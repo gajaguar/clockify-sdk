@@ -60,7 +60,7 @@ Status values: `planned`, `in-progress`, `done`.
 
 | Endpoint             | SDK method              | Status  |
 | -------------------- | ----------------------- | ------- |
-| `GET /user`          | `client.user.me()`      | planned |
+| `GET /user`          | `client.user.me()`      | done    |
 | `GET .../users`      | `ws.users.list()`       | planned |
 | `GET .../userGroups` | `ws.user_groups.list()` | planned |
 

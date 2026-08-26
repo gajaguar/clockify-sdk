@@ -81,11 +81,19 @@ exclude = ["tests/"]
 [tool.pylint.main]
 load-plugins = ["checkers"]
 
+[tool.pylint.format]
+# Ruff owns formatting and line length (see [tool.ruff] line-length above).
+max-line-length = 119
+
 [tool.pylint."messages control"]
 disable = [
   "missing-module-docstring",
   "missing-class-docstring",
   "missing-function-docstring",
+  # Thin resource/transport classes and test doubles legitimately expose one method.
+  "too-few-public-methods",
+  # Re-export lists and endpoint tables are repetitive by design.
+  "duplicate-code",
 ]
 
 [tool.pyright]
