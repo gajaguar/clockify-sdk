@@ -1,0 +1,109 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "clockify-unofficial-sdk"
+version = "0.1.0"
+description = "Unofficial, typed Python SDK for the Clockify API."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Gerardo Antonio Gerónimo Vasconcelos", email = "dev@gajaguar.com" },
+]
+requires-python = ">=3.14"
+keywords = ["clockify", "time-tracking", "sdk", "api-client"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+dependencies = [
+  "httpx>=0.28",
+  "pydantic>=2.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/gajaguar/clockify-sdk"
+Repository = "https://github.com/gajaguar/clockify-sdk"
+Issues = "https://github.com/gajaguar/clockify-sdk/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/clockify"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=clockify --cov-report=term-missing --cov-fail-under=90"
+markers = [
+  "live: hits the real Clockify API (requires CLOCKIFY_TEST_API_KEY)",
+]
+
+[tool.coverage.run]
+source = ["src/clockify"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+  "pragma: no cover",
+  "if __name__ == .__main__.:",
+  "raise NotImplementedError",
+]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 119
+lint.select = ["ALL"]
+lint.ignore = ["missing-trailing-comma", "CPY", "D"]
+lint.isort.section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+lint.isort.force-single-line = true
+lint.isort.case-sensitive = true
+lint.flake8-type-checking.runtime-evaluated-base-classes = [
+  "pydantic.BaseModel",
+  "clockify.models.base.ClockifyModel",
+]
+lint.flake8-bugbear.extend-immutable-calls = ["pydantic.Field"]
+lint.per-file-ignores."src/clockify/resources/**/*.py" = ["builtin-argument-shadowing", "builtin-attribute-shadowing", "too-many-arguments"]
+lint.per-file-ignores."tests/**/*.py" = [ "ANN", "ARG", "magic-value-comparison", "assert", "private-member-access"]
+
+[tool.mypy]
+strict = true
+exclude = ["tests/"]
+
+[tool.pylint.main]
+load-plugins = ["checkers"]
+
+[tool.pylint."messages control"]
+disable = [
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "missing-function-docstring",
+]
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/.venv", "**/node_modules", "tests"]
+
+[dependency-groups]
+dev = [
+  "mypy>=2.1.0",
+  "pre-commit>=4.0",
+  "pylint-plugin",
+  "pylint>=4.0.5",
+  "pyright>=1.1.409",
+  "pytest>=8.0",
+  "pytest-cov>=6.0",
+  "respx>=0.22",
+  "ruff>=0.15.15",
+]
+
+[tool.uv.sources]
+pylint-plugin = { git = "https://github.com/gajaguar/pylint-plugin", tag = "v1.1.0" }
