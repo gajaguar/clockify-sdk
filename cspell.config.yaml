@@ -1,0 +1,23 @@
+version: "0.2"
+language: en
+allowCompoundWords: true
+
+dictionaryDefinitions:
+  - name: project-words
+    path: ./dictionary.txt
+
+dictionaries:
+  - project-words
+  - python
+  - bash
+  - filetypes
+
+ignorePaths:
+  - "**/.venv/**"
+  - "**/.mypy_cache/**"
+  - "**/.ruff_cache/**"
+  - "**/.pytest_cache/**"
+  - "**/htmlcov/**"
+  - "**/uv.lock"
+  - "**/*.lock"
+  - "**/pnpm-lock.yaml"

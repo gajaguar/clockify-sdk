@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.4
+    hooks:
+      - id: ruff
+        args: [--fix, --preview]
+      - id: ruff-format
+        args: [--preview]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy .
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: pylint
+        name: pylint (custom-pylint-rules)
+        entry: >-
+          uv run pylint --load-plugins=checkers --disable=all
+          --enable=app-no-docstrings,app-test-aaa-markers,app-test-no-blank-lines,app-unused-arg-use-del,app-module-const-naming,app-no-file-level-disable,app-no-inline-imports,app-no-relative-imports,app-use-contextlib-suppress
+          src tests
+        language: system
+        types: [python]
+        pass_filenames: false
