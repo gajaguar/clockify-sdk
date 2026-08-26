@@ -37,14 +37,15 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Core API — Time entries
 
-| Endpoint                               | SDK method                            | Status  |
-| -------------------------------------- | ------------------------------------- | ------- |
-| `GET .../user/{userId}/time-entries`   | `ws.time_entries.list(user_id)`       | planned |
-| `GET .../time-entries/{id}`            | `ws.time_entries.get(id)`             | planned |
-| `POST .../time-entries`                | `ws.time_entries.create(payload)`     | planned |
-| `PUT .../time-entries/{id}`            | `ws.time_entries.update(id, payload)` | planned |
-| `PATCH .../user/{userId}/time-entries` | `ws.time_entries.stop(user_id)`       | planned |
-| `DELETE .../time-entries/{id}`         | `ws.time_entries.delete(id)`          | planned |
+| Endpoint                               | SDK method                                        | Status |
+| -------------------------------------- | ------------------------------------------------- | ------ |
+| `GET .../user/{userId}/time-entries`   | `ws.time_entries.list(user_id, entry_filter=...)` | done   |
+| `GET .../time-entries/{id}`            | `ws.time_entries.get(id)`                         | done   |
+| `POST .../time-entries`                | `ws.time_entries.create(payload)`                 | done   |
+| `POST .../user/{userId}/time-entries`  | `ws.time_entries.start(user_id, payload)`         | done   |
+| `PUT .../time-entries/{id}`            | `ws.time_entries.update(id, payload)`             | done   |
+| `PATCH .../user/{userId}/time-entries` | `ws.time_entries.stop(user_id, end=None)`         | done   |
+| `DELETE .../time-entries/{id}`         | `ws.time_entries.delete(id)`                      | done   |
 
 ## Core API — Clients, tags, custom fields
 

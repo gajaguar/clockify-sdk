@@ -7,6 +7,7 @@ from clockify.resources.custom_fields import CustomFieldsResource
 from clockify.resources.projects import ProjectsResource
 from clockify.resources.tags import TagsResource
 from clockify.resources.tasks import TasksResource
+from clockify.resources.time_entries import TimeEntriesResource
 from clockify.resources.user_groups import UserGroupsResource
 from clockify.resources.users import UsersResource
 
@@ -25,3 +26,4 @@ class WorkspaceClient:
         self.clients = ClientsResource(transport, workspace_id, page_size=page_size)
         self.tags = TagsResource(transport, workspace_id, page_size=page_size)
         self.custom_fields = CustomFieldsResource(transport, workspace_id, page_size=page_size)
+        self.time_entries = TimeEntriesResource(transport, workspace_id, page_size=page_size)

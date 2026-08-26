@@ -7,6 +7,8 @@ from pydantic import ValidationError as PydanticValidationError
 from pydantic.alias_generators import to_camel
 
 from clockify.models import ClockifyModel
+from clockify.models import TimeEntryType
+from clockify.models import TimeInterval
 from clockify.models import User
 from clockify.models import UserStatus
 
@@ -116,3 +118,23 @@ def test_base_model_config():
         "extra": "allow",
         "frozen": True,
     }
+
+
+def test_time_interval_round_trips_instant_and_duration():
+    # Arrange
+    payload = {"start": "2026-08-26T10:00:00Z", "end": "2026-08-26T11:30:00Z", "duration": "PT1H30M"}
+    # Act
+    interval = TimeInterval.model_validate(payload)
+    dumped = interval.model_dump(mode="json", by_alias=True)
+    # Assert
+    assert interval.start.tzinfo is not None
+    assert interval.duration.total_seconds() == 5400
+    assert dumped == payload
+
+
+def test_unknown_time_entry_type_falls_back_to_unknown():
+    # Arrange
+    # Act
+    entry_type = TimeEntryType("SOMETHING_NEW")
+    # Assert
+    assert entry_type is TimeEntryType.UNKNOWN

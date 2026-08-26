@@ -33,6 +33,7 @@ from clockify.models import CustomFieldEntityType
 from clockify.models import CustomFieldStatus
 from clockify.models import CustomFieldType
 from clockify.models import CustomFieldUpdate
+from clockify.models import CustomFieldValue
 from clockify.models import EstimateType
 from clockify.models import Membership
 from clockify.models import MembershipStatus
@@ -48,6 +49,12 @@ from clockify.models import Task
 from clockify.models import TaskCreate
 from clockify.models import TaskStatus
 from clockify.models import TaskUpdate
+from clockify.models import TimeEntry
+from clockify.models import TimeEntryCreate
+from clockify.models import TimeEntryFilter
+from clockify.models import TimeEntryType
+from clockify.models import TimeEntryUpdate
+from clockify.models import TimeInterval
 from clockify.models import User
 from clockify.models import UserGroup
 from clockify.models import UserGroupCreate
@@ -83,6 +90,7 @@ __all__ = [
     "CustomFieldStatus",
     "CustomFieldType",
     "CustomFieldUpdate",
+    "CustomFieldValue",
     "EstimateType",
     "ForbiddenError",
     "Membership",
@@ -108,7 +116,13 @@ __all__ = [
     "TaskId",
     "TaskStatus",
     "TaskUpdate",
+    "TimeEntry",
+    "TimeEntryCreate",
+    "TimeEntryFilter",
     "TimeEntryId",
+    "TimeEntryType",
+    "TimeEntryUpdate",
+    "TimeInterval",
     "TransportError",
     "User",
     "UserGroup",

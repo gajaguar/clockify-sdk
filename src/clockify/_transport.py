@@ -64,7 +64,7 @@ class Transport:
         path: str,
         *,
         kind: CqsKind,
-        params: Mapping[str, str | int | float | bool | None] | None = None,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
         json: JSONValue = None,
     ) -> JSONValue:
         try:

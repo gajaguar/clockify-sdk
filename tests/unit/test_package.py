@@ -10,9 +10,10 @@ EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
     "NO_RETRY AuthenticationError Client ClientCreate ClientId ClientOptions ClientUpdate ClockifyAPIError "
     "ClockifyClient ClockifyError ConfigurationError ConflictError CqsKind Currency CustomField "
     "CustomFieldCreate CustomFieldEntityType CustomFieldId CustomFieldStatus CustomFieldType CustomFieldUpdate "
-    "EstimateType ForbiddenError Membership MembershipStatus MembershipType MissingCredentialsError "
-    "NotFoundError Project ProjectCreate ProjectId ProjectUpdate Rate RateLimitError Region RetryPolicy "
-    "ServerError Tag TagCreate TagId TagUpdate Task TaskCreate TaskId TaskStatus TaskUpdate TimeEntryId "
+    "CustomFieldValue EstimateType ForbiddenError Membership MembershipStatus MembershipType "
+    "MissingCredentialsError NotFoundError Project ProjectCreate ProjectId ProjectUpdate Rate RateLimitError "
+    "Region RetryPolicy ServerError Tag TagCreate TagId TagUpdate Task TaskCreate TaskId TaskStatus TaskUpdate "
+    "TimeEntry TimeEntryCreate TimeEntryFilter TimeEntryId TimeEntryType TimeEntryUpdate TimeInterval "
     "TransportError User UserGroup UserGroupCreate UserGroupId UserGroupUpdate UserId UserRedacted "
     "ValidationError Workspace WorkspaceClient WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__"
 ).split()

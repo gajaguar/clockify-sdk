@@ -106,13 +106,13 @@ def _validate_instant(value: object) -> datetime.datetime:
     raise _invalid(value, "instant")
 
 
-ClockifyDuration: Final = Annotated[  # pylint: disable=app-module-const-naming
+type ClockifyDuration = Annotated[  # pylint: disable=app-module-const-naming
     datetime.timedelta,
     BeforeValidator(_validate_duration),
     PlainSerializer(format_duration, return_type=str, when_used="json"),
 ]
 
-ClockifyInstant: Final = Annotated[  # pylint: disable=app-module-const-naming
+type ClockifyInstant = Annotated[  # pylint: disable=app-module-const-naming
     datetime.datetime,
     BeforeValidator(_validate_instant),
     PlainSerializer(format_instant, return_type=str, when_used="json"),
