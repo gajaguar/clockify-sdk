@@ -23,10 +23,23 @@ from clockify.ids import TimeEntryId
 from clockify.ids import UserGroupId
 from clockify.ids import UserId
 from clockify.ids import WorkspaceId
+from clockify.models import Currency
+from clockify.models import Membership
+from clockify.models import MembershipStatus
+from clockify.models import MembershipType
+from clockify.models import Rate
 from clockify.models import User
+from clockify.models import UserGroup
+from clockify.models import UserGroupCreate
+from clockify.models import UserGroupUpdate
+from clockify.models import UserRedacted
+from clockify.models import Workspace
+from clockify.models import WorkspaceSettings
+from clockify.models import WorkspaceSubdomain
 from clockify.retry import NO_RETRY
 from clockify.retry import CqsKind
 from clockify.retry import RetryPolicy
+from clockify.workspace import WorkspaceClient
 
 __all__ = [
     "NO_RETRY",
@@ -39,11 +52,16 @@ __all__ = [
     "ConfigurationError",
     "ConflictError",
     "CqsKind",
+    "Currency",
     "CustomFieldId",
     "ForbiddenError",
+    "Membership",
+    "MembershipStatus",
+    "MembershipType",
     "MissingCredentialsError",
     "NotFoundError",
     "ProjectId",
+    "Rate",
     "RateLimitError",
     "Region",
     "RetryPolicy",
@@ -53,9 +71,17 @@ __all__ = [
     "TimeEntryId",
     "TransportError",
     "User",
+    "UserGroup",
+    "UserGroupCreate",
     "UserGroupId",
+    "UserGroupUpdate",
     "UserId",
+    "UserRedacted",
     "ValidationError",
+    "Workspace",
+    "WorkspaceClient",
     "WorkspaceId",
+    "WorkspaceSettings",
+    "WorkspaceSubdomain",
     "__version__",
 ]

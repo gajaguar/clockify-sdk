@@ -12,8 +12,8 @@ Status values: `planned`, `in-progress`, `done`.
 
 | Endpoint                        | SDK method                  | Status  |
 | ------------------------------- | --------------------------- | ------- |
-| `GET /workspaces`               | `client.workspaces.list()`  | planned |
-| `GET /workspaces/{workspaceId}` | `client.workspaces.get(id)` | planned |
+| `GET /workspaces`               | `client.workspaces.list()`  | done    |
+| `GET /workspaces/{workspaceId}` | `client.workspaces.get(id)` | done    |
 
 ## Core API — Projects
 
@@ -58,11 +58,16 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Users and user groups
 
-| Endpoint             | SDK method              | Status  |
-| -------------------- | ----------------------- | ------- |
-| `GET /user`          | `client.user.me()`      | done    |
-| `GET .../users`      | `ws.users.list()`       | planned |
-| `GET .../userGroups` | `ws.user_groups.list()` | planned |
+| Endpoint                                              | SDK method                           | Status  |
+| ----------------------------------------------------- | ------------------------------------ | ------- |
+| `GET /user`                                           | `client.user.me()`                   | done    |
+| `GET .../users`                                       | `ws.users.list()`                    | done    |
+| `GET .../user-groups`                                 | `ws.user_groups.list()`              | done    |
+| `POST .../user-groups`                                | `ws.user_groups.create(payload)`     | done    |
+| `PUT .../user-groups/{id}`                            | `ws.user_groups.update(id, payload)` | done    |
+| `DELETE .../user-groups/{id}`                         | `ws.user_groups.delete(id)`          | done    |
+| `POST .../user-groups/{userGroupId}/users`            | `ws.user_groups.add_user(...)`       | planned |
+| `DELETE .../user-groups/{userGroupId}/users/{userId}` | `ws.user_groups.remove_user(...)`    | planned |
 
 ## Reports API
 

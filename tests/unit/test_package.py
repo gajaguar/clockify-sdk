@@ -8,9 +8,11 @@ import clockify
 # block in clockify/__init__.py (pylint duplicate-code).
 EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
     "NO_RETRY AuthenticationError ClientId ClientOptions ClockifyAPIError ClockifyClient ClockifyError "
-    "ConfigurationError ConflictError CqsKind CustomFieldId ForbiddenError MissingCredentialsError "
-    "NotFoundError ProjectId RateLimitError Region RetryPolicy ServerError TagId TaskId TimeEntryId "
-    "TransportError User UserGroupId UserId ValidationError WorkspaceId __version__"
+    "ConfigurationError ConflictError CqsKind Currency CustomFieldId ForbiddenError Membership "
+    "MembershipStatus MembershipType MissingCredentialsError NotFoundError ProjectId Rate RateLimitError "
+    "Region RetryPolicy ServerError TagId TaskId TimeEntryId TransportError User UserGroup "
+    "UserGroupCreate UserGroupId UserGroupUpdate UserId UserRedacted ValidationError Workspace "
+    "WorkspaceClient WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__"
 ).split()
 
 

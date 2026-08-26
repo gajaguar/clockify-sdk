@@ -7,8 +7,12 @@ from clockify.config import ClientConfig
 from clockify.config import ClientOptions
 from clockify.config import resolve_api_key
 from clockify.config import resolve_urls
+from clockify.errors import ConfigurationError
+from clockify.ids import WorkspaceId
 from clockify.resources.user import UserResource
+from clockify.resources.workspaces import WorkspacesResource
 from clockify.retry import RetryPolicy
+from clockify.workspace import WorkspaceClient
 
 
 class ClockifyClient:
@@ -28,13 +32,24 @@ class ClockifyClient:
         self._transport = Transport(self._config, resolved_base, event_hooks=resolved_options.event_hooks)
         self._reports_transport = Transport(self._config, resolved_reports, event_hooks=resolved_options.event_hooks)
         self.user = UserResource(self._transport)
-
-    def close(self) -> None:
-        self._transport.close()
-        self._reports_transport.close()
+        self.workspaces = WorkspacesResource(self._transport)
 
     def __enter__(self) -> Self:
         return self
 
     def __exit__(self, *exc: object) -> None:
         self.close()
+
+    def close(self) -> None:
+        self._transport.close()
+        self._reports_transport.close()
+
+    def default_workspace(self) -> WorkspaceClient:
+        user = self.user.me()
+        if user.active_workspace is None:
+            message = "Current user has no active workspace"
+            raise ConfigurationError(message)
+        return self.workspace(user.active_workspace)
+
+    def workspace(self, workspace_id: WorkspaceId | str) -> WorkspaceClient:
+        return WorkspaceClient(self._transport, WorkspaceId(str(workspace_id)), page_size=self._config.page_size)
