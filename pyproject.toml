@@ -85,6 +85,11 @@ load-plugins = ["checkers"]
 # Ruff owns formatting and line length (see [tool.ruff] line-length above).
 max-line-length = 119
 
+[tool.pylint.design]
+# WorkspaceClient is a facade that binds one sub-resource per Clockify endpoint
+# group (§3.3 of TECH_SPEC.md); it grows by design through phases 3-5.
+max-attributes = 12
+
 [tool.pylint."messages control"]
 disable = [
   "missing-module-docstring",

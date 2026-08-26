@@ -10,30 +10,30 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Core API — Workspaces
 
-| Endpoint                        | SDK method                  | Status  |
-| ------------------------------- | --------------------------- | ------- |
-| `GET /workspaces`               | `client.workspaces.list()`  | done    |
-| `GET /workspaces/{workspaceId}` | `client.workspaces.get(id)` | done    |
+| Endpoint                        | SDK method                  | Status |
+| ------------------------------- | --------------------------- | ------ |
+| `GET /workspaces`               | `client.workspaces.list()`  | done   |
+| `GET /workspaces/{workspaceId}` | `client.workspaces.get(id)` | done   |
 
 ## Core API — Projects
 
 | Endpoint                                         | SDK method                        | Status  |
 | ------------------------------------------------ | --------------------------------- | ------- |
-| `GET /workspaces/{workspaceId}/projects`         | `ws.projects.list()`              | planned |
-| `GET /workspaces/{workspaceId}/projects/{id}`    | `ws.projects.get(id)`             | planned |
-| `POST /workspaces/{workspaceId}/projects`        | `ws.projects.create(payload)`     | planned |
-| `PUT /workspaces/{workspaceId}/projects/{id}`    | `ws.projects.update(id, payload)` | planned |
-| `DELETE /workspaces/{workspaceId}/projects/{id}` | `ws.projects.delete(id)`          | planned |
+| `GET /workspaces/{workspaceId}/projects`         | `ws.projects.list()`              | done    |
+| `GET /workspaces/{workspaceId}/projects/{id}`    | `ws.projects.get(id)`             | done    |
+| `POST /workspaces/{workspaceId}/projects`        | `ws.projects.create(payload)`     | done    |
+| `PUT /workspaces/{workspaceId}/projects/{id}`    | `ws.projects.update(id, payload)` | done    |
+| `DELETE /workspaces/{workspaceId}/projects/{id}` | `ws.projects.delete(id)`          | done    |
 
 ## Core API — Tasks
 
 | Endpoint                                     | SDK method                                 | Status  |
 | -------------------------------------------- | ------------------------------------------ | ------- |
-| `GET .../projects/{projectId}/tasks`         | `ws.tasks.list(project_id)`                | planned |
-| `GET .../projects/{projectId}/tasks/{id}`    | `ws.tasks.get(project_id, id)`             | planned |
-| `POST .../projects/{projectId}/tasks`        | `ws.tasks.create(project_id, payload)`     | planned |
-| `PUT .../projects/{projectId}/tasks/{id}`    | `ws.tasks.update(project_id, id, payload)` | planned |
-| `DELETE .../projects/{projectId}/tasks/{id}` | `ws.tasks.delete(project_id, id)`          | planned |
+| `GET .../projects/{projectId}/tasks`         | `ws.tasks.list(project_id)`                | done    |
+| `GET .../projects/{projectId}/tasks/{id}`    | `ws.tasks.get(project_id, id)`             | done    |
+| `POST .../projects/{projectId}/tasks`        | `ws.tasks.create(project_id, payload)`     | done    |
+| `PUT .../projects/{projectId}/tasks/{id}`    | `ws.tasks.update(project_id, id, payload)` | done    |
+| `DELETE .../projects/{projectId}/tasks/{id}` | `ws.tasks.delete(project_id, id)`          | done    |
 
 ## Core API — Time entries
 
@@ -48,13 +48,22 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Core API — Clients, tags, custom fields
 
-| Endpoint                | SDK method                   | Status  |
-| ----------------------- | ---------------------------- | ------- |
-| `GET .../clients`       | `ws.clients.list()`          | planned |
-| `POST .../clients`      | `ws.clients.create(payload)` | planned |
-| `GET .../tags`          | `ws.tags.list()`             | planned |
-| `POST .../tags`         | `ws.tags.create(payload)`    | planned |
-| `GET .../custom-fields` | `ws.custom_fields.list()`    | planned |
+| Endpoint                        | SDK method                             | Status |
+| ------------------------------- | -------------------------------------- | ------ |
+| `GET .../clients`               | `ws.clients.list()`                    | done   |
+| `GET .../clients/{id}`          | `ws.clients.get(id)`                   | done   |
+| `POST .../clients`              | `ws.clients.create(payload)`           | done   |
+| `PUT .../clients/{id}`          | `ws.clients.update(id, payload)`       | done   |
+| `DELETE .../clients/{id}`       | `ws.clients.delete(id)`                | done   |
+| `GET .../tags`                  | `ws.tags.list()`                       | done   |
+| `GET .../tags/{id}`             | `ws.tags.get(id)`                      | done   |
+| `POST .../tags`                 | `ws.tags.create(payload)`              | done   |
+| `PUT .../tags/{id}`             | `ws.tags.update(id, payload)`          | done   |
+| `DELETE .../tags/{id}`          | `ws.tags.delete(id)`                   | done   |
+| `GET .../custom-fields`         | `ws.custom_fields.list()`              | done   |
+| `POST .../custom-fields`        | `ws.custom_fields.create(payload)`     | done   |
+| `PUT .../custom-fields/{id}`    | `ws.custom_fields.update(id, payload)` | done   |
+| `DELETE .../custom-fields/{id}` | `ws.custom_fields.delete(id)`          | done   |
 
 ## Users and user groups
 

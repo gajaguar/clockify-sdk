@@ -23,11 +23,31 @@ from clockify.ids import TimeEntryId
 from clockify.ids import UserGroupId
 from clockify.ids import UserId
 from clockify.ids import WorkspaceId
+from clockify.models import Client
+from clockify.models import ClientCreate
+from clockify.models import ClientUpdate
 from clockify.models import Currency
+from clockify.models import CustomField
+from clockify.models import CustomFieldCreate
+from clockify.models import CustomFieldEntityType
+from clockify.models import CustomFieldStatus
+from clockify.models import CustomFieldType
+from clockify.models import CustomFieldUpdate
+from clockify.models import EstimateType
 from clockify.models import Membership
 from clockify.models import MembershipStatus
 from clockify.models import MembershipType
+from clockify.models import Project
+from clockify.models import ProjectCreate
+from clockify.models import ProjectUpdate
 from clockify.models import Rate
+from clockify.models import Tag
+from clockify.models import TagCreate
+from clockify.models import TagUpdate
+from clockify.models import Task
+from clockify.models import TaskCreate
+from clockify.models import TaskStatus
+from clockify.models import TaskUpdate
 from clockify.models import User
 from clockify.models import UserGroup
 from clockify.models import UserGroupCreate
@@ -44,8 +64,11 @@ from clockify.workspace import WorkspaceClient
 __all__ = [
     "NO_RETRY",
     "AuthenticationError",
+    "Client",
+    "ClientCreate",
     "ClientId",
     "ClientOptions",
+    "ClientUpdate",
     "ClockifyAPIError",
     "ClockifyClient",
     "ClockifyError",
@@ -53,21 +76,38 @@ __all__ = [
     "ConflictError",
     "CqsKind",
     "Currency",
+    "CustomField",
+    "CustomFieldCreate",
+    "CustomFieldEntityType",
     "CustomFieldId",
+    "CustomFieldStatus",
+    "CustomFieldType",
+    "CustomFieldUpdate",
+    "EstimateType",
     "ForbiddenError",
     "Membership",
     "MembershipStatus",
     "MembershipType",
     "MissingCredentialsError",
     "NotFoundError",
+    "Project",
+    "ProjectCreate",
     "ProjectId",
+    "ProjectUpdate",
     "Rate",
     "RateLimitError",
     "Region",
     "RetryPolicy",
     "ServerError",
+    "Tag",
+    "TagCreate",
     "TagId",
+    "TagUpdate",
+    "Task",
+    "TaskCreate",
     "TaskId",
+    "TaskStatus",
+    "TaskUpdate",
     "TimeEntryId",
     "TransportError",
     "User",
