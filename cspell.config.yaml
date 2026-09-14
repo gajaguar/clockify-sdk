@@ -13,6 +13,7 @@ dictionaries:
   - filetypes
 
 ignorePaths:
+  - ".gitignore" # vendored toptal.com boilerplate, not authored here
   - "**/.venv/**"
   - "**/.mypy_cache/**"
   - "**/.ruff_cache/**"
