@@ -16,8 +16,9 @@ coverage matrix.
 
 ## Requirements
 
-- **Python >= 3.14**
-- [uv](https://docs.astral.sh/uv/) — dependency management and virtualenvs
+- [mise](https://mise.jdx.dev) — pins the toolchain (`mise.toml`: Python 3.14,
+  uv, node, pnpm, pre-commit, checkmake); run `mise install`, then
+  `make install`
 - A Clockify API key (`CLOCKIFY_API_KEY`) — see [Authentication](#authentication)
 
 ## Usage
@@ -91,23 +92,29 @@ All targets accept `FILES="..."` to scope to specific paths/globs, e.g.
 - **mypy** + **pyright** — static type checking
 - **pytest** + **pytest-cov** + **respx** — testing, coverage, HTTP mocking
 - **markdownlint-cli2** + **cspell** (pnpm, dev-only) — Markdown lint & spell check
-- **pylint** + [`custom-pylint-rules`](https://github.com/gajaguar/custom-pylint-rules)
+- **checkmake** — lints the `Makefile` itself (`make makefile-lint`)
+- **pylint** + [`pylint-plugin`](https://github.com/gajaguar/pylint-plugin)
   (uv git dependency) — custom checkers for personal-preference rules ruff
   doesn't cover (e.g. no docstrings — see below)
-- **pre-commit** — git hook running ruff, ruff-format, mypy, and pylint before
-  each commit
+- **pre-commit** — git hook running the generic hygiene hooks
+  (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
+  check-merge-conflict, check-added-large-files, mixed-line-ending),
+  markdownlint-cli2, cspell, checkmake, ruff, ruff-format, mypy, and pylint
+  before each commit
+- **mise** — pins the whole toolchain version (Python, uv, node, pnpm,
+  pre-commit, checkmake) in `mise.toml`
 
 #### Docstring policy
 
 This project does not use docstrings — use comments only where the *why*
-isn't obvious from the code. `custom-pylint-rules`'s `app-no-docstrings`
+isn't obvious from the code. `pylint-plugin`'s `app-no-docstrings`
 (W9001) checker fails `make check`/`make pylint` if any function, method, or
 class has one. Because the SDK can't rely on docstrings for endpoint
 reference, each resource method carries a one-line `# METHOD /path` comment
 above its definition, and the authoritative endpoint-to-method mapping lives
 in [`docs/coverage.md`](docs/coverage.md).
 
-#### Custom pylint checkers (`custom-pylint-rules`)
+#### Custom pylint checkers (`pylint-plugin`)
 
 A standalone pylint plugin encoding personal code-review preferences beyond
 ruff's rule set, installed as a `uv` git dependency pinned in
@@ -120,7 +127,9 @@ checker list.
 ```text
 .
 ├── pyproject.toml       # deps, ruff/mypy/pyright/pytest/coverage config
-├── Makefile             # check/fix command surface
+├── Makefile             # check/fix command surface (root: shared targets)
+├── mk/python.mk         # Python-specific targets, wired into the Makefile
+├── mise.toml            # pinned toolchain versions
 ├── docs/                # tech spec, architecture, endpoint coverage matrix
 ├── src/clockify/        # SDK package
 └── tests/
@@ -136,6 +145,10 @@ checker list.
 - **`requires-python = ">=3.14"`** excludes most current Python installations
   (3.11–3.13); this is a deliberate, revisitable floor — see `docs/TECH_SPEC.md`
   §11, risk R1.
+- `mise.toml` forces `uv` onto the mise-provided interpreter
+  (`python-preference = "only-system"`, `python-downloads = "never"` in
+  `pyproject.toml`'s `[tool.uv]`), so `.python-version` is intentionally
+  absent — mise is the single source of truth for the pinned Python version.
 - Clockify rate limits differ by plan and are not fully documented upstream;
   retry defaults are conservative and configurable — see
   [`src/clockify/retry.py`](src/clockify/retry.py).

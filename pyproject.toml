@@ -119,4 +119,8 @@ dev = [
 ]
 
 [tool.uv.sources]
-pylint-plugin = { git = "https://github.com/gajaguar/pylint-plugin", tag = "v1.1.0" }
+pylint-plugin = { git = "https://github.com/gajaguar/pylint-plugin", tag = "v1.1.1" }
+
+[tool.uv]
+python-preference = "only-system"
+python-downloads = "never"
