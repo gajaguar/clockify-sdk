@@ -41,6 +41,33 @@ client = ClockifyClient()  # reads CLOCKIFY_API_KEY
 client = ClockifyClient(api_key="...")  # explicit argument takes precedence
 ```
 
+## Recipes
+
+Start a timer, list today's running/finished entries, then stop it:
+
+```python
+import datetime
+
+from clockify import ClockifyClient, TimeEntryCreate, TimeEntryFilter
+
+with ClockifyClient() as client:
+    workspace = client.default_workspace()
+    user = client.user.me()
+
+    payload = TimeEntryCreate(description="Writing docs")
+    started = workspace.time_entries.start(user.id, payload)
+    print(f"started {started.id}")
+
+    today = datetime.datetime.now(datetime.UTC)
+    today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+    entry_filter = TimeEntryFilter(start=today)
+    for entry in workspace.time_entries.list(user.id, entry_filter=entry_filter):
+        print(entry.description, entry.time_interval.duration)
+
+    stopped = workspace.time_entries.stop(user.id)
+    print(stopped.time_interval.duration)
+```
+
 ## Command convention: `check` vs `fix`
 
 Targets are split by whether they mutate files:

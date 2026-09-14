@@ -68,22 +68,31 @@ as an additive namespace.
 ### 3.1 Construction
 
 ```python
-from clockify import ClockifyClient, Region
+from clockify import ClientOptions, ClockifyClient, Region
 
 client = ClockifyClient()  # reads CLOCKIFY_API_KEY
 client = ClockifyClient(api_key="...")  # explicit wins over env
-client = ClockifyClient(region=Region.EU_CENTRAL_1)
+client = ClockifyClient(options=ClientOptions(region=Region.EU_CENTRAL_1))
 client = ClockifyClient(
-    base_url="https://euc1.clockify.me/api/v1", reports_base_url="https://euc1.clockify.me/report/v1"
+    options=ClientOptions(
+        base_url="https://euc1.clockify.me/api/v1", reports_base_url="https://euc1.clockify.me/report/v1"
+    )
 )
 ```
+
+`api_key` stays a direct keyword because it is the one argument nearly every
+call site sets. Everything else that shapes a client (`region`, `base_url`,
+`reports_base_url`, `timeout`, `retry`, `event_hooks`) is a Parameter Object
+(`ClientOptions`, a frozen dataclass in `config.py`) rather than seven
+individual keywords on `__init__` — see §5.2's row on it and the coding-style
+skill's "long-parameter-list" rule.
 
 Resolution order for the key: `api_key` argument → `CLOCKIFY_API_KEY` →
 `MissingCredentialsError` at construction time, not at first request.
 
 `Region` is an enum covering the documented hosts (global, `euc1`, `use2`,
-`euw2`, `apse2`, `developer`). An explicit `base_url` overrides the region and
-is the seam used to point tests at a fake server.
+`euw2`, `apse2`, `developer`). An explicit `base_url` (on `ClientOptions`)
+overrides the region and is the seam used to point tests at a fake server.
 
 The client is a context manager and owns one `httpx.Client`:
 
@@ -220,14 +229,15 @@ stays.
 
 ### 5.2 Patterns adopted
 
-| Pattern                       | Applied to                                      | Why                                                                                       |
-| ----------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Generic resource base class   | `resources/base.py`                             | Dominant risk is surface area; writes the CRUD five once instead of 40+ times             |
-| Strategy                      | `RetryPolicy`, auth scheme                      | Plan-dependent rate limits need a different policy, not a tuned number                    |
-| Decorator (transport wrapper) | retry/backoff as an `httpx.BaseTransport`       | Composes, tests standalone, keeps `request()` linear, doubles as the user injection point |
-| Facade                        | `ClockifyClient`                                | One entry point over httpx, auth, retries, pagination                                     |
-| Iterator                      | `list()` → `Iterator[T]`                        | Lazy pagination without materializing whole workspaces                                    |
-| Value Object                  | ID types, `ClockifyInstant`, `ClockifyDuration` | Prevents `str`/`str` transposition; see §5.3                                              |
+| Pattern                       | Applied to                                      | Why                                                                                                 |
+| ----------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Generic resource base class   | `resources/base.py`                             | Dominant risk is surface area; writes the CRUD five once instead of 40+ times                       |
+| Strategy                      | `RetryPolicy`, auth scheme                      | Plan-dependent rate limits need a different policy, not a tuned number                              |
+| Decorator (transport wrapper) | retry/backoff as an `httpx.BaseTransport`       | Composes, tests standalone, keeps `request()` linear, doubles as the user injection point           |
+| Facade                        | `ClockifyClient`                                | One entry point over httpx, auth, retries, pagination                                               |
+| Iterator                      | `list()` → `Iterator[T]`                        | Lazy pagination without materializing whole workspaces                                              |
+| Value Object                  | ID types, `ClockifyInstant`, `ClockifyDuration` | Prevents `str`/`str` transposition; see §5.3                                                        |
+| Parameter Object              | `ClientOptions` (§3.1), `ErrorBody` (§7.4)      | Collapses a long, related keyword list into one typed object instead of a many-argument constructor |
 
 #### Generic resource base class
 
@@ -252,8 +262,9 @@ being hand-written is correct, not a defect.
 Retry configuration is an object, not a spread of constructor keywords:
 
 ```python
-client = ClockifyClient(retry=RetryPolicy(max_attempts=3, backoff=...))
-client = ClockifyClient(retry=NO_RETRY)
+options = ClientOptions(retry=RetryPolicy(max_attempts=3, backoff=...))
+client = ClockifyClient(options=options)
+client = ClockifyClient(options=ClientOptions(retry=NO_RETRY))
 ```
 
 Free-plan workspaces face limits differing by orders of magnitude from paid
@@ -473,7 +484,11 @@ ClockifyError                       # base; carries request + response context
 ```
 
 Clockify's error body (`{"code": ..., "message": ...}`) is parsed when present
-and preserved verbatim in `.raw` when it is not.
+and preserved verbatim in `.raw` when it is not. `code`/`message`/`raw` travel
+into the exception constructors as one `ErrorBody` (§5.2's Parameter Object
+row) rather than three separate keywords, but remain flat attributes
+(`.code`, `.message`, `.raw`) on the raised exception itself — the grouping is
+a constructor-ergonomics detail, not a change to the caught-exception shape.
 
 ### 7.5 Logging and hooks
 
@@ -482,8 +497,8 @@ and preserved verbatim in `.raw` when it is not.
 - `DEBUG`: method, URL, status, elapsed ms, request id if returned.
 - The API key is **never** logged; a redacting filter covers the `X-Api-Key`
   header and any `api_key` value in structured extras.
-- `ClockifyClient(event_hooks={"request": [...], "response": [...]})` forwards
-  to httpx event hooks for caller-supplied instrumentation.
+- `ClientOptions(event_hooks=...)` forwards to httpx event hooks for
+  caller-supplied instrumentation.
 
 ---
 

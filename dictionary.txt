@@ -3,6 +3,7 @@ astroid
 cakecom
 capsys
 clockify
+delenv
 euc
 euw
 fromlineno
