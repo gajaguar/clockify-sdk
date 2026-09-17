@@ -1,10 +1,9 @@
 # Endpoint coverage
 
-Authoritative mapping of every documented Clockify endpoint in scope (see
-[`TECH_SPEC.md`](TECH_SPEC.md) §1.1) to its SDK method and implementation
-status. Updated as each phase in `TECH_SPEC.md` §10 lands. This table is the
-verifiable definition of "covers all actions" — an endpoint with no row, or a
-row not marked `done`, is not yet supported.
+Authoritative mapping of every documented Clockify endpoint in scope to its
+SDK method and implementation status. This table is the verifiable definition
+of "covers all actions" — an endpoint with no row, or a row not marked
+`done`, is not yet supported.
 
 Status values: `planned`, `in-progress`, `done`.
 
@@ -90,6 +89,6 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Out of scope (v1)
 
-PTO/Time-off, Approvals, Webhooks, Expenses/Invoices (pending confirmation —
-see `TECH_SPEC.md` §12 open item 1). Not tracked in this table until promoted
-into scope.
+PTO/Time-off, Approvals, Webhooks, Expenses/Invoices (pending confirmation of
+plan-level availability). Not tracked in this table until promoted into
+scope.

@@ -2,8 +2,7 @@
 
 This document describes how the SDK is layered, why it is layered that way,
 and the process for adding a new Clockify endpoint. See
-[`TECH_SPEC.md`](TECH_SPEC.md) for the decisions this architecture implements
-and [`coverage.md`](coverage.md) for the endpoint-to-method mapping.
+[`coverage.md`](coverage.md) for the endpoint-to-method mapping.
 
 ## Layering
 
@@ -87,16 +86,17 @@ text does not carry endpoint information. Instead:
 ## Adding a new endpoint
 
 1. Add or extend the pydantic model(s) in `src/clockify/models/`. Read models
-   and write models (`XCreate`/`XUpdate`) are separate types — see
-   `TECH_SPEC.md` §4.1.
+   and write models (`XCreate`/`XUpdate`) are separate types; write models
+   must not carry server-assigned fields.
 2. Add the method to the relevant resource in `src/clockify/resources/`,
-   following the CRUD naming contract in `TECH_SPEC.md` §3.4. Prefix it with a
-   `# METHOD /path` comment.
+   following the CRUD naming contract (`list`/`list_page` → `get` → `create`
+   → `update` → `delete`, each returning the corresponding model). Prefix it
+   with a `# METHOD /path` comment.
 3. Declare the method's CQS kind — query, idempotent command, or
-   non-idempotent command (`TECH_SPEC.md` §5.5). The retry transport reads it
-   to decide `5xx` eligibility, so getting it wrong either strips retry
-   protection from a read or risks duplicating a write. Reports are queries
-   despite being `POST`.
+   non-idempotent command. The retry transport reads it to decide `5xx`
+   eligibility, so getting it wrong either strips retry protection from a
+   read or risks duplicating a write. Reports are queries despite being
+   `POST`.
 4. Add a unit test in `tests/unit/` asserting the exact HTTP method, path,
    query parameters, and body the method produces (respx).
 5. Update `coverage.md`: flip the endpoint's status to `done` and link the
@@ -105,8 +105,8 @@ text does not carry endpoint information. Instead:
 
 ## Release checklist
 
-There is no CI for this repository (accepted trade-off, `TECH_SPEC.md` §11
-risk R2). Before tagging a release:
+There is no CI for this repository (accepted trade-off — a missed local hook
+can ship a broken release). Before tagging a release:
 
 1. `make check` — must exit 0.
 2. `make test` — must exit 0, coverage gate (90%) must pass.

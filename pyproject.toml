@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-  { name = "Gerardo Antonio Gerónimo Vasconcelos", email = "dev@gajaguar.com" },
+  { name = "G.A.JAGUAR", email = "dev@gajaguar.com" },
 ]
 requires-python = ">=3.14"
 keywords = ["clockify", "time-tracking", "sdk", "api-client"]
@@ -87,7 +87,7 @@ max-line-length = 119
 
 [tool.pylint.design]
 # WorkspaceClient is a facade that binds one sub-resource per Clockify endpoint
-# group (§3.3 of TECH_SPEC.md); it grows by design through phases 3-5.
+# group; it grows by design as SDK coverage expands.
 max-attributes = 12
 
 [tool.pylint."messages control"]
