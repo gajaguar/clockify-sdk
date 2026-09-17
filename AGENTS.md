@@ -14,6 +14,6 @@
   `src/clockify/config.py`'s `ClientOptions` (groups `region`, `base_url`,
   `reports_base_url`, `timeout`, `retry`, `event_hooks` for
   `ClockifyClient.__init__`).
-- If the long parameter list is on a *documented* public API (e.g. specified
-  in `docs/TECH_SPEC.md`), update the spec's examples in the same change —
-  don't let the doc drift from the actual constructor shape.
+- If the long parameter list is on a *documented* public API, update the
+  README's usage examples in the same change — don't let the docs drift from
+  the actual constructor shape.

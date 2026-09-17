@@ -25,7 +25,7 @@ pyright: ## Type-check with Pyright — accepts FILES="..." to limit scope
 
 typecheck: mypy pyright ## Run both type checkers
 
-pylint: ## Self-lint with this repo's own checkers (see github.com/gajaguar/pylint-plugin) — accepts FILES="..."
+pylint: ## Run pylint with the project's custom checkers — accepts FILES="..."
 	$(UV) run pylint $(or $(FILES),src tests)
 
 format: ## Format code with Ruff — accepts FILES="..." to limit scope

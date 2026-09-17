@@ -8,7 +8,6 @@ euc
 euw
 fromlineno
 gajaguar
-gerónimo
 hatchling
 httpx
 iso
@@ -24,4 +23,3 @@ respx
 sdk
 tolineno
 toptal
-vasconcelos

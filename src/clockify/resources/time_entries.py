@@ -82,7 +82,7 @@ class TimeEntriesResource:
     def stop(self, user_id: UserId | str, *, end: datetime.datetime | None = None) -> TimeEntry:
         # Classified non-idempotent, not idempotent, despite the PATCH verb: a retried
         # stop against a stale in-flight timer could end a different entry than the one
-        # the caller intended. See TECH_SPEC.md §7.3's exception table.
+        # the caller intended (see retry.py's CQS-aware retry rule).
         resolved_end = end if end is not None else datetime.datetime.now(datetime.UTC)
         body: dict[str, JSONValue] = {"end": format_instant(resolved_end)}
         data = self._transport.request(
