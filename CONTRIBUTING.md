@@ -51,9 +51,9 @@ make test
 ```
 
 `make fix` applies the safe automatic fixes for what `make check` reports.
-CI runs the Makefile, Markdown, and spelling linters, `make commits-check`,
-and the pre-commit hooks. It does not run the test suite, so `make test`
-before you push is on you.
+CI runs both commands on every pull request, plus the Makefile, Markdown,
+and spelling linters, `make commits-check`, and the pre-commit hooks. Run
+them locally first so a failure doesn't cost a round trip.
 
 Describe the change and the endpoint(s) it covers in the pull request.
 
