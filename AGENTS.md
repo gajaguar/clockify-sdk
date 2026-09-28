@@ -23,8 +23,8 @@ concept.
 Commit messages MUST follow
 [Conventional Commits](https://www.conventionalcommits.org/); branch names
 MUST follow [Conventional Branch](https://conventional-branch.github.io/)
-(`<type>/<description>`, e.g. `feat/add-python-branch`,
-`fix/makefile-phony-scoping`). Both share the same `type` vocabulary
+(`<type>/<description>`, e.g. `feat/add-tags-resource`,
+`fix/retry-after-parsing`). Both share the same `type` vocabulary
 (`feat`, `fix`, `docs`, `build`, `ci`, `refactor`, `test`, `chore`, ...). A
 pre-commit hook and `make commits-check` enforce both — see
 [`docs/conventions/commits-check.md`](docs/conventions/commits-check.md).

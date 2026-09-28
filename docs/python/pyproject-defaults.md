@@ -15,15 +15,14 @@ least one current violation; drop it when the code that needed it goes away.
 
 These are left out on purpose:
 
-| Omitted setting                                | Why it is not needed                                                                                                    |
-| :--------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| `license-files`                                | hatchling picks up `LICENSE` by default                                                                                 |
-| `[tool.hatch.build.targets.wheel].packages`    | hatchling auto-detects `src/<normalized project name>`; `scripts/init.d/python.sh` adds it only when `PACKAGE` diverges |
-| `[tool.pytest.ini_options].testpaths`          | pytest's default recursion rules already skip `.venv` and `node_modules`                                                |
-| `[tool.coverage.run].source`                   | `addopts` passes `--cov=src`                                                                                            |
-| `exclude_lines` with `pragma: no cover`        | already a default; `exclude_also` only adds the `__main__` guard                                                        |
-| ruff `target-version`                          | inferred from `requires-python`                                                                                         |
-| ruff `lint.isort.section-order`                | equal to ruff's default order                                                                                           |
-| pyright `exclude` for `.venv` / `node_modules` | pyright excludes `**/.*` and `**/node_modules` by default                                                               |
-| pylint `missing-*-docstring` disables          | `disable = ["all"]` already covers them; only the plugin's `app-*` checkers run                                         |
-| `[tool.uv]` interpreter settings               | set once in `mise.toml`'s `[env]` — see [Interpreter source](interpreter-source.md)                                     |
+| Omitted setting                                | Why it is not needed                                                                |
+| :--------------------------------------------- | :---------------------------------------------------------------------------------- |
+| `license-files`                                | hatchling picks up `LICENSE` by default                                             |
+| `[tool.pytest.ini_options].testpaths`          | pytest's default recursion rules already skip `.venv` and `node_modules`            |
+| `[tool.coverage.run].source`                   | `addopts` passes `--cov=clockify`                                                   |
+| `exclude_lines` with `pragma: no cover`        | already a default; `exclude_also` only adds the `__main__` guard                    |
+| ruff `target-version`                          | inferred from `requires-python`                                                     |
+| ruff `lint.isort.section-order`                | equal to ruff's default order                                                       |
+| pyright `exclude` for `.venv` / `node_modules` | pyright excludes `**/.*` and `**/node_modules` by default                           |
+| pylint `missing-*-docstring` disables          | `disable = ["all"]` already covers them; only the plugin's `app-*` checkers run     |
+| `[tool.uv]` interpreter settings               | set once in `mise.toml`'s `[env]` — see [Interpreter source](interpreter-source.md) |
