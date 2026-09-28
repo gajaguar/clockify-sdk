@@ -20,14 +20,20 @@ secret exists anywhere in this repository.
 
 Before the first release, add this workflow as a trusted publisher on the
 PyPI project
-(`https://pypi.org/manage/project/clockify-sdk/publishing/`, or the "pending
-publisher" form under `https://pypi.org/manage/account/publishing/` if the
-project does not exist on PyPI yet):
+(`https://pypi.org/manage/project/clockify-unofficial-sdk/publishing/`, or
+the "pending publisher" form under
+`https://pypi.org/manage/account/publishing/` if the project does not exist
+on PyPI yet). The PyPI project name is the distribution name
+`clockify-unofficial-sdk`, not the repository name:
 
 * Owner: `gajaguar`
 * Repository name: `clockify-sdk`
 * Workflow name: `publish.yml`
 * Environment name: `pypi`
+
+Then, in the GitHub repository's settings, restrict the `pypi` environment
+to `v*` tags and require a reviewer, so a release only uploads after an
+explicit approval.
 
 ## Cutting a release
 
