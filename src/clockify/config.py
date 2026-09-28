@@ -16,6 +16,11 @@ if TYPE_CHECKING:
 
 API_KEY_ENV_VAR: Final = "CLOCKIFY_API_KEY"
 
+# A caller-supplied callback invoked lazily on every request instead of a fixed string,
+# so a rotating or externally-managed key never has to be baked into the client at
+# construction time. The SDK never calls this itself outside the auth flow.
+type ApiKeyProvider = Callable[[], str]  # pylint: disable=app-module-const-naming
+
 
 class Region(StrEnum):
     GLOBAL = "GLOBAL"
@@ -42,7 +47,9 @@ _REGION_HOSTS: Final[dict[Region, tuple[str, str]]] = {
 
 @dataclass(frozen=True, slots=True)
 class ClientConfig:
-    api_key: str
+    # repr=False: a dataclass repr would otherwise print the raw key into any traceback
+    # or log line that captures this object.
+    api_key: str | ApiKeyProvider = field(repr=False)
     base_url: str
     reports_base_url: str
     timeout: float = 30.0
@@ -61,7 +68,10 @@ class ClientOptions:
     event_hooks: dict[str, list[Callable[..., Any]]] | None = None
 
 
-def resolve_api_key(explicit: str | None) -> str:
+def resolve_api_key(explicit: str | ApiKeyProvider | None) -> str | ApiKeyProvider:
+    # A provider is returned as-is; it is only invoked later, per request, by ApiKeyAuth.
+    if callable(explicit):
+        return explicit
     if explicit:
         return explicit
     from_env = environ.get(API_KEY_ENV_VAR)

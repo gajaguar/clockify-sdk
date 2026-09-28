@@ -1,5 +1,7 @@
 from clockify._version import __version__
 from clockify.client import ClockifyClient
+from clockify.config import API_KEY_ENV_VAR
+from clockify.config import ApiKeyProvider
 from clockify.config import ClientOptions
 from clockify.config import Region
 from clockify.errors import AuthenticationError
@@ -69,7 +71,9 @@ from clockify.retry import RetryPolicy
 from clockify.workspace import WorkspaceClient
 
 __all__ = [
+    "API_KEY_ENV_VAR",
     "NO_RETRY",
+    "ApiKeyProvider",
     "AuthenticationError",
     "Client",
     "ClientCreate",

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Self
 
 from clockify._transport import Transport
@@ -14,9 +15,12 @@ from clockify.resources.workspaces import WorkspacesResource
 from clockify.retry import RetryPolicy
 from clockify.workspace import WorkspaceClient
 
+if TYPE_CHECKING:
+    from clockify.config import ApiKeyProvider
+
 
 class ClockifyClient:
-    def __init__(self, api_key: str | None = None, *, options: ClientOptions | None = None) -> None:
+    def __init__(self, api_key: str | ApiKeyProvider | None = None, *, options: ClientOptions | None = None) -> None:
         resolved_options = options or ClientOptions()
         resolved_key = resolve_api_key(api_key)
         resolved_base, resolved_reports = resolve_urls(

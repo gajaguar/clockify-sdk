@@ -23,6 +23,7 @@ sequenceDiagram
 
     Caller->>Resource: ws.projects.list(archived=False)
     Resource->>Transport: request(method, path, params)
+    Transport->>Transport: call api_key() if provider, else use as-is
     Transport->>Transport: inject X-Api-Key
     Transport->>API: HTTP request
     API-->>Transport: 429 + Retry-After
