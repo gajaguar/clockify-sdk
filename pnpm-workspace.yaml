@@ -1,0 +1,8 @@
+overrides:
+  smol-toml: 1.8.0
+  # cspell@10.3.4 otherwise resolves ansi-regex/chalk to versions published
+  # within the last 24h, which pnpm 12's minimumReleaseAge supply-chain
+  # policy rejects in CI (ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION). Pinned to
+  # the previous, already-aged patch/minor.
+  ansi-regex: 6.3.0
+  chalk: 6.0.0

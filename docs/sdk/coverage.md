@@ -1,3 +1,11 @@
+---
+type: reference
+title: Endpoint coverage
+description: Authoritative mapping of every documented Clockify endpoint in scope to its SDK method and implementation status.
+tags: [sdk]
+status: stable
+---
+
 # Endpoint coverage
 
 Authoritative mapping of every documented Clockify endpoint in scope to its
