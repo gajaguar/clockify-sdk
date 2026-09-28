@@ -53,10 +53,10 @@ model with attribute access and real Python types — not a raw `dict`.
 
 `ClockifyClient` owns one `httpx.Client` and exposes root-level namespaces
 plus `workspace(id)` / `default_workspace()`, which return a `WorkspaceClient`
-bound to a workspace. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for
+bound to a workspace. See [`docs/sdk/index.md`](docs/sdk/index.md) for
 the full layering (with diagrams) and how to add a new endpoint.
-[`docs/coverage.md`](docs/coverage.md) is the authoritative endpoint-to-method
-coverage matrix.
+[`docs/sdk/coverage.md`](docs/sdk/coverage.md) is the authoritative
+endpoint-to-method coverage matrix.
 
 ## Getting started
 
@@ -180,9 +180,10 @@ explicit `base_url`/`reports_base_url` if one turns out to be wrong.
 ```bash
 make install   # sync Python deps, install node tooling, install pre-commit hook
 make check     # read-only gate: lint, format-check, mypy, pyright,
-               # md-lint, spell, pylint
+               # md-lint, spell, pylint, commits-check
 make fix       # apply safe auto-fixes (format, ruff --fix, markdownlint --fix)
 make test      # run the test suite
+make build     # build the sdist and wheel into dist/
 ```
 
 Run `make help` for the full target list.
@@ -191,10 +192,10 @@ Run `make help` for the full target list.
 
 Targets are split by whether they mutate files:
 
-| Prefix / umbrella   | Behavior                                                             | Example targets                                                                               |
-| ------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `check` (read-only) | Reports problems, exits non-zero, never writes. This is the CI gate. | `lint`, `format-check`, `mypy`, `pyright`, `typecheck`, `md-lint`, `spell`, `pylint`, `check` |
-| `fix` (writable)    | Mutates files in place.                                              | `format`, `lint-fix`, `lint-fix-unsafe`, `md-fix`, `fix`, `fix-unsafe`                        |
+| Prefix / umbrella   | Behavior                                                             | Example targets                                                                                                |
+| ------------------- | ---------------------------------------------------------------------| ---------------------------------------------------------------------------------------------------------------|
+| `check` (read-only) | Reports problems, exits non-zero, never writes. This is the CI gate. | `lint`, `format-check`, `mypy`, `pyright`, `typecheck`, `md-lint`, `spell`, `pylint`, `commits-check`, `check` |
+| `fix` (writable)    | Mutates files in place.                                              | `format`, `lint-fix`, `lint-fix-unsafe`, `md-fix`, `fix`, `fix-unsafe`                                         |
 
 All targets accept `FILES="..."` to scope to specific paths/globs, e.g.
 `make lint FILES="src/clockify/client.py"`.
@@ -219,6 +220,8 @@ All targets accept `FILES="..."` to scope to specific paths/globs, e.g.
   before each commit
 - **mise** — pins the whole toolchain version (Python, uv, node, pnpm,
   pre-commit, checkmake) in `mise.toml`
+- **conventional-git** — validates commit messages and branch names against
+  Conventional Commits/Conventional Branch (`make commits-check`)
 
 #### Docstring policy
 
@@ -228,7 +231,7 @@ isn't obvious from the code. The pylint plugin's `app-no-docstrings`
 class has one. Because the SDK can't rely on docstrings for endpoint
 reference, each resource method carries a one-line `# METHOD /path` comment
 above its definition, and the authoritative endpoint-to-method mapping lives
-in [`docs/coverage.md`](docs/coverage.md).
+in [`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ### Project layout
 
@@ -238,7 +241,7 @@ in [`docs/coverage.md`](docs/coverage.md).
 ├── Makefile             # check/fix command surface (root: shared targets)
 ├── mk/python.mk         # Python-specific targets, wired into the Makefile
 ├── mise.toml            # pinned toolchain versions
-├── docs/                # tech spec, architecture, endpoint coverage matrix
+├── docs/                # OKF bundle: SDK architecture, endpoint coverage, conventions
 ├── src/clockify/        # SDK package
 └── tests/
     ├── unit/            # respx-backed, offline, deterministic
@@ -247,18 +250,18 @@ in [`docs/coverage.md`](docs/coverage.md).
 
 ## Platform notes
 
-- **No CI pipeline.** `make check && make test` is the gate; run it before
-  every commit and always before tagging a release (accepted trade-off — a
-  missed local hook can ship a broken release). GitHub Actions is planned
-  before `1.0.0`.
+- **CI** (`.github/workflows/ci.yml`, `python.yml`) runs `make check && make
+  test` on every push and pull request against `main`. `make check && make
+  test` is still the gate to run locally before every commit — a local
+  `--no-verify` bypass of the pre-commit hook is the case CI exists to catch.
 - **`requires-python = ">=3.14"`** excludes most current Python installations
   (3.11–3.13); this is a deliberate, revisitable floor, accepted to keep
   modern-syntax features (PEP 695 generics, `StrEnum`, `datetime.UTC`)
   available now and lowered later without a breaking change.
-- `mise.toml` forces `uv` onto the mise-provided interpreter
-  (`python-preference = "only-system"`, `python-downloads = "never"` in
-  `pyproject.toml`'s `[tool.uv]`), so `.python-version` is intentionally
-  absent — mise is the single source of truth for the pinned Python version.
+- `mise.toml`'s `[env]` forces `uv` onto the mise-provided interpreter
+  (`UV_PYTHON_PREFERENCE = "only-system"`, `UV_PYTHON_DOWNLOADS = "never"`),
+  so `.python-version` is intentionally absent — mise is the single source
+  of truth for the pinned Python version.
 - Clockify rate limits differ by plan and are not fully documented upstream;
   retry defaults are conservative and configurable — see
   [`src/clockify/retry.py`](src/clockify/retry.py).
@@ -270,11 +273,11 @@ in [`docs/coverage.md`](docs/coverage.md).
 - [x] Users and user-group membership reads
 - [ ] Reports API (`summary`, `detailed`, `weekly`, shared reports)
 - [ ] User-group membership management (`add_user` / `remove_user`)
-- [ ] GitHub Actions CI, before `1.0.0`
-- [ ] Publish to PyPI
+- [x] GitHub Actions CI
+- [x] Publish to PyPI (PyPI Trusted Publishing)
 
 Track detailed status per endpoint in
-[`docs/coverage.md`](docs/coverage.md).
+[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ### Open questions
 
@@ -288,7 +291,7 @@ Track detailed status per endpoint in
 1. Fork the repository and create a feature branch.
 2. Run `mise install && make install` to set up the toolchain.
 3. Make your change, following
-   [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)'s "Adding a new endpoint"
+   [`docs/sdk/adding-an-endpoint.md`](docs/sdk/adding-an-endpoint.md)'s
    steps for new endpoints and [`AGENTS.md`](AGENTS.md) for code-style rules.
 4. Run `make check && make test` before committing — both must exit 0.
 5. Open a pull request describing the change and the endpoint(s) it covers.

@@ -1,4 +1,9 @@
 UV := uv
+GIT_DEPS := pylint-plugin
+
+# Use the project's own pinned, dev-dependency copy in make commits-check
+# (defined in the base Makefile) instead of an ephemeral uvx fetch.
+CONVENTIONAL_GIT := $(UV) run conventional-git
 
 LANG_INSTALL_TARGETS    += install-python
 LANG_CHECK_TARGETS      += lint format-check typecheck pylint
@@ -9,7 +14,7 @@ LANG_TEST_TARGETS       += pytest
 ##@ Python
 
 install-python: ## Sync Python deps (no console scripts to register — this package ships no CLI)
-	$(UV) sync
+	$(UV) sync $(addprefix --upgrade-package ,$(GIT_DEPS))
 
 lint: ## Lint with Ruff — accepts FILES="..." to limit scope
 	$(UV) run ruff check --preview $(or $(FILES),.)
@@ -21,11 +26,11 @@ mypy: ## Type-check with mypy — accepts FILES="..." to limit scope
 	$(UV) run mypy $(or $(FILES),.)
 
 pyright: ## Type-check with Pyright — accepts FILES="..." to limit scope
-	$(UV) run pyright $(or $(FILES),.)
+	$(UV) run pyright $(FILES)
 
 typecheck: mypy pyright ## Run both type checkers
 
-pylint: ## Run pylint with the project's custom checkers — accepts FILES="..."
+pylint: ## Self-lint with this repo's own checkers (see github.com/gajaguar/pylint-plugin) — accepts FILES="..."
 	$(UV) run pylint $(or $(FILES),src tests)
 
 format: ## Format code with Ruff — accepts FILES="..." to limit scope
@@ -41,7 +46,11 @@ pytest: ## Run the test suite — accepts FILES="..." to limit scope
 	$(UV) run pytest $(FILES)
 
 coverage: ## Run tests with an HTML coverage report
-	$(UV) run pytest --cov --cov-report=html
+	$(UV) run pytest --cov-report=html
+
+build: ## Build the sdist and wheel into dist/
+	rm -rf dist
+	$(UV) build
 
 .PHONY: install-python lint format-check mypy pyright typecheck pylint \
-	format lint-fix lint-fix-unsafe pytest coverage
+	format lint-fix lint-fix-unsafe pytest coverage build
