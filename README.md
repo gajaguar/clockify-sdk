@@ -199,19 +199,8 @@ make test      # run the test suite
 make build     # build the sdist and wheel into dist/
 ```
 
-Run `make help` for the full target list.
-
-### Command convention: `check` vs `fix`
-
-Targets are split by whether they mutate files:
-
-| Prefix / umbrella   | Behavior                                                             | Example targets                                                                                                |
-| ------------------- | ---------------------------------------------------------------------| ---------------------------------------------------------------------------------------------------------------|
-| `check` (read-only) | Reports problems, exits non-zero, never writes. This is the CI gate. | `lint`, `format-check`, `mypy`, `pyright`, `typecheck`, `md-lint`, `spell`, `pylint`, `commits-check`, `check` |
-| `fix` (writable)    | Mutates files in place.                                              | `format`, `lint-fix`, `lint-fix-unsafe`, `md-fix`, `fix`, `fix-unsafe`                                         |
-
-All targets accept `FILES="..."` to scope to specific paths/globs, e.g.
-`make lint FILES="src/clockify/client.py"`.
+Run `make help` for the full target list; every target accepts
+`FILES="..."` to scope to specific paths/globs.
 
 ### Toolchain
 
