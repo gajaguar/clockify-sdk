@@ -11,7 +11,10 @@
   `--cov=clockify`; `toolchain/layering-rule.md` no longer repeats the
   interpreter-source paragraph.
   README.md now follows the standard section order (CI badge, About, Open
-  items) and its docstring subsection points at `AGENTS.md`.
+  items) and its docstring subsection points at `AGENTS.md`. The README's
+  "Open items" section was then removed as a duplicate of
+  [`sdk/coverage.md`](sdk/coverage.md); its one unique caveat, the unconfirmed
+  `page-size` maximum, moved to [`sdk/pagination.md`](sdk/pagination.md).
 
 ## 2026-09-28 (2)
 

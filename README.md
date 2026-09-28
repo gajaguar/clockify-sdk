@@ -27,7 +27,6 @@ model with attribute access and real Python types — not a raw `dict`.
 - [Configuration](#configuration)
 - [Development](#development)
 - [Platform notes](#platform-notes)
-- [Open items](#open-items)
 - [Contributing](#contributing)
 - [Security](#security)
 - [License](#license)
@@ -38,7 +37,8 @@ The Clockify REST API returns plain JSON, which leaves every caller to
 hand-roll response parsing, pagination, retries, and error mapping. This SDK
 does that once for the Working API: validated models, a lazy pagination
 iterator, retry with backoff, and a typed exception hierarchy. Reports API
-support is not implemented yet — see [Open items](#open-items).
+support is not implemented yet — see
+[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ## Key features
 
@@ -273,20 +273,6 @@ the authoritative endpoint-to-method mapping lives in
 - Clockify rate limits differ by plan and are not fully documented upstream;
   retry defaults are conservative and configurable — see
   [`src/clockify/retry.py`](src/clockify/retry.py).
-
-## Open items
-
-- The Reports API (`summary`, `detailed`, `weekly`, shared reports) is not
-  implemented.
-- User-group membership management (`add_user` / `remove_user`) is not
-  implemented.
-- Whether Expenses and Invoices are exposed under the v1 Working API for the
-  target plan is unconfirmed.
-- The real per-endpoint `page-size` maximum is unconfirmed (reported values
-  range from 200 to 5000).
-
-Track detailed status per endpoint in
-[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ## Contributing
 
