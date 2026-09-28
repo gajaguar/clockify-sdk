@@ -10,6 +10,7 @@ from httpx import Response
 
 from clockify._transport import Transport  # ruff: ignore[import-private-name]
 from clockify.config import ClientConfig
+from clockify.errors import MissingCredentialsError
 from clockify.errors import NotFoundError
 from clockify.errors import TransportError
 from clockify.retry import NO_RETRY
@@ -88,6 +89,54 @@ def test_connect_error_maps_to_transport_error() -> None:
     # Act
     # Assert
     with pytest.raises(TransportError, match="dns failure"):
+        transport.request("GET", "/user", kind=CqsKind.QUERY)
+    transport.close()
+
+
+class _CountingProvider:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def __call__(self) -> str:
+        self.calls += 1
+        return API_KEY
+
+
+@respx.mock
+def test_api_key_provider_is_deferred_until_the_first_request() -> None:
+    # Arrange
+    provider = _CountingProvider()
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = Transport(_config(api_key=provider), BASE_URL)
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert provider.calls == 1
+    transport.close()
+
+
+@respx.mock
+def test_api_key_provider_is_invoked_on_every_request() -> None:
+    # Arrange
+    provider = _CountingProvider()
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = Transport(_config(api_key=provider), BASE_URL)
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert provider.calls == 2
+    transport.close()
+
+
+@respx.mock
+def test_empty_api_key_provider_raises_missing_credentials_error() -> None:
+    # Arrange
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = Transport(_config(api_key=lambda: ""), BASE_URL)
+    # Act
+    # Assert
+    with pytest.raises(MissingCredentialsError):
         transport.request("GET", "/user", kind=CqsKind.QUERY)
     transport.close()
 

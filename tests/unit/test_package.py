@@ -7,7 +7,8 @@ import clockify
 # Kept as one string rather than a list literal so it does not duplicate the __all__
 # block in clockify/__init__.py (pylint duplicate-code).
 EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
-    "NO_RETRY AuthenticationError Client ClientCreate ClientId ClientOptions ClientUpdate ClockifyAPIError "
+    "API_KEY_ENV_VAR NO_RETRY ApiKeyProvider AuthenticationError Client ClientCreate ClientId ClientOptions "
+    "ClientUpdate ClockifyAPIError "
     "ClockifyClient ClockifyError ConfigurationError ConflictError CqsKind Currency CustomField "
     "CustomFieldCreate CustomFieldEntityType CustomFieldId CustomFieldStatus CustomFieldType CustomFieldUpdate "
     "CustomFieldValue EstimateType ForbiddenError Membership MembershipStatus MembershipType "
@@ -24,7 +25,7 @@ def test_version_is_exported() -> None:
     # Act
     version = clockify.__version__
     # Assert
-    assert version == "0.1.0"
+    assert version == "0.2.0"
 
 
 def test_public_import_surface() -> None:

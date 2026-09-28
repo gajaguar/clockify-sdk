@@ -98,7 +98,20 @@ from clockify import ClockifyClient
 os.environ["CLOCKIFY_API_KEY"] = "..."
 client = ClockifyClient()  # reads CLOCKIFY_API_KEY
 client = ClockifyClient(api_key="...")  # explicit argument takes precedence
+
+# api_key also accepts a zero-argument callable, invoked lazily on every request
+# instead of once at construction time — useful for a rotating or externally-managed
+# key (e.g. one read from an OS keyring by the calling application).
+client = ClockifyClient(api_key=lambda: keychain.current_clockify_key())
 ```
+
+The SDK's only credential sources are the `api_key` argument (string or
+provider) and the `CLOCKIFY_API_KEY` environment variable as its sole
+fallback. It has no OS keyring/keychain integration, no 1Password or other
+password-manager support, no OAuth/SSO flow, and no interactive prompts —
+that is an application-level concern for whatever consumes this SDK (see
+[`clockify-cli`](https://github.com/gajaguar/clockify-cli) for an example
+that layers all of that on top).
 
 ### Recipes
 

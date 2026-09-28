@@ -1,5 +1,17 @@
 # Directory Update Log
 
+## 2026-09-28
+
+* **Auth: credential provider callback (0.2.0)**: `ClockifyClient(api_key=...)`
+  and `resolve_api_key` now accept a zero-argument callable in addition to a
+  plain string, invoked lazily on every request by `ApiKeyAuth` instead of
+  once at construction. This is the SDK's only new credential-related
+  surface — it keeps the environment variable as its sole automatic
+  fallback and adds no keyring, filesystem, or interactive dependency.
+  `ClientConfig.api_key` is now `repr=False` so the raw key can no longer
+  leak into a dataclass repr. See
+  [`sdk/request-lifecycle.md`](sdk/request-lifecycle.md).
+
 ## 2026-09-27
 
 * **Standardization**: Brought the project up to date with this org's

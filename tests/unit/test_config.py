@@ -85,3 +85,34 @@ def test_client_config_defaults() -> None:
     assert config.page_size == 200
     assert config.user_agent == "clockify-unofficial-sdk"
     assert config.retry == RetryPolicy()
+
+
+def test_client_config_repr_never_contains_the_api_key() -> None:
+    # Arrange
+    config = ClientConfig(api_key="super-secret-key-value", base_url="b", reports_base_url="r")
+    # Act
+    rendered = repr(config)
+    # Assert
+    assert "super-secret-key-value" not in rendered
+
+
+def _provider() -> str:
+    return "from-provider"
+
+
+def test_resolve_api_key_returns_a_provider_callable_unchanged(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_API_KEY", "from-env")
+    # Act
+    resolved = resolve_api_key(_provider)
+    # Assert
+    assert resolved is _provider
+
+
+def test_resolve_api_key_prefers_a_provider_over_the_environment(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
+    # Act
+    resolved = resolve_api_key(_provider)
+    # Assert
+    assert resolved is _provider
