@@ -1,5 +1,6 @@
 # Clockify Unofficial SDK
 
+[![CI](https://github.com/gajaguar/clockify-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/clockify-sdk/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](pyproject.toml)
 [![Topics](https://img.shields.io/badge/topics-python%20%7C%20sdk%20%7C%20api--client%20%7C%20clockify%20%7C%20httpx%20%7C%20pydantic-informational)](https://github.com/gajaguar/clockify-sdk)
@@ -14,6 +15,7 @@ model with attribute access and real Python types — not a raw `dict`.
 
 ## Table of contents
 
+- [About](#about)
 - [Key features](#key-features)
 - [Architecture](#architecture)
 - [Getting started](#getting-started)
@@ -25,11 +27,18 @@ model with attribute access and real Python types — not a raw `dict`.
 - [Configuration](#configuration)
 - [Development](#development)
 - [Platform notes](#platform-notes)
-- [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [Security](#security)
 - [License](#license)
-- [Contact](#contact)
+
+## About
+
+The Clockify REST API returns plain JSON, which leaves every caller to
+hand-roll response parsing, pagination, retries, and error mapping. This SDK
+does that once for the Working API: validated models, a lazy pagination
+iterator, retry with backoff, and a typed exception hierarchy. Reports API
+support is not implemented yet — see
+[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ## Key features
 
@@ -225,15 +234,12 @@ Run `make help` for the full target list; every target accepts
 - **conventional-git** — validates commit messages and branch names against
   Conventional Commits/Conventional Branch (`make commits-check`)
 
-#### Docstring policy
+#### Endpoint comments
 
-This project does not use docstrings — use comments only where the *why*
-isn't obvious from the code. The pylint plugin's `app-no-docstrings`
-(W9001) checker fails `make check`/`make pylint` if any function, method, or
-class has one. Because the SDK can't rely on docstrings for endpoint
-reference, each resource method carries a one-line `# METHOD /path` comment
-above its definition, and the authoritative endpoint-to-method mapping lives
-in [`docs/sdk/coverage.md`](docs/sdk/coverage.md).
+Docstrings are forbidden (see [`AGENTS.md`](AGENTS.md)), so each resource
+method carries a one-line `# METHOD /path` comment above its definition, and
+the authoritative endpoint-to-method mapping lives in
+[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
 
 ### Project layout
 
@@ -268,26 +274,6 @@ in [`docs/sdk/coverage.md`](docs/sdk/coverage.md).
   retry defaults are conservative and configurable — see
   [`src/clockify/retry.py`](src/clockify/retry.py).
 
-## Roadmap
-
-- [x] Core CRUD: workspaces, projects, tasks, clients, tags, custom fields
-- [x] Time entries, including start/stop, bulk operations, and filters
-- [x] Users and user-group membership reads
-- [ ] Reports API (`summary`, `detailed`, `weekly`, shared reports)
-- [ ] User-group membership management (`add_user` / `remove_user`)
-- [x] GitHub Actions CI
-- [x] Publish to PyPI (PyPI Trusted Publishing)
-
-Track detailed status per endpoint in
-[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
-
-### Open questions
-
-- Whether Expenses and Invoices are exposed under the v1 Working API for the
-  target plan is unconfirmed.
-- The real per-endpoint `page-size` maximum is unconfirmed (reported values
-  range from 200 to 5000).
-
 ## Contributing
 
 1. Fork the repository and create a feature branch.
@@ -307,9 +293,3 @@ commit one, and rotate immediately if one is exposed.
 ## License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.
-
-## Contact
-
-G.A.JAGUAR — <dev@gajaguar.com>
-
-Repository: <https://github.com/gajaguar/clockify-sdk>

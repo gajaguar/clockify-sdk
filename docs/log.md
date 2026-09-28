@@ -1,5 +1,21 @@
 # Directory Update Log
 
+## 2026-09-28 (3)
+
+* **Sync**: Realigned `AGENTS.md` and the seeded notes with the project
+  standard. `AGENTS.md` gained the "Agent instructions" section and lost its
+  config-restating Python bullets; `docs/index.md` blurbs no longer describe
+  pruned notes; `sdk/endpoint-comments.md` points at `AGENTS.md` instead of the
+  deleted `python/docstring-policy.md`; `python/pyproject-defaults.md` drops
+  the hatch row (this project sets `packages` explicitly) and cites
+  `--cov=clockify`; `toolchain/layering-rule.md` no longer repeats the
+  interpreter-source paragraph.
+  README.md now follows the standard section order (CI badge, About, Open
+  items) and its docstring subsection points at `AGENTS.md`. The README's
+  "Open items" section was then removed as a duplicate of
+  [`sdk/coverage.md`](sdk/coverage.md); its one unique caveat, the unconfirmed
+  `page-size` maximum, moved to [`sdk/pagination.md`](sdk/pagination.md).
+
 ## 2026-09-28 (2)
 
 * **Pruning**: Removed `docs/toolchain/{checkmake,markdown-tooling,mise,

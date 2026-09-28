@@ -33,6 +33,22 @@ Issues = "https://github.com/gajaguar/clockify-sdk/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["src/clockify"]
 
+[dependency-groups]
+dev = [
+  "conventional-git>=1.0",
+  "mypy>=2.3.1",
+  "pylint-plugin",
+  "pylint>=4.0.9",
+  "pyright>=1.1.414",
+  "pytest-cov>=7.1",
+  "pytest>=9.1",
+  "respx>=0.22",
+  "ruff>=0.16.8",
+]
+
+[tool.uv.sources]
+pylint-plugin = { git = "https://github.com/gajaguar/pylint-plugin" }
+
 [tool.pytest.ini_options]
 addopts = "--cov=clockify --cov-report=term-missing --cov-fail-under=90"
 markers = [
@@ -63,6 +79,9 @@ lint.per-file-ignores."tests/**/*.py" = ["ANN", "magic-value-comparison", "asser
 strict = true
 exclude = ["tests/"]
 
+[tool.pyright]
+include = ["src"]
+
 [tool.pylint.main]
 load-plugins = ["checkers"]
 
@@ -84,23 +103,3 @@ enable = [
   "app-unused-arg-use-del",
   "app-use-contextlib-suppress",
 ]
-
-[tool.pyright]
-include = ["src"]
-exclude = ["tests"]
-
-[dependency-groups]
-dev = [
-  "conventional-git>=1.0",
-  "mypy>=2.3.1",
-  "pylint-plugin",
-  "pylint>=4.0.9",
-  "pyright>=1.1.414",
-  "pytest-cov>=7.1",
-  "pytest>=9.1",
-  "respx>=0.22",
-  "ruff>=0.16.8",
-]
-
-[tool.uv.sources]
-pylint-plugin = { git = "https://github.com/gajaguar/pylint-plugin" }

@@ -10,8 +10,8 @@ out under this directory.
 
 ## Reference
 
-* [Conventions](conventions/index.md) - the `check`/`fix` split, `FILES=`
-  scoping, and commit/branch naming.
+* [Conventions](conventions/index.md) - commit and branch naming, and how
+  they're enforced.
 * [Toolchain](toolchain/index.md) - which layer (mise or an ecosystem package
   manager) installs which tool, and why.
 
@@ -24,8 +24,8 @@ See [`log.md`](log.md) for the bundle's change history.
 
 ## Python
 
-* [Python](python/index.md) - the docstring policy, `pylint-plugin`, and the interpreter
-  source decision.
+* [Python](python/index.md) - the interpreter source and the
+  `pyproject.toml` settings left out on purpose.
 
 ## SDK
 
