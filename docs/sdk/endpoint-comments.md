@@ -1,15 +1,15 @@
 ---
 type: convention
 title: Endpoint comment convention
-description: Every resource method carries a `# METHOD /path` comment above its def, since app-no-docstrings (see docs/python/docstring-policy.md) leaves IDE hover text without endpoint information.
+description: Every resource method carries a `# METHOD /path` comment above its def, since the no-docstrings rule in AGENTS.md leaves IDE hover text without endpoint information.
 tags: [sdk]
 status: stable
 ---
 
 # Endpoint comment convention
 
-This repository enforces `app-no-docstrings` — see
-[`docs/python/docstring-policy.md`](../python/docstring-policy.md) — so IDE
+This repository forbids docstrings — see the Python section of
+[`AGENTS.md`](../../AGENTS.md) — so IDE
 hover text does not carry endpoint information. Instead:
 
 - every resource method has a `# METHOD /path` comment directly above its

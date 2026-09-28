@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-09-28 (3)
+
+* **Sync**: Realigned `AGENTS.md` and the seeded notes with the project
+  standard. `AGENTS.md` gained the "Agent instructions" section and lost its
+  config-restating Python bullets; `docs/index.md` blurbs no longer describe
+  pruned notes; `sdk/endpoint-comments.md` points at `AGENTS.md` instead of the
+  deleted `python/docstring-policy.md`; `python/pyproject-defaults.md` drops
+  the hatch row (this project sets `packages` explicitly) and cites
+  `--cov=clockify`; `toolchain/layering-rule.md` no longer repeats the
+  interpreter-source paragraph.
+
 ## 2026-09-28 (2)
 
 * **Pruning**: Removed `docs/toolchain/{checkmake,markdown-tooling,mise,
