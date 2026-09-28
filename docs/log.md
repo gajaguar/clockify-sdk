@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-09-28 (5)
+
+* **Conventions**: `AGENTS.md` and `CONTRIBUTING.md` now say a branch type
+  is one the Conventional Branch specification defines (`feat`, `fix`,
+  `hotfix`, `release`, `chore`), not any commit type; documentation work uses
+  `chore/`. Links point at conventionalbranch.org.
+
 ## 2026-09-28 (4)
 
 * **Contributing**: added a root `CONTRIBUTING.md` carrying what the

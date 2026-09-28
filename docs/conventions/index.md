@@ -5,4 +5,4 @@ Commit and branch naming, and how they're enforced.
 * [Enforcing commits and branches](commits-check.md) - the pre-commit hook
   and `make commits-check` that enforce
   [Conventional Commits](https://www.conventionalcommits.org/) and
-  [Conventional Branch](https://conventional-branch.github.io/).
+  [Conventional Branch](https://conventionalbranch.org/).

@@ -10,7 +10,7 @@ status: stable
 
 Commit messages follow
 [Conventional Commits](https://www.conventionalcommits.org/); branch names
-follow [Conventional Branch](https://conventional-branch.github.io/) — see
+follow [Conventional Branch](https://conventionalbranch.org/) — see
 `AGENTS.md`'s "Commits and branches" section for the normative form of
 both. Two layers enforce them, via
 [conventional-git](https://github.com/gajaguar/conventional-git):
