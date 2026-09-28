@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-28 (4)
+
+* **Contributing**: added a root `CONTRIBUTING.md` carrying what the
+  README's `## Contributing` section listed — setup, the new-endpoint
+  procedure, the gate, commit and branch conventions — plus how to report a
+  bug, a vulnerability, and the docs-bundle rule. The README section is now
+  one sentence linking to it.
+
 ## 2026-09-28 (3)
 
 * **Sync**: Realigned `AGENTS.md` and the seeded notes with the project

@@ -276,13 +276,7 @@ the authoritative endpoint-to-method mapping lives in
 
 ## Contributing
 
-1. Fork the repository and create a feature branch.
-2. Run `mise install && make install` to set up the toolchain.
-3. Make your change, following
-   [`docs/sdk/adding-an-endpoint.md`](docs/sdk/adding-an-endpoint.md)'s
-   steps for new endpoints and [`AGENTS.md`](AGENTS.md) for code-style rules.
-4. Run `make check && make test` before committing — both must exit 0.
-5. Open a pull request describing the change and the endpoint(s) it covers.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Security
 
