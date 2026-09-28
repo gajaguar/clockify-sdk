@@ -10,6 +10,8 @@
   the hatch row (this project sets `packages` explicitly) and cites
   `--cov=clockify`; `toolchain/layering-rule.md` no longer repeats the
   interpreter-source paragraph.
+  README.md now follows the standard section order (CI badge, About, Open
+  items) and its docstring subsection points at `AGENTS.md`.
 
 ## 2026-09-28 (2)
 
