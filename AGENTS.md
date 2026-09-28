@@ -25,9 +25,12 @@ full list.
 
 Commit messages MUST follow
 [Conventional Commits](https://www.conventionalcommits.org/); branch names
-MUST follow [Conventional Branch](https://conventional-branch.github.io/)
+MUST follow [Conventional Branch](https://conventionalbranch.org/)
 (`<type>/<description>`, e.g. `feat/add-tags-resource`,
-`fix/retry-after-parsing`). A pre-commit hook and
+`fix/retry-after-parsing`). A commit type may be any Conventional Commits
+type, but a branch type MUST be one of `feat` (or `feature`), `fix` (or
+`bugfix`), `hotfix`, `release`, `chore`; documentation and dependency work
+uses `chore/`, e.g. `chore/update-readme`. A pre-commit hook and
 `make commits-check` enforce both — see
 [`docs/conventions/commits-check.md`](docs/conventions/commits-check.md).
 

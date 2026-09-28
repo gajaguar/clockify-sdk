@@ -62,9 +62,10 @@ Describe the change and the endpoint(s) it covers in the pull request.
 - Commit messages follow
   [Conventional Commits](https://www.conventionalcommits.org/).
 - Branch names follow
-  [Conventional Branch](https://conventional-branch.github.io/):
+  [Conventional Branch](https://conventionalbranch.org/):
   `<type>/<description>`, for example `feat/add-tags-resource` or
-  `fix/retry-after-parsing`.
+  `fix/retry-after-parsing`. The branch type is one of `feat`, `fix`,
+  `hotfix`, `release`, or `chore`; documentation work uses `chore/`.
 
 A pre-commit hook and `make commits-check` enforce both; see
 [`docs/conventions/commits-check.md`](docs/conventions/commits-check.md).
