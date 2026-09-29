@@ -19,7 +19,7 @@ API_KEY_ENV_VAR: Final = "CLOCKIFY_API_KEY"
 # A caller-supplied callback invoked lazily on every request instead of a fixed string,
 # so a rotating or externally-managed key never has to be baked into the client at
 # construction time. The SDK never calls this itself outside the auth flow.
-type ApiKeyProvider = Callable[[], str]  # pylint: disable=app-module-const-naming
+type ApiKeyProvider = Callable[[], str]  # pylint: disable=gajaguar-module-const-naming
 
 
 class Region(StrEnum):

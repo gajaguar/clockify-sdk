@@ -54,12 +54,15 @@ repository — see
 
 - The agent MUST NOT add docstrings to functions, methods, or classes; use a
   comment only where the *why* is not obvious from the code. The
-  `pylint-plugin` `app-no-docstrings` checker enforces this and fails
-  `make check`/`make pylint` otherwise.
+  `pylint-gajaguar` `gajaguar-no-docstrings` (W9001) checker enforces this and
+  fails `make check`/`make pylint` otherwise.
 - The agent MUST NOT add a `pyproject.toml` setting that equals the tool's
   default, and every `lint.per-file-ignores` entry MUST match a current
   violation — see
   [`docs/python/pyproject-defaults.md`](docs/python/pyproject-defaults.md).
+- `make conventional-git-latest` fails when the installed `conventional-git`
+  is behind PyPI (`make install` upgrades it); it skips when PyPI is
+  unreachable.
 - The agent MUST run `make check` and `make test` before committing Python
   changes, and SHOULD run `make fix` first for anything auto-fixable.
 
