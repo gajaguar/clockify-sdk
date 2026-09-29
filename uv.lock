@@ -132,7 +132,7 @@ dev = [
     { name = "conventional-git" },
     { name = "mypy" },
     { name = "pylint" },
-    { name = "pylint-plugin" },
+    { name = "pylint-gajaguar" },
     { name = "pyright" },
     { name = "pytest" },
     { name = "pytest-cov" },
@@ -148,10 +148,10 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "conventional-git", specifier = ">=1.0" },
+    { name = "conventional-git", specifier = ">=1.1" },
     { name = "mypy", specifier = ">=2.3.1" },
     { name = "pylint", specifier = ">=4.0.9" },
-    { name = "pylint-plugin", git = "https://github.com/gajaguar/pylint-plugin" },
+    { name = "pylint-gajaguar", specifier = ">=2.0" },
     { name = "pyright", specifier = ">=1.1.414" },
     { name = "pytest", specifier = ">=9.1" },
     { name = "pytest-cov", specifier = ">=7.1" },
@@ -170,14 +170,14 @@ wheels = [
 
 [[package]]
 name = "conventional-git"
-version = "1.0.0"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e5/6e/9c5d4db16f173ea85e8d4c2032895badb0ad67334911313d78bdb63e44d4/conventional_git-1.0.0.tar.gz", hash = "sha256:d6da55fe466a20861af18dd348f392d90428f8cb6404747eba70dbcc3d6f75e9", size = 146622, upload-time = "2026-09-27T03:58:25.831Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/5b/4079df321de64a9c231f54282d5affde251a05fa2e721104164c3f4da647/conventional_git-1.2.0.tar.gz", hash = "sha256:37fc4242c02cb85855a9500ef7045e4e5e0e5a764f5949094df3282b58d037f5", size = 147288, upload-time = "2026-09-29T05:03:53.327Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/11/fe/ab0b4ce4b1ff7ac68659067717e2a527f576926c7bed14eda0d607b6a2eb/conventional_git-1.0.0-py3-none-any.whl", hash = "sha256:51094890469bb79fec70e7d71530e8f2ab512e302e183ef017e6fdf924f156e4", size = 40050, upload-time = "2026-09-27T03:58:24.32Z" },
+    { url = "https://files.pythonhosted.org/packages/99/2a/49b27dc061aaf47c4cd73271d81ecae79bfa1a6be93f8e1df7fdb57d356c/conventional_git-1.2.0-py3-none-any.whl", hash = "sha256:68d266eba75f2577bbd8f4ebfd366fc5e182b607afd9f2e9cba347c241f10793", size = 40693, upload-time = "2026-09-29T05:03:51.777Z" },
 ]
 
 [[package]]
@@ -602,9 +602,16 @@ wheels = [
 ]
 
 [[package]]
-name = "pylint-plugin"
-version = "1.1.2"
-source = { git = "https://github.com/gajaguar/pylint-plugin#bef114a80bb2c3825ab3cfa4c4ededd73d00e10f" }
+name = "pylint-gajaguar"
+version = "2.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pylint" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/88/b5/466c4d0fbfdd0e2521de5c9d921d22c7b864423c2aebe9f0e8c2fde74907/pylint_gajaguar-2.0.0.tar.gz", hash = "sha256:f706aabbc311b87290315edefc22d74dd05c05ca2f16fef95e3ab3d0a9a0da52", size = 87271, upload-time = "2026-09-29T03:49:01.75Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b1/49/4ee594c712e5e3a47cbd6dc92a3c0ca9aec47aa0df1f387655b4db394234/pylint_gajaguar-2.0.0-py3-none-any.whl", hash = "sha256:b3b6c098ebcfd6d0fe78ab4e82c09bc337d5d5cae48e45bea7375274fa2f0642", size = 20631, upload-time = "2026-09-29T03:49:00.577Z" },
+]
 
 [[package]]
 name = "pyright"

@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-29
+
+* **Template sync**: `pylint-plugin` (git) replaced by `pylint-gajaguar` from
+  PyPI with `enable = ["gajaguar"]`; `conventional-git>=1.1`, the
+  `conventional-git-latest` target, Dependabot's `npm` ecosystem, and the
+  Dependabot branch skip in `make commits-check` now match the template.
+  `AGENTS.md` names the `gajaguar-no-docstrings` checker.
+
 ## 2026-09-28 (6)
 
 * **Release readiness**: [`release/pypi-trusted-publishing.md`](release/pypi-trusted-publishing.md)
