@@ -1,6 +1,7 @@
 # Clockify Unofficial SDK
 
 [![CI](https://github.com/gajaguar/clockify-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/gajaguar/clockify-sdk/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/clockify-unofficial-sdk.svg)](https://pypi.org/project/clockify-unofficial-sdk/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](pyproject.toml)
 [![Topics](https://img.shields.io/badge/topics-python%20%7C%20sdk%20%7C%20api--client%20%7C%20clockify%20%7C%20httpx%20%7C%20pydantic-informational)](https://github.com/gajaguar/clockify-sdk)
@@ -38,7 +39,7 @@ hand-roll response parsing, pagination, retries, and error mapping. This SDK
 does that once for the Working API: validated models, a lazy pagination
 iterator, retry with backoff, and a typed exception hierarchy. Reports API
 support is not implemented yet — see
-[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
+[`docs/sdk/coverage.md`](https://github.com/gajaguar/clockify-sdk/blob/main/docs/sdk/coverage.md).
 
 ## Key features
 
@@ -62,9 +63,9 @@ support is not implemented yet — see
 
 `ClockifyClient` owns one `httpx.Client` and exposes root-level namespaces
 plus `workspace(id)` / `default_workspace()`, which return a `WorkspaceClient`
-bound to a workspace. See [`docs/sdk/index.md`](docs/sdk/index.md) for
+bound to a workspace. See [`docs/sdk/index.md`][sdk-index] for
 the full layering (with diagrams) and how to add a new endpoint.
-[`docs/sdk/coverage.md`](docs/sdk/coverage.md) is the authoritative
+[`docs/sdk/coverage.md`][sdk-coverage] is the authoritative
 endpoint-to-method coverage matrix.
 
 ## Getting started
@@ -79,21 +80,16 @@ Contributing to the SDK itself additionally requires
 
 ### Installation
 
-Not published to PyPI. Add it as a `uv` git dependency pinned to a tag:
-
 ```bash
-uv add "clockify-unofficial-sdk @ git+https://github.com/gajaguar/clockify-sdk@v0.1.0"
+uv add clockify-unofficial-sdk
+# or
+pip install clockify-unofficial-sdk
 ```
 
-or add the source directly in `pyproject.toml`:
+To track an unreleased commit instead, use a `uv` git dependency:
 
-```toml
-[project]
-dependencies = ["clockify-unofficial-sdk"]
-
-[tool.uv.sources.clockify-unofficial-sdk]
-git = "https://github.com/gajaguar/clockify-sdk"
-tag = "v0.1.0"
+```bash
+uv add "clockify-unofficial-sdk @ git+https://github.com/gajaguar/clockify-sdk"
 ```
 
 ## Usage
@@ -236,10 +232,10 @@ Run `make help` for the full target list; every target accepts
 
 #### Endpoint comments
 
-Docstrings are forbidden (see [`AGENTS.md`](AGENTS.md)), so each resource
+Docstrings are forbidden (see [`AGENTS.md`][agents]), so each resource
 method carries a one-line `# METHOD /path` comment above its definition, and
 the authoritative endpoint-to-method mapping lives in
-[`docs/sdk/coverage.md`](docs/sdk/coverage.md).
+[`docs/sdk/coverage.md`](https://github.com/gajaguar/clockify-sdk/blob/main/docs/sdk/coverage.md).
 
 ### Project layout
 
@@ -272,18 +268,25 @@ the authoritative endpoint-to-method mapping lives in
   of truth for the pinned Python version.
 - Clockify rate limits differ by plan and are not fully documented upstream;
   retry defaults are conservative and configurable — see
-  [`src/clockify/retry.py`](src/clockify/retry.py).
+  [`src/clockify/retry.py`](https://github.com/gajaguar/clockify-sdk/blob/main/src/clockify/retry.py).
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+See [`CONTRIBUTING.md`](https://github.com/gajaguar/clockify-sdk/blob/main/CONTRIBUTING.md).
 
 ## Security
 
-Report suspected vulnerabilities to <dev@gajaguar.com> instead of opening a
-public issue. A Clockify API key grants full access to a workspace — never
-commit one, and rotate immediately if one is exposed.
+Report suspected vulnerabilities through GitHub's
+[private vulnerability reporting](https://github.com/gajaguar/clockify-sdk/security/advisories/new),
+or email <dev@gajaguar.com>, instead of opening a public issue. A Clockify
+API key grants full access to a workspace — never commit one, and rotate
+immediately if one is exposed.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+Distributed under the MIT License. See [LICENSE][license] for details.
+
+[sdk-index]: https://github.com/gajaguar/clockify-sdk/blob/main/docs/sdk/index.md
+[sdk-coverage]: https://github.com/gajaguar/clockify-sdk/blob/main/docs/sdk/coverage.md
+[agents]: https://github.com/gajaguar/clockify-sdk/blob/main/AGENTS.md
+[license]: https://github.com/gajaguar/clockify-sdk/blob/main/LICENSE

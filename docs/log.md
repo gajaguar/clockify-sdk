@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-28 (6)
+
+* **Release readiness**: [`release/pypi-trusted-publishing.md`](release/pypi-trusted-publishing.md)
+  now names the PyPI project `clockify-unofficial-sdk` and the `pypi`
+  environment protection. [`conventions/commits-check.md`](conventions/commits-check.md)
+  documents that Dependabot branches skip the branch-name check. Version
+  1.0.0.
+
 ## 2026-09-28 (5)
 
 * **Conventions**: `AGENTS.md` and `CONTRIBUTING.md` now say a branch type
