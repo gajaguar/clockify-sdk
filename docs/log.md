@@ -1,5 +1,17 @@
 # Directory Update Log
 
+## 2026-09-30
+
+* **Template sync**: `Makefile` and `mk/python.mk` match the template again
+  (`make commits-check` rejects an empty commit message; `install-python`
+  registers console scripts only when the project declares them, so the
+  hand-made deviation is gone). The credential notes drop their `generated`
+  field. `AGENTS.md` follows the current seed, with the Pull requests and SDK
+  sections, and keeps "Long parameter lists". `conventions/commits-check.md`
+  and `python/pyproject-defaults.md` no longer describe the old branch-skip and
+  the `app-*` pylint checkers. No code or public API changed, so the version
+  stays 1.0.1.
+
 ## 2026-09-29 (4)
 
 * **Release**: version 1.0.1, a patch. Since 1.0.0 the public API is
