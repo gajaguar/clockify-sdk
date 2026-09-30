@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-29 (2)
+
+* **Auth**: added [`sdk/credentials.md`](sdk/credentials.md), the credential
+  contract shared with `bitbucket-sdk`. `Transport` now receives its
+  `httpx.Auth` from the client instead of building one, and
+  `MissingCredentialsError` names where to create the key. The README gained
+  a "Getting a credential" section.
+
 ## 2026-09-29
 
 * **Template sync**: `pylint-plugin` (git) replaced by `pylint-gajaguar` from

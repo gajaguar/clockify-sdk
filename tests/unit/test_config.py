@@ -37,6 +37,15 @@ def test_resolve_api_key_raises_when_missing(monkeypatch) -> None:
         resolve_api_key(None)
 
 
+def test_resolve_api_key_error_says_where_to_create_the_key(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
+    # Act
+    # Assert
+    with pytest.raises(MissingCredentialsError, match="Manage API keys"):
+        resolve_api_key(None)
+
+
 @pytest.mark.parametrize(
     ("region", "expected"),
     [
