@@ -8,6 +8,7 @@ from httpx import Response
 from clockify import NO_RETRY
 from clockify import ClientOptions
 from clockify import ClockifyClient
+from clockify._auth import ApiKeyAuth  # ruff: ignore[import-private-name]
 from clockify._transport import Transport  # ruff: ignore[import-private-name]
 from clockify.config import ClientConfig
 from clockify.ids import WorkspaceId
@@ -56,7 +57,7 @@ def test_list_auto_paginates_across_pages() -> None:
         ]
     )
     config = ClientConfig(api_key="dummy", base_url=BASE_URL, reports_base_url=BASE_URL, retry=NO_RETRY)
-    transport = Transport(config, BASE_URL)
+    transport = Transport(config, BASE_URL, ApiKeyAuth("dummy"))
     resource = UsersResource(transport, WORKSPACE_ID, page_size=2)
     # Act
     users = list(resource.list())

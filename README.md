@@ -118,6 +118,17 @@ that is an application-level concern for whatever consumes this SDK (see
 [`clockify-cli`](https://github.com/gajaguar/clockify-cli) for an example
 that layers all of that on top).
 
+#### Getting a credential
+
+1. Open your profile menu and choose **Profile settings**.
+2. Open the **Advanced** tab and choose **Manage API keys**.
+3. Choose **Generate new** and give the key a name.
+4. Copy the key. Clockify does not show it again once you leave the page.
+
+Any user can generate keys for their own account, and a key can be renamed
+or deleted from the same page. Clockify has no OAuth flow, so an API key is
+the only credential.
+
 ### Recipes
 
 Start a timer, list today's running/finished entries, then stop it:

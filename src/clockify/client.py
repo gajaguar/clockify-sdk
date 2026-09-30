@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from typing import Self
 
+from clockify._auth import ApiKeyAuth
 from clockify._transport import Transport
 from clockify.config import ClientConfig
 from clockify.config import ClientOptions
@@ -33,8 +34,11 @@ class ClockifyClient:
             timeout=resolved_options.timeout,
             retry=resolved_options.retry or RetryPolicy(),
         )
-        self._transport = Transport(self._config, resolved_base, event_hooks=resolved_options.event_hooks)
-        self._reports_transport = Transport(self._config, resolved_reports, event_hooks=resolved_options.event_hooks)
+        auth = ApiKeyAuth(resolved_key)
+        self._transport = Transport(self._config, resolved_base, auth, event_hooks=resolved_options.event_hooks)
+        self._reports_transport = Transport(
+            self._config, resolved_reports, auth, event_hooks=resolved_options.event_hooks
+        )
         self.user = UserResource(self._transport)
         self.workspaces = WorkspacesResource(self._transport)
 

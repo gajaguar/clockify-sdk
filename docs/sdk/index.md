@@ -12,6 +12,8 @@ and the process for adding a new Clockify endpoint. Replaces the former
   resources, and `_transport`.
 * [Request lifecycle](request-lifecycle.md) - the auth → retry →
   error-mapping → validation pipeline every request goes through.
+* [Credentials](credentials.md) - where the API key comes from, the order
+  the SDK resolves it in, and what the SDK leaves to the application.
 * [Offset pagination](pagination.md) - how `list()` and `list_page()` hide
   Clockify's `page`/`page-size` pagination.
 * [Endpoint comment convention](endpoint-comments.md) - the `# METHOD /path`

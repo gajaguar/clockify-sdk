@@ -8,7 +8,9 @@ import respx
 from httpx import ConnectError
 from httpx import Response
 
+from clockify._auth import ApiKeyAuth  # ruff: ignore[import-private-name]
 from clockify._transport import Transport  # ruff: ignore[import-private-name]
+from clockify.config import ApiKeyProvider
 from clockify.config import ClientConfig
 from clockify.errors import MissingCredentialsError
 from clockify.errors import NotFoundError
@@ -30,11 +32,15 @@ def _config(**overrides) -> ClientConfig:
     return ClientConfig(**(defaults | overrides))
 
 
+def _transport(api_key: str | ApiKeyProvider = API_KEY) -> Transport:
+    return Transport(_config(api_key=api_key), BASE_URL, ApiKeyAuth(api_key))
+
+
 @respx.mock
 def test_request_sends_api_key_header() -> None:
     # Arrange
     route = respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     # Act
     data = transport.request("GET", "/user", kind=CqsKind.QUERY)
     # Assert
@@ -48,7 +54,7 @@ def test_request_sends_api_key_header() -> None:
 def test_request_forwards_params_and_json() -> None:
     # Arrange
     route = respx.post(f"{BASE_URL}/thing").mock(return_value=Response(200, json=[]))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     # Act
     transport.request("POST", "/thing", kind=CqsKind.QUERY, params={"page": 2}, json={"name": "x"})
     # Assert
@@ -61,7 +67,7 @@ def test_request_forwards_params_and_json() -> None:
 def test_no_content_maps_to_none() -> None:
     # Arrange
     respx.delete(f"{BASE_URL}/thing/1").mock(return_value=Response(204))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     # Act
     result = transport.request("DELETE", "/thing/1", kind=CqsKind.IDEMPOTENT_COMMAND)
     # Assert
@@ -73,7 +79,7 @@ def test_no_content_maps_to_none() -> None:
 def test_error_status_maps_to_typed_exception() -> None:
     # Arrange
     respx.get(f"{BASE_URL}/missing").mock(return_value=Response(404, json={"code": 404, "message": "nope"}))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     # Act
     # Assert
     with pytest.raises(NotFoundError):
@@ -85,7 +91,7 @@ def test_error_status_maps_to_typed_exception() -> None:
 def test_connect_error_maps_to_transport_error() -> None:
     # Arrange
     respx.get(f"{BASE_URL}/user").mock(side_effect=ConnectError("dns failure"))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     # Act
     # Assert
     with pytest.raises(TransportError, match="dns failure"):
@@ -107,7 +113,7 @@ def test_api_key_provider_is_deferred_until_the_first_request() -> None:
     # Arrange
     provider = _CountingProvider()
     respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
-    transport = Transport(_config(api_key=provider), BASE_URL)
+    transport = _transport(provider)
     # Act
     transport.request("GET", "/user", kind=CqsKind.QUERY)
     # Assert
@@ -120,7 +126,7 @@ def test_api_key_provider_is_invoked_on_every_request() -> None:
     # Arrange
     provider = _CountingProvider()
     respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
-    transport = Transport(_config(api_key=provider), BASE_URL)
+    transport = _transport(provider)
     # Act
     transport.request("GET", "/user", kind=CqsKind.QUERY)
     transport.request("GET", "/user", kind=CqsKind.QUERY)
@@ -133,7 +139,7 @@ def test_api_key_provider_is_invoked_on_every_request() -> None:
 def test_empty_api_key_provider_raises_missing_credentials_error() -> None:
     # Arrange
     respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
-    transport = Transport(_config(api_key=lambda: ""), BASE_URL)
+    transport = _transport(lambda: "")
     # Act
     # Assert
     with pytest.raises(MissingCredentialsError):
@@ -145,7 +151,7 @@ def test_empty_api_key_provider_raises_missing_credentials_error() -> None:
 def test_debug_log_never_contains_api_key(caplog) -> None:
     # Arrange
     respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
-    transport = Transport(_config(), BASE_URL)
+    transport = _transport()
     caplog.set_level(DEBUG, logger="clockify")
     # Act
     transport.request("GET", "/user", kind=CqsKind.QUERY)

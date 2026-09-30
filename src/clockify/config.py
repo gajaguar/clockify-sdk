@@ -77,7 +77,10 @@ def resolve_api_key(explicit: str | ApiKeyProvider | None) -> str | ApiKeyProvid
     from_env = environ.get(API_KEY_ENV_VAR)
     if from_env:
         return from_env
-    message = f"No API key provided. Pass api_key=... or set the {API_KEY_ENV_VAR} environment variable."
+    message = (
+        f"No API key provided. Pass api_key=... or set the {API_KEY_ENV_VAR} environment variable. "
+        "Create one under Profile settings > Advanced > Manage API keys."
+    )
     raise MissingCredentialsError(message)
 
 

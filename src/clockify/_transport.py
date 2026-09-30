@@ -9,7 +9,6 @@ from typing import cast
 
 import httpx
 
-from clockify._auth import ApiKeyAuth
 from clockify._retry_transport import RetryTransport
 from clockify.errors import TransportError
 from clockify.errors import error_for_response
@@ -45,13 +44,14 @@ class Transport:
         self,
         config: ClientConfig,
         base_url: str,
+        auth: httpx.Auth,
         *,
         event_hooks: dict[str, list[Callable[..., Any]]] | None = None,
     ) -> None:
         self._config = config
         self._client = httpx.Client(
             base_url=base_url,
-            auth=ApiKeyAuth(config.api_key),
+            auth=auth,
             timeout=config.timeout,
             transport=RetryTransport(httpx.HTTPTransport(), policy=config.retry),
             headers={"User-Agent": config.user_agent},
