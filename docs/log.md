@@ -1,5 +1,11 @@
 # Directory Update Log
 
+## 2026-09-30 (3)
+
+* **Updated**: `sdk/credential-contract.md` (new "Choosing between credential
+  kinds" section) and `sdk/credential-tests.md` (new "Selection" group),
+  aligned with `bitbucket-sdk`. The behavior already matched.
+
 ## 2026-09-30 (2)
 
 * **Addition**: `ClockifyClient` accepts an add-on token (`addon_token=` or
