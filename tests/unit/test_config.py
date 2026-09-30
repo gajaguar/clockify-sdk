@@ -167,6 +167,14 @@ def test_resolve_addon_token_returns_a_provider_unchanged_and_ahead_of_the_envir
     assert resolved is _provider
 
 
+def test_resolve_credentials_rejects_a_provider_with_an_explicit_credential_of_the_other_kind() -> None:
+    # Arrange
+    # Act
+    # Assert
+    with pytest.raises(ConfigurationError, match="not both"):
+        resolve_credentials(lambda: "key", "token")
+
+
 def test_resolve_credentials_rejects_both_explicit(monkeypatch) -> None:
     # Arrange
     monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
