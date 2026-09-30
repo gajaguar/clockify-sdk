@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-09-29 (3)
+
+* **Addition**: adopted the credential notes `credential-contract.md`,
+  `credential-sources.md` and `credential-tests.md` under `docs/sdk/`, the
+  same text `bitbucket-sdk` carries. [`sdk/credentials.md`](sdk/credentials.md)
+  now holds only what belongs to Clockify and links to the contract.
+
 ## 2026-09-29 (2)
 
 * **Auth**: added [`sdk/credentials.md`](sdk/credentials.md), the credential

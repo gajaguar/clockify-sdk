@@ -54,3 +54,4 @@ unbypassable
 uv
 venv
 vocabulary
+workos
