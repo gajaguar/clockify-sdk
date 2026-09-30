@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+    from collections.abc import Awaitable
     from collections.abc import Callable
     from collections.abc import Iterator
 
@@ -20,6 +22,17 @@ def paginate[T](fetch: Callable[[int], Page[T]], *, start_page: int = 1) -> Iter
     while True:
         page = fetch(number)
         yield from page.items
+        if len(page.items) < page.page_size:
+            return
+        number += 1
+
+
+async def apaginate[T](fetch: Callable[[int], Awaitable[Page[T]]], *, start_page: int = 1) -> AsyncIterator[T]:
+    number = start_page
+    while True:
+        page = await fetch(number)
+        for item in page.items:
+            yield item
         if len(page.items) < page.page_size:
             return
         number += 1

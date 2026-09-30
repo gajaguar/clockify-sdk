@@ -1,4 +1,5 @@
 from clockify._version import __version__
+from clockify.client import AsyncClockifyClient
 from clockify.client import ClockifyClient
 from clockify.config import ADDON_TOKEN_ENV_VAR
 from clockify.config import API_KEY_ENV_VAR
@@ -70,6 +71,7 @@ from clockify.models import WorkspaceSubdomain
 from clockify.retry import NO_RETRY
 from clockify.retry import CqsKind
 from clockify.retry import RetryPolicy
+from clockify.workspace import AsyncWorkspaceClient
 from clockify.workspace import WorkspaceClient
 
 __all__ = [
@@ -78,6 +80,8 @@ __all__ = [
     "NO_RETRY",
     "AddonTokenProvider",
     "ApiKeyProvider",
+    "AsyncClockifyClient",
+    "AsyncWorkspaceClient",
     "AuthenticationError",
     "Client",
     "ClientCreate",

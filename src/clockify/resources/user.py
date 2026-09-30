@@ -6,6 +6,7 @@ from clockify.models import User
 from clockify.retry import CqsKind
 
 if TYPE_CHECKING:
+    from clockify._transport import AsyncTransport
     from clockify._transport import Transport
 
 
@@ -16,4 +17,14 @@ class UserResource:
     # GET /user
     def me(self) -> User:
         data = self._transport.request("GET", "/user", kind=CqsKind.QUERY)
+        return User.model_validate(data)
+
+
+class AsyncUserResource:
+    def __init__(self, transport: AsyncTransport) -> None:
+        self._transport = transport
+
+    # GET /user
+    async def me(self) -> User:
+        data = await self._transport.request("GET", "/user", kind=CqsKind.QUERY)
         return User.model_validate(data)
