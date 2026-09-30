@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-09-29 (4)
+
+* **Release**: version 1.0.1, a patch. Since 1.0.0 the public API is
+  unchanged; `Transport` now receives its authentication from the client,
+  `MissingCredentialsError` names where to create the key, and the docs gained
+  the credential notes.
+
 ## 2026-09-29 (3)
 
 * **Addition**: adopted the credential notes `credential-contract.md`,
