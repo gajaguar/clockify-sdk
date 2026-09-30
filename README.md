@@ -110,11 +110,28 @@ client = ClockifyClient(api_key="...")  # explicit argument takes precedence
 client = ClockifyClient(api_key=lambda: keychain.current_clockify_key())
 ```
 
-The SDK's only credential sources are the `api_key` argument (string or
-provider) and the `CLOCKIFY_API_KEY` environment variable as its sole
-fallback. It has no OS keyring/keychain integration, no 1Password or other
-password-manager support, no OAuth/SSO flow, and no interactive prompts —
-that is an application-level concern for whatever consumes this SDK (see
+An add-on authenticates with the token Clockify issues to it instead of an
+API key. The SDK then sends `X-Addon-Token` in place of `X-Api-Key`:
+
+```python
+client = ClockifyClient(addon_token="...")
+client = ClockifyClient()  # reads CLOCKIFY_ADDON_TOKEN if no API key is set
+client = ClockifyClient(addon_token=lambda: store.current_token())
+```
+
+An API key and an add-on token are mutually exclusive: passing both
+arguments, or setting both environment variables with no argument, raises a
+`ConfigurationError`. An explicit argument beats the other credential's
+environment variable. Add-on tokens are rate limited to 50 requests per
+second per workspace, and an add-on usually sets
+`options=ClientOptions(base_url=...)` to the backend URL Clockify gives it.
+
+The SDK's only credential sources are the `api_key` and `addon_token`
+arguments (string or provider) and, as their sole fallbacks, the
+`CLOCKIFY_API_KEY` and `CLOCKIFY_ADDON_TOKEN` environment variables. It has
+no OS keyring/keychain integration, no 1Password or other password-manager
+support, no OAuth/SSO flow, and no interactive prompts — that is an
+application-level concern for whatever consumes this SDK (see
 [`clockify-cli`](https://github.com/gajaguar/clockify-cli) for an example
 that layers all of that on top).
 
@@ -126,8 +143,8 @@ that layers all of that on top).
 4. Copy the key. Clockify does not show it again once you leave the page.
 
 Any user can generate keys for their own account, and a key can be renamed
-or deleted from the same page. Clockify has no OAuth flow, so an API key is
-the only credential.
+or deleted from the same page. Clockify has no OAuth flow. An add-on token
+comes from Clockify when the add-on is installed in a workspace.
 
 ### Recipes
 
@@ -181,6 +198,7 @@ print(len(page.items), page.items)
 | Variable                     | Where it's read                | Default        | Description                                            |
 | ---------------------------- | ------------------------------ | -------------- | ------------------------------------------------------ |
 | `CLOCKIFY_API_KEY`           | `ClockifyClient()`             | none, required | API key used when `api_key` is not passed explicitly.  |
+| `CLOCKIFY_ADDON_TOKEN`       | `ClockifyClient()`             | none           | Add-on token used when neither credential is passed.   |
 | `CLOCKIFY_TEST_API_KEY`      | `tests/live` suite (`-m live`) | none           | Enables the live smoke tests against a real workspace. |
 | `CLOCKIFY_TEST_WORKSPACE_ID` | `tests/live` suite (`-m live`) | none           | Workspace the live smoke tests run against.            |
 

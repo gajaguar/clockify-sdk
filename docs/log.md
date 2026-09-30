@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-30 (2)
+
+* **Addition**: `ClockifyClient` accepts an add-on token (`addon_token=` or
+  `CLOCKIFY_ADDON_TOKEN`), sent as `X-Addon-Token`, mutually exclusive with
+  the API key. [`sdk/credentials.md`](sdk/credentials.md) now covers both
+  credentials. The version stays 1.0.1; the minor bump to 1.1.0 is a separate
+  release change.
+
 ## 2026-09-30
 
 * **Template sync**: `Makefile` and `mk/python.mk` match the template again

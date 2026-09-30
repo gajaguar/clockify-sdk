@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 from typing import Any
 from typing import Final
 
+from clockify.errors import ConfigurationError
 from clockify.errors import MissingCredentialsError
 from clockify.retry import RetryPolicy
 
@@ -15,11 +16,15 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 API_KEY_ENV_VAR: Final = "CLOCKIFY_API_KEY"
+# The value is an environment variable name, not a secret.
+ADDON_TOKEN_ENV_VAR: Final = "CLOCKIFY_ADDON_TOKEN"  # ruff: ignore[hardcoded-password-string]
 
 # A caller-supplied callback invoked lazily on every request instead of a fixed string,
 # so a rotating or externally-managed key never has to be baked into the client at
 # construction time. The SDK never calls this itself outside the auth flow.
 type ApiKeyProvider = Callable[[], str]  # pylint: disable=gajaguar-module-const-naming
+# Same contract as ApiKeyProvider, for the add-on token.
+type AddonTokenProvider = Callable[[], str]  # pylint: disable=gajaguar-module-const-naming
 
 
 class Region(StrEnum):
@@ -45,11 +50,12 @@ _REGION_HOSTS: Final[dict[Region, tuple[str, str]]] = {
 }
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, kw_only=True)
 class ClientConfig:
-    # repr=False: a dataclass repr would otherwise print the raw key into any traceback
-    # or log line that captures this object.
-    api_key: str | ApiKeyProvider = field(repr=False)
+    # repr=False: a dataclass repr would otherwise print the raw key or token into any
+    # traceback or log line that captures this object.
+    api_key: str | ApiKeyProvider | None = field(default=None, repr=False)
+    addon_token: str | AddonTokenProvider | None = field(default=None, repr=False)
     base_url: str
     reports_base_url: str
     timeout: float = 30.0
@@ -82,6 +88,41 @@ def resolve_api_key(explicit: str | ApiKeyProvider | None) -> str | ApiKeyProvid
         "Create one under Profile settings > Advanced > Manage API keys."
     )
     raise MissingCredentialsError(message)
+
+
+def resolve_addon_token(explicit: str | AddonTokenProvider | None) -> str | AddonTokenProvider:
+    # A provider is returned as-is; it is only invoked later, per request, by AddonTokenAuth.
+    if explicit:
+        return explicit
+    from_env = environ.get(ADDON_TOKEN_ENV_VAR)
+    if from_env:
+        return from_env
+    message = (
+        f"No add-on token provided. Pass addon_token=... or set the {ADDON_TOKEN_ENV_VAR} environment variable. "
+        "Clockify issues the token to an add-on when it is installed in a workspace."
+    )
+    raise MissingCredentialsError(message)
+
+
+def resolve_credentials(
+    api_key: str | ApiKeyProvider | None, addon_token: str | AddonTokenProvider | None
+) -> tuple[str | ApiKeyProvider | None, str | AddonTokenProvider | None]:
+    # Exactly one of the two is returned non-None. An explicit credential beats the other
+    # credential's environment variable; two explicit ones, or two environment variables
+    # with nothing explicit, are ambiguous and rejected.
+    if api_key and addon_token:
+        message = "Pass either api_key or addon_token, not both."
+        raise ConfigurationError(message)
+    if addon_token:
+        return None, resolve_addon_token(addon_token)
+    if api_key:
+        return resolve_api_key(api_key), None
+    if environ.get(API_KEY_ENV_VAR) and environ.get(ADDON_TOKEN_ENV_VAR):
+        message = f"Both {API_KEY_ENV_VAR} and {ADDON_TOKEN_ENV_VAR} are set; set only one."
+        raise ConfigurationError(message)
+    if environ.get(ADDON_TOKEN_ENV_VAR):
+        return None, resolve_addon_token(None)
+    return resolve_api_key(None), None
 
 
 def resolve_urls(region: Region, base_url: str | None, reports_base_url: str | None) -> tuple[str, str]:

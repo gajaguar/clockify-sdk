@@ -70,7 +70,7 @@ lint.flake8-type-checking.runtime-evaluated-base-classes = [
   "clockify.models.base.ClockifyModel",
 ]
 lint.flake8-bugbear.extend-immutable-calls = ["pydantic.Field"]
-lint.per-file-ignores."tests/**/*.py" = ["ANN", "magic-value-comparison", "assert"]
+lint.per-file-ignores."tests/**/*.py" = ["ANN", "magic-value-comparison", "assert", "hardcoded-password-func-arg"]
 
 [tool.mypy]
 strict = true
