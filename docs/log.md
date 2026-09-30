@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-30 (5)
+
+* **Release**: version 1.1.0, a minor. Since 1.0.1 the public API only grew:
+  `ClockifyClient` accepts an add-on token (`addon_token=` or
+  `CLOCKIFY_ADDON_TOKEN`), and `AsyncClockifyClient` and
+  `AsyncWorkspaceClient` are new. Nothing was removed or changed in behavior,
+  so it is not a major.
+
 ## 2026-09-30 (4)
 
 * **Addition**: `AsyncClockifyClient` and `AsyncWorkspaceClient`, built on
