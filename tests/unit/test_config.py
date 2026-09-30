@@ -4,8 +4,11 @@ import pytest
 
 from clockify.config import ClientConfig
 from clockify.config import Region
+from clockify.config import resolve_addon_token
 from clockify.config import resolve_api_key
+from clockify.config import resolve_credentials
 from clockify.config import resolve_urls
+from clockify.errors import ConfigurationError
 from clockify.errors import MissingCredentialsError
 from clockify.retry import RetryPolicy
 
@@ -125,3 +128,117 @@ def test_resolve_api_key_prefers_a_provider_over_the_environment(monkeypatch) ->
     resolved = resolve_api_key(_provider)
     # Assert
     assert resolved is _provider
+
+
+def test_resolve_addon_token_prefers_explicit_argument(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "from-env")
+    # Act
+    resolved = resolve_addon_token("explicit")
+    # Assert
+    assert resolved == "explicit"
+
+
+def test_resolve_addon_token_falls_back_to_environment(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "from-env")
+    # Act
+    resolved = resolve_addon_token(None)
+    # Assert
+    assert resolved == "from-env"
+
+
+def test_resolve_addon_token_raises_when_missing_and_names_the_variable(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_ADDON_TOKEN", raising=False)
+    # Act
+    # Assert
+    with pytest.raises(MissingCredentialsError, match="CLOCKIFY_ADDON_TOKEN") as excinfo:
+        resolve_addon_token(None)
+    assert "add-on" in str(excinfo.value)
+
+
+def test_resolve_addon_token_returns_a_provider_unchanged_and_ahead_of_the_environment(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "from-env")
+    # Act
+    resolved = resolve_addon_token(_provider)
+    # Assert
+    assert resolved is _provider
+
+
+def test_resolve_credentials_rejects_both_explicit(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
+    monkeypatch.delenv("CLOCKIFY_ADDON_TOKEN", raising=False)
+    # Act
+    # Assert
+    with pytest.raises(ConfigurationError, match="not both"):
+        resolve_credentials("key", "token")
+
+
+def test_resolve_credentials_rejects_both_environment_variables(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_API_KEY", "key")
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "token")
+    # Act
+    # Assert
+    with pytest.raises(ConfigurationError, match="CLOCKIFY_ADDON_TOKEN"):
+        resolve_credentials(None, None)
+
+
+def test_resolve_credentials_explicit_addon_token_beats_the_api_key_variable(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_API_KEY", "key")
+    # Act
+    resolved = resolve_credentials(None, "token")
+    # Assert
+    assert resolved == (None, "token")
+
+
+def test_resolve_credentials_explicit_api_key_beats_the_addon_token_variable(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "token")
+    # Act
+    resolved = resolve_credentials("key", None)
+    # Assert
+    assert resolved == ("key", None)
+
+
+def test_resolve_credentials_addon_token_variable_alone_selects_the_token(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
+    monkeypatch.setenv("CLOCKIFY_ADDON_TOKEN", "token")
+    # Act
+    resolved = resolve_credentials(None, None)
+    # Assert
+    assert resolved == (None, "token")
+
+
+def test_resolve_credentials_api_key_variable_alone_selects_the_key(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.setenv("CLOCKIFY_API_KEY", "key")
+    monkeypatch.delenv("CLOCKIFY_ADDON_TOKEN", raising=False)
+    # Act
+    resolved = resolve_credentials(None, None)
+    # Assert
+    assert resolved == ("key", None)
+
+
+def test_resolve_credentials_raises_when_nothing_is_set(monkeypatch) -> None:
+    # Arrange
+    monkeypatch.delenv("CLOCKIFY_API_KEY", raising=False)
+    monkeypatch.delenv("CLOCKIFY_ADDON_TOKEN", raising=False)
+    # Act
+    # Assert
+    with pytest.raises(MissingCredentialsError, match="CLOCKIFY_API_KEY"):
+        resolve_credentials(None, None)
+
+
+def test_client_config_repr_never_contains_the_addon_token() -> None:
+    # Arrange
+    config = ClientConfig(addon_token="super-secret-addon-token", base_url="b", reports_base_url="r")
+    # Act
+    rendered = repr(config)
+    # Assert
+    assert "super-secret-addon-token" not in rendered

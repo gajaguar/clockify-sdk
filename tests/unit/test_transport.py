@@ -8,8 +8,10 @@ import respx
 from httpx import ConnectError
 from httpx import Response
 
+from clockify._auth import AddonTokenAuth  # ruff: ignore[import-private-name]
 from clockify._auth import ApiKeyAuth  # ruff: ignore[import-private-name]
 from clockify._transport import Transport  # ruff: ignore[import-private-name]
+from clockify.config import AddonTokenProvider
 from clockify.config import ApiKeyProvider
 from clockify.config import ClientConfig
 from clockify.errors import MissingCredentialsError
@@ -152,6 +154,78 @@ def test_debug_log_never_contains_api_key(caplog) -> None:
     # Arrange
     respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
     transport = _transport()
+    caplog.set_level(DEBUG, logger="clockify")
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert "GET /user -> 200" in caplog.text
+    assert API_KEY not in caplog.text
+    transport.close()
+
+
+def _addon_transport(token: str | AddonTokenProvider = API_KEY) -> Transport:
+    return Transport(_config(api_key=None, addon_token=token), BASE_URL, AddonTokenAuth(token))
+
+
+@respx.mock
+def test_request_sends_addon_token_header_and_no_api_key_header() -> None:
+    # Arrange
+    route = respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = _addon_transport()
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert route.calls[0].request.headers["X-Addon-Token"] == API_KEY
+    assert "X-Api-Key" not in route.calls[0].request.headers
+    transport.close()
+
+
+@respx.mock
+def test_addon_token_provider_is_deferred_until_the_first_request() -> None:
+    # Arrange
+    provider = _CountingProvider()
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = _addon_transport(provider)
+    calls_before = provider.calls
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert calls_before == 0
+    assert provider.calls == 1
+    transport.close()
+
+
+@respx.mock
+def test_addon_token_provider_is_invoked_on_every_request() -> None:
+    # Arrange
+    provider = _CountingProvider()
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = _addon_transport(provider)
+    # Act
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    transport.request("GET", "/user", kind=CqsKind.QUERY)
+    # Assert
+    assert provider.calls == 2
+    transport.close()
+
+
+@respx.mock
+def test_empty_addon_token_provider_raises_missing_credentials_error() -> None:
+    # Arrange
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = _addon_transport(lambda: "")
+    # Act
+    # Assert
+    with pytest.raises(MissingCredentialsError, match="add-on token"):
+        transport.request("GET", "/user", kind=CqsKind.QUERY)
+    transport.close()
+
+
+@respx.mock
+def test_debug_log_never_contains_addon_token(caplog) -> None:
+    # Arrange
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(200, json={"ok": True}))
+    transport = _addon_transport()
     caplog.set_level(DEBUG, logger="clockify")
     # Act
     transport.request("GET", "/user", kind=CqsKind.QUERY)

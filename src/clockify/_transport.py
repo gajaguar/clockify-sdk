@@ -78,7 +78,7 @@ class Transport:
         except httpx.TransportError as exc:
             raise TransportError(str(exc)) from exc
         # Only primitives are logged; headers and the config object are never logged so the
-        # X-Api-Key value cannot leak into a caller's log sink.
+        # X-Api-Key / X-Addon-Token value cannot leak into a caller's log sink.
         elapsed_ms = _elapsed_ms(response)
         LOGGER.debug("%s %s -> %s (%.1fms)", method, path, response.status_code, elapsed_ms)
         if response.status_code == _NO_CONTENT:

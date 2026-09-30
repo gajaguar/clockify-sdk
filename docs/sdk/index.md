@@ -12,8 +12,8 @@ Clockify endpoint.
   resources, and `_transport`.
 * [Request lifecycle](request-lifecycle.md) - the auth → retry →
   error-mapping → validation pipeline every request goes through.
-* [Clockify API key](credentials.md) - the names the SDK uses for the API
-  key, and where the key is created.
+* [Clockify credentials](credentials.md) - the names the SDK uses for the API
+  key and the add-on token, and where each is created.
 * [Credential contract](credential-contract.md) - the sources the SDK reads
   a credential from, their order, and how the credential stays out of logs
   and output.

@@ -3,11 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from typing import Self
 
+from clockify._auth import AddonTokenAuth
 from clockify._auth import ApiKeyAuth
 from clockify._transport import Transport
 from clockify.config import ClientConfig
 from clockify.config import ClientOptions
-from clockify.config import resolve_api_key
+from clockify.config import resolve_credentials
 from clockify.config import resolve_urls
 from clockify.errors import ConfigurationError
 from clockify.ids import WorkspaceId
@@ -17,24 +18,38 @@ from clockify.retry import RetryPolicy
 from clockify.workspace import WorkspaceClient
 
 if TYPE_CHECKING:
+    from clockify.config import AddonTokenProvider
     from clockify.config import ApiKeyProvider
 
 
 class ClockifyClient:
-    def __init__(self, api_key: str | ApiKeyProvider | None = None, *, options: ClientOptions | None = None) -> None:
+    def __init__(
+        self,
+        api_key: str | ApiKeyProvider | None = None,
+        *,
+        addon_token: str | AddonTokenProvider | None = None,
+        options: ClientOptions | None = None,
+    ) -> None:
         resolved_options = options or ClientOptions()
-        resolved_key = resolve_api_key(api_key)
+        resolved_key, resolved_token = resolve_credentials(api_key, addon_token)
         resolved_base, resolved_reports = resolve_urls(
             resolved_options.region, resolved_options.base_url, resolved_options.reports_base_url
         )
         self._config = ClientConfig(
             api_key=resolved_key,
+            addon_token=resolved_token,
             base_url=resolved_base,
             reports_base_url=resolved_reports,
             timeout=resolved_options.timeout,
             retry=resolved_options.retry or RetryPolicy(),
         )
-        auth = ApiKeyAuth(resolved_key)
+        auth: ApiKeyAuth | AddonTokenAuth
+        if resolved_key is not None:
+            auth = ApiKeyAuth(resolved_key)
+        else:
+            # resolve_credentials returns exactly one non-None credential.
+            assert resolved_token is not None  # ruff: ignore[assert]
+            auth = AddonTokenAuth(resolved_token)
         self._transport = Transport(self._config, resolved_base, auth, event_hooks=resolved_options.event_hooks)
         self._reports_transport = Transport(
             self._config, resolved_reports, auth, event_hooks=resolved_options.event_hooks
