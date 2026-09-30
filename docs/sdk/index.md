@@ -4,9 +4,9 @@ okf_version: "0.2"
 
 # SDK
 
-How the SDK is layered, why it is layered that way, the request lifecycle,
-and the process for adding a new Clockify endpoint. Replaces the former
-`docs/ARCHITECTURE.md` and `docs/coverage.md`.
+How the SDK is layered, how a request flows, how it reads, protects and
+tests the credentials its callers give it, and the process for adding a new
+Clockify endpoint.
 
 * [SDK layering](layering.md) - `ClockifyClient`, `WorkspaceClient`,
   resources, and `_transport`.

@@ -1,38 +1,45 @@
 ---
 type: rule
 title: Enforcing commits and branches
-description: A pre-commit hook checks the commit being written and the current branch name; make commits-check re-validates the whole range in CI, through this project's own pinned copy of conventional-git.
+description: A pre-commit hook checks the commit being written and the current branch name; make commits-check re-validates the whole range in CI.
 tags: [git]
 status: stable
 ---
 
 # Enforcing commits and branches
 
-Commit messages follow
-[Conventional Commits](https://www.conventionalcommits.org/); branch names
-follow [Conventional Branch](https://conventionalbranch.org/) — see
-`AGENTS.md`'s "Commits and branches" section for the normative form of
-both. Two layers enforce them, via
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
+and branch names follow [Conventional Branch](https://conventionalbranch.org/).
+A commit type may be any Conventional Commits type (`docs`, `build`, `ci`,
+...), but a branch type is one of `feat` (or `feature`), `fix` (or `bugfix`),
+`hotfix`, `release`, or `chore`: documentation and dependency work uses
+`chore/`, so `docs/` is not a valid branch prefix.
+Two layers enforce both, via
 [conventional-git](https://github.com/gajaguar/conventional-git):
 
 * **Local**: `.pre-commit-config.yaml`'s `conventional-commit-msg` hook
   checks the message being written (`commit-msg` stage);
   `conventional-branch-name` checks the current branch name (`pre-commit`
-  and `pre-push` stages). Both run through `uvx`, unconditionally.
-* **CI**: `make commits-check` re-validates every commit in `$(BASE)..HEAD`
-  and the branch name, since a local hook can be bypassed with
+  and `pre-push` stages).
+* **CI**: `make commits-check` re-validates every non-merge commit in
+  `$(BASE)..HEAD` and the branch name, since a local hook can be bypassed with
   `--no-verify`. It runs as part of `make check`.
 
-`mk/python.mk` overrides the base Makefile's `CONVENTIONAL_GIT ?= uvx
-conventional-git` with `$(UV) run conventional-git`, so `make commits-check`
-uses this project's own pinned dev dependency (already synced by `uv sync`)
-instead of an ephemeral `uvx` fetch — faster, and reproducible from the
-lockfile. `.github/workflows/{ci,python}.yml`'s checkout uses `fetch-depth:
-0` and the pull request's head ref, so `$(BASE)` (`origin/main`) and the
-branch name resolve correctly instead of hitting a detached `HEAD`.
+Merge commits are skipped: their headers are generated (`Merge pull
+request #N from ...`, `Merge branch 'main' into ...`) and are not Conventional
+Commits, while the commits they bring in are still validated.
 
 Dependabot always names its branches `dependabot/<ecosystem>/<dependency>`,
 which is not a Conventional Branch type, and its prefix can't be changed.
-`make commits-check` therefore skips the branch-name check for
-`dependabot/*` branches; the commit messages are still validated, and
+`conventional-git` therefore accepts names that start with `dependabot/` or
+`renovate/` (1.1.0 and later), in the hook and in `make commits-check`
+alike; the commit messages are still validated, and
 `.github/dependabot.yml` sets their `ci`/`chore` prefixes.
+
+`make commits-check` runs through `$(UV) run conventional-git` — the
+project's own pinned dev dependency, already synced by `uv sync` — instead
+of an ephemeral `uvx conventional-git` fetch, for a faster and
+lockfile-reproducible CI run. The CI workflow checks out with
+`fetch-depth: 0` and the pull request's head ref, so `$(BASE)`
+(`origin/main`) and the branch name resolve correctly instead of hitting a
+detached `HEAD`.
