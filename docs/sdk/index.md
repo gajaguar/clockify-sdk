@@ -10,6 +10,8 @@ Clockify endpoint.
 
 * [SDK layering](layering.md) - `ClockifyClient`, `WorkspaceClient`,
   resources, and `_transport`.
+* [Async client](async-client.md) - `AsyncClockifyClient`, what it shares with
+  the sync client and how it is awaited and closed.
 * [Request lifecycle](request-lifecycle.md) - the auth → retry →
   error-mapping → validation pipeline every request goes through.
 * [Clockify credentials](credentials.md) - the names the SDK uses for the API

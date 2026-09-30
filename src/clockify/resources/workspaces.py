@@ -9,6 +9,7 @@ from clockify.retry import CqsKind
 if TYPE_CHECKING:
     from typing import Any
 
+    from clockify._transport import AsyncTransport
     from clockify._transport import Transport
     from clockify.ids import WorkspaceId
 
@@ -25,4 +26,19 @@ class WorkspacesResource:
     # GET /workspaces
     def list(self) -> list[Workspace]:
         data = self._transport.request("GET", "/workspaces", kind=CqsKind.QUERY)
+        return [Workspace.model_validate(item) for item in cast("list[dict[str, Any]]", data)]
+
+
+class AsyncWorkspacesResource:
+    def __init__(self, transport: AsyncTransport) -> None:
+        self._transport = transport
+
+    # GET /workspaces/<workspaceId>
+    async def get(self, workspace_id: WorkspaceId) -> Workspace:
+        data = await self._transport.request("GET", f"/workspaces/{workspace_id}", kind=CqsKind.QUERY)
+        return Workspace.model_validate(data)
+
+    # GET /workspaces
+    async def list(self) -> list[Workspace]:
+        data = await self._transport.request("GET", "/workspaces", kind=CqsKind.QUERY)
         return [Workspace.model_validate(item) for item in cast("list[dict[str, Any]]", data)]

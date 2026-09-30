@@ -7,7 +7,8 @@ import clockify
 # Kept as one string rather than a list literal so it does not duplicate the __all__
 # block in clockify/__init__.py (pylint duplicate-code).
 EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
-    "ADDON_TOKEN_ENV_VAR API_KEY_ENV_VAR NO_RETRY AddonTokenProvider ApiKeyProvider AuthenticationError "
+    "ADDON_TOKEN_ENV_VAR API_KEY_ENV_VAR NO_RETRY AddonTokenProvider ApiKeyProvider "
+    "AsyncClockifyClient AsyncWorkspaceClient AuthenticationError "
     "Client ClientCreate ClientId ClientOptions "
     "ClientUpdate ClockifyAPIError "
     "ClockifyClient ClockifyError ConfigurationError ConflictError CqsKind Currency CustomField "

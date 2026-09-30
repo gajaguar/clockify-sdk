@@ -10,7 +10,7 @@
 > supported by CAKE.com d.o.o. "Clockify" is a trademark of CAKE.com d.o.o.
 > Use at your own risk against the [Clockify API](https://docs.clockify.me/).
 
-Typed, synchronous Python SDK for the Clockify Working API and Reports API.
+Typed Python SDK, sync and async, for the Clockify Working API and Reports API.
 Every response is a validated, frozen [pydantic](https://docs.pydantic.dev/)
 model with attribute access and real Python types — not a raw `dict`.
 
@@ -53,6 +53,8 @@ support is not implemented yet — see
   cursor control.
 - **Built-in retry.** `429` and `5xx` responses retry with jittered backoff,
   honoring `Retry-After` and skipping retries on non-idempotent commands.
+- **Sync and async.** `ClockifyClient` uses `httpx.Client`;
+  `AsyncClockifyClient` exposes the same resources on `httpx.AsyncClient`.
 - **Typed exception hierarchy.** HTTP failures map to specific
   `clockify.errors` exceptions (`AuthenticationError`, `NotFoundError`,
   `RateLimitError`, and others) instead of a generic HTTP exception.
@@ -172,6 +174,28 @@ with ClockifyClient() as client:
     stopped = workspace.time_entries.stop(user.id)
     print(stopped.time_interval.duration)
 ```
+
+Use the async client with `async with` and `await`:
+
+```python
+import asyncio
+
+from clockify import AsyncClockifyClient
+
+
+async def main() -> None:
+    async with AsyncClockifyClient() as client:
+        workspace = await client.default_workspace()
+        async for project in workspace.projects.list():
+            print(project.name)
+
+
+asyncio.run(main())
+```
+
+A credential provider runs inside the event loop, so it must not block, and
+`event_hooks` passed to the async client must be coroutine functions. See
+[`docs/sdk/async-client.md`](docs/sdk/async-client.md).
 
 Handle API errors with the typed exception hierarchy:
 

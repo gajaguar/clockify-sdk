@@ -30,6 +30,11 @@ flowchart TD
     Models -.validates/serializes.-> WSRes
 ```
 
+`AsyncClockifyClient` mirrors this layering on `httpx.AsyncClient`: it owns an
+`AsyncTransport`, hands out `AsyncWorkspaceClient` and async resources with the
+same names, and reuses the models, auth and error mapping — see
+[`async-client.md`](async-client.md).
+
 See [`request-lifecycle.md`](request-lifecycle.md) for what happens inside
 `_transport`, and [`adding-an-endpoint.md`](adding-an-endpoint.md) for the
 procedure that extends this layering with a new endpoint.

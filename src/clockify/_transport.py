@@ -9,6 +9,7 @@ from typing import cast
 
 import httpx
 
+from clockify._retry_transport import AsyncRetryTransport
 from clockify._retry_transport import RetryTransport
 from clockify.errors import TransportError
 from clockify.errors import error_for_response
@@ -37,6 +38,20 @@ def _elapsed_ms(response: httpx.Response) -> float:
         # Timing is unavailable when the response never went through a real network
         # transport (mocked transports in tests). Logging must not fail because of it.
         return 0.0
+
+
+def _handle_response(method: str, path: str, response: httpx.Response) -> JSONValue:
+    # Only primitives are logged; headers and the config object are never logged so the
+    # X-Api-Key / X-Addon-Token value cannot leak into a caller's log sink.
+    elapsed_ms = _elapsed_ms(response)
+    LOGGER.debug("%s %s -> %s (%.1fms)", method, path, response.status_code, elapsed_ms)
+    if response.status_code == _NO_CONTENT:
+        return None
+    if not response.is_success:
+        raise error_for_response(response)
+    # httpx's Response.json() is typed Any; the wire body is trusted to be the JSON
+    # subset the JSONValue alias describes, per Clockify's documented content type.
+    return cast("JSONValue", response.json())
 
 
 class Transport:
@@ -77,17 +92,51 @@ class Transport:
             )
         except httpx.TransportError as exc:
             raise TransportError(str(exc)) from exc
-        # Only primitives are logged; headers and the config object are never logged so the
-        # X-Api-Key / X-Addon-Token value cannot leak into a caller's log sink.
-        elapsed_ms = _elapsed_ms(response)
-        LOGGER.debug("%s %s -> %s (%.1fms)", method, path, response.status_code, elapsed_ms)
-        if response.status_code == _NO_CONTENT:
-            return None
-        if not response.is_success:
-            raise error_for_response(response)
-        # httpx's Response.json() is typed Any; the wire body is trusted to be the JSON
-        # subset the JSONValue alias describes, per Clockify's documented content type.
-        return cast("JSONValue", response.json())
+        return _handle_response(method, path, response)
 
     def close(self) -> None:
         self._client.close()
+
+
+class AsyncTransport:
+    def __init__(
+        self,
+        config: ClientConfig,
+        base_url: str,
+        auth: httpx.Auth,
+        *,
+        event_hooks: dict[str, list[Callable[..., Any]]] | None = None,
+    ) -> None:
+        self._config = config
+        self._client = httpx.AsyncClient(
+            base_url=base_url,
+            auth=auth,
+            timeout=config.timeout,
+            transport=AsyncRetryTransport(httpx.AsyncHTTPTransport(), policy=config.retry),
+            headers={"User-Agent": config.user_agent},
+            event_hooks=event_hooks or {},
+        )
+
+    async def request(
+        self,
+        method: str,
+        path: str,
+        *,
+        kind: CqsKind,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
+        json: JSONValue = None,
+    ) -> JSONValue:
+        try:
+            response = await self._client.request(
+                method,
+                path,
+                params=params,
+                json=json,
+                extensions={"clockify_cqs": kind},
+            )
+        except httpx.TransportError as exc:
+            raise TransportError(str(exc)) from exc
+        return _handle_response(method, path, response)
+
+    async def aclose(self) -> None:
+        await self._client.aclose()

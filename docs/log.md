@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-09-30 (4)
+
+* **Addition**: `AsyncClockifyClient` and `AsyncWorkspaceClient`, built on
+  `httpx.AsyncClient`, with async twins of every resource, the retry
+  transport and pagination. Decision recorded in
+  [`sdk/async-client.md`](sdk/async-client.md); `sdk/layering.md`,
+  `sdk/request-lifecycle.md` and `sdk/adding-an-endpoint.md` now cover the
+  async path. The version stays 1.0.1; the minor bump to 1.1.0 is a separate
+  release change.
+
 ## 2026-09-30 (3)
 
 * **Updated**: `sdk/credential-contract.md` (new "Choosing between credential

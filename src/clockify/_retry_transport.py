@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from asyncio import sleep as _default_async_sleep
 from time import sleep as _default_sleep
 from typing import TYPE_CHECKING
 
@@ -11,6 +12,7 @@ from clockify.retry import compute_delay
 from clockify.retry import should_retry
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable
     from collections.abc import Callable
 
 
@@ -59,3 +61,32 @@ class RetryTransport(httpx.BaseTransport):
 
     def close(self) -> None:
         self.next_transport.close()
+
+
+class AsyncRetryTransport(httpx.AsyncBaseTransport):
+    def __init__(
+        self,
+        next_transport: httpx.AsyncBaseTransport,
+        *,
+        policy: RetryPolicy,
+        sleep: Callable[[float], Awaitable[None]] = _default_async_sleep,
+    ) -> None:
+        self.next_transport = next_transport
+        self.policy = policy
+        self.sleep = sleep
+
+    async def handle_async_request(self, request: httpx.Request) -> httpx.Response:
+        kind = request.extensions.get("clockify_cqs", CqsKind.NON_IDEMPOTENT_COMMAND)
+        # Same 1-indexed attempt accounting as RetryTransport.handle_request.
+        attempt = 1
+        while True:
+            response = await self.next_transport.handle_async_request(request)
+            await response.aread()
+            if not should_retry(self.policy, kind, response.status_code, attempt):
+                return response
+            delay = compute_delay(self.policy, attempt - 1, _parse_retry_after(response))
+            await self.sleep(delay)
+            attempt += 1
+
+    async def aclose(self) -> None:
+        await self.next_transport.aclose()
