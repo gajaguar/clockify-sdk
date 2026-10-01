@@ -1,5 +1,14 @@
 # Directory Update Log
 
+## 2026-09-30 (14)
+
+* **Release**: version 1.4.0, a minor. Since 1.3.0 the public API only grew:
+  `ws.webhooks` (`list`, `get`, `create`, `update`, `delete`,
+  `regenerate_token`), the webhook models, `verify_signature` and the two
+  header-name constants are new, sync and async. A successful response with no
+  body now returns `None` instead of raising; nothing else changed in
+  behavior, so it is not a major.
+
 ## 2026-09-30 (13)
 
 * **Feature**: `workspace.webhooks` (`list`, `get`, `create`, `update`,
