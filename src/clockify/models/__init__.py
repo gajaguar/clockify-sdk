@@ -14,6 +14,24 @@ from clockify.models.project import EstimateType
 from clockify.models.project import Project
 from clockify.models.project import ProjectCreate
 from clockify.models.project import ProjectUpdate
+from clockify.models.report import DetailedFilter
+from clockify.models.report import DetailedReport
+from clockify.models.report import DetailedReportRequest
+from clockify.models.report import ReportEntityFilter
+from clockify.models.report import ReportFilterContains
+from clockify.models.report import ReportFilterStatus
+from clockify.models.report import ReportGroup
+from clockify.models.report import ReportGroupRow
+from clockify.models.report import ReportSortOrder
+from clockify.models.report import ReportTotals
+from clockify.models.report import SharedReport
+from clockify.models.report import SharedReportQuery
+from clockify.models.report import SummaryFilter
+from clockify.models.report import SummaryReport
+from clockify.models.report import SummaryReportRequest
+from clockify.models.report import WeeklyFilter
+from clockify.models.report import WeeklyReport
+from clockify.models.report import WeeklyReportRequest
 from clockify.models.tag import Tag
 from clockify.models.tag import TagCreate
 from clockify.models.tag import TagUpdate
@@ -56,6 +74,9 @@ __all__ = [
     "CustomFieldType",
     "CustomFieldUpdate",
     "CustomFieldValue",
+    "DetailedFilter",
+    "DetailedReport",
+    "DetailedReportRequest",
     "EstimateType",
     "Membership",
     "MembershipStatus",
@@ -64,6 +85,18 @@ __all__ = [
     "ProjectCreate",
     "ProjectUpdate",
     "Rate",
+    "ReportEntityFilter",
+    "ReportFilterContains",
+    "ReportFilterStatus",
+    "ReportGroup",
+    "ReportGroupRow",
+    "ReportSortOrder",
+    "ReportTotals",
+    "SharedReport",
+    "SharedReportQuery",
+    "SummaryFilter",
+    "SummaryReport",
+    "SummaryReportRequest",
     "Tag",
     "TagCreate",
     "TagUpdate",
@@ -83,6 +116,9 @@ __all__ = [
     "UserGroupUpdate",
     "UserRedacted",
     "UserStatus",
+    "WeeklyFilter",
+    "WeeklyReport",
+    "WeeklyReportRequest",
     "Workspace",
     "WorkspaceSettings",
     "WorkspaceSubdomain",

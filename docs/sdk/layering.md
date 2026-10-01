@@ -30,6 +30,11 @@ flowchart TD
     Models -.validates/serializes.-> WSRes
 ```
 
+The Reports API lives on a separate host, so `ClockifyClient` owns a second
+transport for `reports_base_url` and passes it to `WorkspaceClient`, whose
+`reports` resource is the only one that uses it. Reports are queries even
+though most are `POST`, and they are always requested as JSON.
+
 `AsyncClockifyClient` mirrors this layering on `httpx.AsyncClient`: it owns an
 `AsyncTransport`, hands out `AsyncWorkspaceClient` and async resources with the
 same names, and reuses the models, auth and error mapping — see

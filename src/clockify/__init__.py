@@ -39,6 +39,9 @@ from clockify.models import CustomFieldStatus
 from clockify.models import CustomFieldType
 from clockify.models import CustomFieldUpdate
 from clockify.models import CustomFieldValue
+from clockify.models import DetailedFilter
+from clockify.models import DetailedReport
+from clockify.models import DetailedReportRequest
 from clockify.models import EstimateType
 from clockify.models import Membership
 from clockify.models import MembershipStatus
@@ -47,6 +50,18 @@ from clockify.models import Project
 from clockify.models import ProjectCreate
 from clockify.models import ProjectUpdate
 from clockify.models import Rate
+from clockify.models import ReportEntityFilter
+from clockify.models import ReportFilterContains
+from clockify.models import ReportFilterStatus
+from clockify.models import ReportGroup
+from clockify.models import ReportGroupRow
+from clockify.models import ReportSortOrder
+from clockify.models import ReportTotals
+from clockify.models import SharedReport
+from clockify.models import SharedReportQuery
+from clockify.models import SummaryFilter
+from clockify.models import SummaryReport
+from clockify.models import SummaryReportRequest
 from clockify.models import Tag
 from clockify.models import TagCreate
 from clockify.models import TagUpdate
@@ -65,6 +80,9 @@ from clockify.models import UserGroup
 from clockify.models import UserGroupCreate
 from clockify.models import UserGroupUpdate
 from clockify.models import UserRedacted
+from clockify.models import WeeklyFilter
+from clockify.models import WeeklyReport
+from clockify.models import WeeklyReportRequest
 from clockify.models import Workspace
 from clockify.models import WorkspaceSettings
 from clockify.models import WorkspaceSubdomain
@@ -103,6 +121,9 @@ __all__ = [
     "CustomFieldType",
     "CustomFieldUpdate",
     "CustomFieldValue",
+    "DetailedFilter",
+    "DetailedReport",
+    "DetailedReportRequest",
     "EstimateType",
     "ForbiddenError",
     "Membership",
@@ -117,8 +138,20 @@ __all__ = [
     "Rate",
     "RateLimitError",
     "Region",
+    "ReportEntityFilter",
+    "ReportFilterContains",
+    "ReportFilterStatus",
+    "ReportGroup",
+    "ReportGroupRow",
+    "ReportSortOrder",
+    "ReportTotals",
     "RetryPolicy",
     "ServerError",
+    "SharedReport",
+    "SharedReportQuery",
+    "SummaryFilter",
+    "SummaryReport",
+    "SummaryReportRequest",
     "Tag",
     "TagCreate",
     "TagId",
@@ -144,6 +177,9 @@ __all__ = [
     "UserId",
     "UserRedacted",
     "ValidationError",
+    "WeeklyFilter",
+    "WeeklyReport",
+    "WeeklyReportRequest",
     "Workspace",
     "WorkspaceClient",
     "WorkspaceId",
