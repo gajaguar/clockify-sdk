@@ -1,5 +1,11 @@
 # Directory Update Log
 
+## 2026-10-01 (3)
+
+* **Release**: version 1.5.0, a minor. Since 1.4.0 the public API only grew:
+  `ws.approvals` (`list`, `list_page`, `submit`, `submit_for_user`, `update`,
+  `resubmit`) and the approval models, sync and async; no breaking changes.
+
 ## 2026-10-01 (2)
 
 * **Feature**: `workspace.approvals` (`list`, `list_page`, `submit`,
