@@ -1,5 +1,10 @@
 # Directory Update Log
 
+## 2026-09-30 (12)
+
+* **Documentation**: the README's environment variable table lists
+  `CLOCKIFY_TEST_REGION`, the `Region` the live reports smoke test runs against.
+
 ## 2026-09-30 (11)
 
 * **Documentation**: the README documents the weekly report's 7-day range and
