@@ -195,6 +195,29 @@ with ClockifyClient() as client:
         print(row.name, row.duration)
 ```
 
+A weekly report takes a `group` and a `subgroup`, which is `WeeklySubgroup.TIME`
+or `WeeklySubgroup.EARNINGS` rather than a `ReportGroup`. The API rejects any
+range that is not exactly 7 days long ("Please select date range of exactly 7
+days for weekly report"):
+
+```python
+import datetime
+
+from clockify import ReportGroup, WeeklyFilter, WeeklyReportRequest, WeeklySubgroup
+
+start = datetime.datetime(2026, 8, 3, tzinfo=datetime.UTC)
+request = WeeklyReportRequest(
+    date_range_start=start,
+    date_range_end=start + datetime.timedelta(days=7),
+    weekly_filter=WeeklyFilter(group=ReportGroup.PROJECT, subgroup=WeeklySubgroup.TIME),
+)
+```
+
+Clockify answers a report request with a 403 (`ForbiddenError`) when the
+workspace's plan or the user's role does not allow reports; a FREE workspace
+did. The report models are covered by unit tests with mocked responses, but they
+have not been checked against a live response yet.
+
 Use the async client with `async with` and `await`:
 
 ```python
