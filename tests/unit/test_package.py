@@ -18,8 +18,8 @@ EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
     "SharedReportQuery SummaryFilter SummaryReport SummaryReportRequest Tag TagCreate TagId TagUpdate Task "
     "TaskCreate TaskId TaskStatus TaskUpdate TimeEntry TimeEntryCreate TimeEntryFilter TimeEntryId TimeEntryType "
     "TimeEntryUpdate TimeInterval TransportError User UserGroup UserGroupCreate UserGroupId UserGroupUpdate "
-    "UserId UserRedacted ValidationError WeeklyFilter WeeklyReport WeeklyReportRequest Workspace WorkspaceClient "
-    "WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__"
+    "UserId UserRedacted ValidationError WeeklyFilter WeeklyReport WeeklyReportRequest WeeklySubgroup Workspace "
+    "WorkspaceClient WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__"
 ).split()
 
 

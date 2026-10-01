@@ -4,8 +4,10 @@ import datetime
 import json
 from typing import Final
 
+import pytest
 import respx
 from httpx import Response
+from pydantic import ValidationError
 
 from clockify import NO_RETRY
 from clockify import ClientOptions
@@ -19,6 +21,7 @@ from clockify import SummaryFilter
 from clockify import SummaryReportRequest
 from clockify import WeeklyFilter
 from clockify import WeeklyReportRequest
+from clockify import WeeklySubgroup
 from clockify.ids import WorkspaceId
 
 BASE_URL: Final = "https://fake.clockify.test/api/v1"
@@ -88,11 +91,39 @@ def test_detailed_posts_and_parses_the_lowercase_timeentries_key() -> None:
     assert json.loads(respx.calls[0].request.content) == {
         **RANGE_BODY,
         "sortOrder": "DESCENDING",
+        "detailedFilter": {"page": 1, "pageSize": 50},
         "exportType": "JSON",
     }
     assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY
     assert report.time_entries == [{"_id": "e1", "description": "Build API"}]
     client.close()
+
+
+@respx.mock
+def test_detailed_sends_the_default_filter_when_none_is_given() -> None:
+    # Arrange
+    respx.post(f"{REPORTS_URL}/workspaces/{WORKSPACE_ID}/reports/detailed").mock(
+        return_value=Response(200, json=DETAILED_PAYLOAD)
+    )
+    client = _client()
+    request = DetailedReportRequest(date_range_start=START, date_range_end=END)
+    # Act
+    client.workspace(WORKSPACE_ID).reports.detailed(request)
+    # Assert
+    assert json.loads(respx.calls[0].request.content) == {
+        **RANGE_BODY,
+        "detailedFilter": {"page": 1, "pageSize": 50},
+        "exportType": "JSON",
+    }
+    client.close()
+
+
+def test_weekly_subgroup_rejects_a_report_group() -> None:
+    # Arrange
+    # Act
+    # Assert
+    with pytest.raises(ValidationError):
+        WeeklyFilter(group=ReportGroup.USER, subgroup="PROJECT")  # type: ignore[arg-type]
 
 
 @respx.mock
@@ -105,7 +136,7 @@ def test_weekly_posts_group_and_subgroup() -> None:
     request = WeeklyReportRequest(
         date_range_start=START,
         date_range_end=END,
-        weekly_filter=WeeklyFilter(group=ReportGroup.USER, subgroup=ReportGroup.PROJECT),
+        weekly_filter=WeeklyFilter(group=ReportGroup.USER, subgroup=WeeklySubgroup.TIME),
     )
     # Act
     report = client.workspace(WORKSPACE_ID).reports.weekly(request)
@@ -113,7 +144,7 @@ def test_weekly_posts_group_and_subgroup() -> None:
     assert route.call_count == 1
     assert json.loads(respx.calls[0].request.content) == {
         **RANGE_BODY,
-        "weeklyFilter": {"group": "USER", "subgroup": "PROJECT"},
+        "weeklyFilter": {"group": "USER", "subgroup": "TIME"},
         "exportType": "JSON",
     }
     assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY

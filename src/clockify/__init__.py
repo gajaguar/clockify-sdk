@@ -83,6 +83,7 @@ from clockify.models import UserRedacted
 from clockify.models import WeeklyFilter
 from clockify.models import WeeklyReport
 from clockify.models import WeeklyReportRequest
+from clockify.models import WeeklySubgroup
 from clockify.models import Workspace
 from clockify.models import WorkspaceSettings
 from clockify.models import WorkspaceSubdomain
@@ -180,6 +181,7 @@ __all__ = [
     "WeeklyFilter",
     "WeeklyReport",
     "WeeklyReportRequest",
+    "WeeklySubgroup",
     "Workspace",
     "WorkspaceClient",
     "WorkspaceId",

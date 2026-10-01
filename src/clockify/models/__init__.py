@@ -32,6 +32,7 @@ from clockify.models.report import SummaryReportRequest
 from clockify.models.report import WeeklyFilter
 from clockify.models.report import WeeklyReport
 from clockify.models.report import WeeklyReportRequest
+from clockify.models.report import WeeklySubgroup
 from clockify.models.tag import Tag
 from clockify.models.tag import TagCreate
 from clockify.models.tag import TagUpdate
@@ -119,6 +120,7 @@ __all__ = [
     "WeeklyFilter",
     "WeeklyReport",
     "WeeklyReportRequest",
+    "WeeklySubgroup",
     "Workspace",
     "WorkspaceSettings",
     "WorkspaceSubdomain",
