@@ -22,6 +22,8 @@ from clockify.errors import ValidationError
 from clockify.ids import ApprovalRequestId
 from clockify.ids import ClientId
 from clockify.ids import CustomFieldId
+from clockify.ids import ExpenseCategoryId
+from clockify.ids import ExpenseId
 from clockify.ids import ProjectId
 from clockify.ids import TagId
 from clockify.ids import TaskId
@@ -64,6 +66,23 @@ from clockify.models import DetailedFilter
 from clockify.models import DetailedReport
 from clockify.models import DetailedReportRequest
 from clockify.models import EstimateType
+from clockify.models import Expense
+from clockify.models import ExpenseCategory
+from clockify.models import ExpenseCategoryCreate
+from clockify.models import ExpenseCategoryFilter
+from clockify.models import ExpenseCategoryList
+from clockify.models import ExpenseCategorySortColumn
+from clockify.models import ExpenseCategoryStatusUpdate
+from clockify.models import ExpenseCategoryUpdate
+from clockify.models import ExpenseChangeField
+from clockify.models import ExpenseCreate
+from clockify.models import ExpenseDailyTotal
+from clockify.models import ExpenseDetails
+from clockify.models import ExpenseFile
+from clockify.models import ExpenseList
+from clockify.models import ExpenseUpdate
+from clockify.models import ExpenseWeeklyTotal
+from clockify.models import ExpensesWithCount
 from clockify.models import Membership
 from clockify.models import MembershipStatus
 from clockify.models import MembershipType
@@ -179,6 +198,25 @@ __all__ = [
     "DetailedReport",
     "DetailedReportRequest",
     "EstimateType",
+    "Expense",
+    "ExpenseCategory",
+    "ExpenseCategoryCreate",
+    "ExpenseCategoryFilter",
+    "ExpenseCategoryId",
+    "ExpenseCategoryList",
+    "ExpenseCategorySortColumn",
+    "ExpenseCategoryStatusUpdate",
+    "ExpenseCategoryUpdate",
+    "ExpenseChangeField",
+    "ExpenseCreate",
+    "ExpenseDailyTotal",
+    "ExpenseDetails",
+    "ExpenseFile",
+    "ExpenseId",
+    "ExpenseList",
+    "ExpenseUpdate",
+    "ExpenseWeeklyTotal",
+    "ExpensesWithCount",
     "ForbiddenError",
     "Membership",
     "MembershipStatus",

@@ -134,18 +134,22 @@ lower plan Clockify answers `403`, which the SDK raises as `ForbiddenError`.
 
 ## Core API — Expenses (Pro plan)
 
-| Endpoint                             | SDK method | Status  |
-| ------------------------------------ | ---------- | ------- |
-| `GET .../expenses`                   | -          | planned |
-| `POST .../expenses`                  | -          | planned |
-| `GET .../expenses/{id}`              | -          | planned |
-| `PUT .../expenses/{id}`              | -          | planned |
-| `DELETE .../expenses/{id}`           | -          | planned |
-| `GET .../expense-categories`         | -          | planned |
-| `POST .../expense-categories`        | -          | planned |
-| `PUT .../expense-categories/{id}`    | -          | planned |
-| `PATCH .../expense-categories/{id}`  | -          | planned |
-| `DELETE .../expense-categories/{id}` | -          | planned |
+The models follow the OpenAPI spec and are not verified against a real response;
+see [`multipart-uploads.md`](multipart-uploads.md).
+
+| Endpoint                                      | SDK method                                      | Status  |
+| --------------------------------------------- | ----------------------------------------------- | ------- |
+| `GET .../expenses`                            | `ws.expenses.list(user_id=)`                    | done    |
+| `POST .../expenses`                           | `ws.expenses.create(payload)`                   | done    |
+| `GET .../expenses/{id}`                       | `ws.expenses.get(id)`                           | done    |
+| `PUT .../expenses/{id}`                       | `ws.expenses.update(id, payload)`               | done    |
+| `DELETE .../expenses/{id}`                    | `ws.expenses.delete(id)`                        | done    |
+| `GET .../expenses/{id}/files/{fileId}`        | -                                               | planned |
+| `GET .../expenses/categories`                 | `ws.expense_categories.list(category_filter=)`  | done    |
+| `POST .../expenses/categories`                | `ws.expense_categories.create(payload)`         | done    |
+| `PUT .../expenses/categories/{id}`            | `ws.expense_categories.update(id, payload)`     | done    |
+| `PATCH .../expenses/categories/{id}/status`   | `ws.expense_categories.update_status(id, body)` | done    |
+| `DELETE .../expenses/categories/{id}`         | `ws.expense_categories.delete(id)`              | done    |
 
 ## Core API — Invoices (Standard plan)
 

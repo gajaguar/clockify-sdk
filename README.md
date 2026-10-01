@@ -63,6 +63,9 @@ support is not implemented yet — see
   came from Clockify.
 - **Approvals.** `workspace.approvals` lists approval requests, submits and
   resubmits timesheets and expenses, and approves, rejects or withdraws them.
+- **Expenses.** `workspace.expenses` and `workspace.expense_categories` manage
+  expenses (with their receipt file) and their categories. Pro plan only, and
+  not verified against a real response.
 - **Multi-region support.** `Region.GLOBAL` and the regional Clockify hosts
   are built in; an explicit `base_url` overrides either.
 
@@ -319,6 +322,34 @@ for details in workspace.approvals.list(request_filter=ApprovalRequestFilter(sta
 
 `submit_for_user(user_id, type, payload)` submits on behalf of another user and
 `resubmit(payload)` resubmits rejected or withdrawn entries.
+
+Create an expense category and an expense with its receipt (Pro plan; a lower
+plan answers `403`, raised as `ForbiddenError`). These models follow the OpenAPI
+spec and have **not been verified against a real response**, because the account
+used to build the SDK is on the Free plan:
+
+```python
+import datetime
+
+from clockify import ExpenseCategoryCreate, ExpenseCreate, ExpenseFile
+
+category = workspace.expense_categories.create(ExpenseCategoryCreate(name="Travel"))
+expense = workspace.expenses.create(
+    ExpenseCreate(
+        user_id=user.id,
+        category_id=category.id,
+        project_id=project.id,
+        date=datetime.datetime(2026, 9, 30, tzinfo=datetime.UTC),
+        amount=12.5,
+        file=ExpenseFile("receipt.pdf", receipt_bytes, "application/pdf"),
+    )
+)
+```
+
+The file is sent as bytes, not a stream, so a retry can resend it. Clockify has
+no endpoint to read one category, so `expense_categories.get()` raises
+`NotImplementedError`; downloading the receipt is not covered yet. See
+[`docs/sdk/multipart-uploads.md`](docs/sdk/multipart-uploads.md).
 
 Manage pagination directly instead of iterating the full collection:
 

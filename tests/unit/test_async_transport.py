@@ -11,6 +11,7 @@ from httpx import Response
 from clockify._auth import AddonTokenAuth  # ruff: ignore[import-private-name]
 from clockify._auth import ApiKeyAuth  # ruff: ignore[import-private-name]
 from clockify._transport import AsyncTransport  # ruff: ignore[import-private-name]
+from clockify._transport import Multipart  # ruff: ignore[import-private-name]
 from clockify.config import ClientConfig
 from clockify.errors import MissingCredentialsError
 from clockify.errors import NotFoundError
@@ -173,4 +174,22 @@ async def test_debug_log_never_contains_the_secret(caplog) -> None:
     # Assert
     assert "GET /user -> 200" in caplog.text
     assert API_KEY not in caplog.text
+    await transport.aclose()
+
+
+@respx.mock
+async def test_multipart_body_is_sent_as_form_data_with_the_api_key() -> None:
+    # Arrange
+    route = respx.post(f"{BASE_URL}/thing").mock(return_value=Response(201, json={"ok": True}))
+    transport = _transport()
+    body = Multipart((("note", (None, b"hi", None)), ("file", ("a.txt", b"data", "text/plain"))))
+    # Act
+    data = await transport.request("POST", "/thing", kind=CqsKind.NON_IDEMPOTENT_COMMAND, json=body)
+    # Assert
+    request = route.calls[0].request
+    assert data == {"ok": True}
+    assert request.headers["Content-Type"].startswith("multipart/form-data; boundary=")
+    assert request.headers["X-Api-Key"] == API_KEY
+    assert b'name="note"\r\n\r\nhi' in request.content
+    assert b'name="file"; filename="a.txt"\r\nContent-Type: text/plain\r\n\r\ndata' in request.content
     await transport.aclose()

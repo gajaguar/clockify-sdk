@@ -135,7 +135,9 @@ class ApprovalTimeEntry(ClockifyModel):
     custom_field_values: list[CustomFieldValue] | None = None
 
 
-# The expense category stays an extra field until Expenses has its own resource.
+# `category` stays an extra field so its type does not change in a minor release; it has
+# the shape of clockify.models.expense.ExpenseCategory and
+# ExpenseCategory.model_validate(expense.model_extra["category"]) reads it.
 class ApprovalExpense(ClockifyModel):
     id: str
     approval_request_id: ApprovalRequestId | None = None
