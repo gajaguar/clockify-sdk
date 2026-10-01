@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-10-01 (5)
+
+* **Release**: version 1.6.0, a minor. Since 1.5.0 the public API only grew:
+  `ws.expenses` (`list`, `list_page`, `get`, `create`, `update`, `delete`),
+  `ws.expense_categories` (`list`, `list_page`, `create`, `update`,
+  `update_status`, `delete`) and the expense models, sync and async; no breaking
+  changes. The Expenses models are not verified against a real response.
+
 ## 2026-10-01 (4)
 
 * **Feature**: `workspace.expenses` (`list`, `list_page`, `get`, `create`, `update`,
