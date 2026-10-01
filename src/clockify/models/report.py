@@ -87,9 +87,16 @@ class DetailedFilter(ClockifyModel):
     sort_column: str | None = None
 
 
+class WeeklySubgroup(StrEnum):
+    TIME = "TIME"
+    EARNINGS = "EARNINGS"
+
+
 class WeeklyFilter(ClockifyModel):
     group: ReportGroup
-    subgroup: ReportGroup | None = None
+    # Unlike group, the API only accepts TIME or EARNINGS here and rejects every
+    # ReportGroup value with "Invalid sub group name".
+    subgroup: WeeklySubgroup | None = None
 
 
 class _ReportRequest(ClockifyModel):

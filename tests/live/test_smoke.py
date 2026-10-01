@@ -12,6 +12,7 @@ from clockify import ReportGroup
 from clockify import SummaryFilter
 from clockify import SummaryReportRequest
 from clockify import TimeEntryCreate
+from clockify.errors import ForbiddenError
 from clockify.ids import WorkspaceId
 
 
@@ -70,6 +71,9 @@ def test_reports_summary_smoke() -> None:
     try:
         # Act
         report = workspace.reports.summary(request)
+    except ForbiddenError:
+        pytest.skip("403 from the Reports API: the key authenticated but the workspace plan (e.g. FREE) lacks it")
+    else:
         # Assert
         assert report is not None
     finally:

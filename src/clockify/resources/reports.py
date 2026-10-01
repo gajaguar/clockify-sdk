@@ -25,7 +25,9 @@ if TYPE_CHECKING:
 def _body(request: BaseModel) -> dict[str, JSONValue]:
     # Always JSON: the PDF, CSV and XLSX exports return binary bodies that the
     # transport's JSON response handling cannot parse.
-    body = request.model_dump(mode="json", by_alias=True, exclude_unset=True)
+    # exclude_none rather than exclude_unset: the API rejects a detailed report without
+    # its filter, and the default filter is "unset" yet must still be sent.
+    body = request.model_dump(mode="json", by_alias=True, exclude_none=True)
     body["exportType"] = "JSON"
     return body
 

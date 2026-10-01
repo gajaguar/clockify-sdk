@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-09-30 (10)
+
+* **Fix**: a live run against the Reports API showed two request bugs. A
+  `DetailedReportRequest` without an explicit filter sent no `detailedFilter`,
+  which the API rejects; `_body` now drops `None` values instead of unset ones,
+  so the default filter is sent. `WeeklyFilter.subgroup` was typed
+  `ReportGroup`, but the API accepts only `TIME` or `EARNINGS`; the new
+  `WeeklySubgroup` enum replaces it, so passing a `ReportGroup` now fails
+  validation. The live summary smoke test skips on a 403, since the FREE plan
+  lacks the Reports API.
+
 ## 2026-09-30 (9)
 
 * **Release**: version 1.3.0, a minor. Since 1.2.0 the public API only grew:
