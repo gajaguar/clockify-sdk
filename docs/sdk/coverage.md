@@ -124,13 +124,13 @@ lower plan Clockify answers `403`, which the SDK raises as `ForbiddenError`.
 
 ## Core API — Approvals (Standard plan)
 
-| Endpoint                                                   | SDK method | Status  |
-| ---------------------------------------------------------- | ---------- | ------- |
-| `GET .../approval-requests`                                | -          | planned |
-| `POST .../approval-requests/{type}`                        | -          | planned |
-| `POST .../approval-requests/users/{userId}/{type}`         | -          | planned |
-| `PATCH .../approval-requests/{id}`                         | -          | planned |
-| `POST .../approval-requests/resubmit-entries-for-approval` | -          | planned |
+| Endpoint                                                   | SDK method                                             | Status |
+| ---------------------------------------------------------- | ------------------------------------------------------ | ------ |
+| `GET .../approval-requests`                                | `ws.approvals.list(request_filter=)`                   | done   |
+| `POST .../approval-requests/{type}`                        | `ws.approvals.submit(type, payload)`                   | done   |
+| `POST .../approval-requests/users/{userId}/{type}`         | `ws.approvals.submit_for_user(user_id, type, payload)` | done   |
+| `PATCH .../approval-requests/{id}`                         | `ws.approvals.update(id, payload)`                     | done   |
+| `POST .../approval-requests/resubmit-entries-for-approval` | `ws.approvals.resubmit(payload)`                       | done   |
 
 ## Core API — Expenses (Pro plan)
 

@@ -19,6 +19,7 @@ from clockify.errors import RateLimitError
 from clockify.errors import ServerError
 from clockify.errors import TransportError
 from clockify.errors import ValidationError
+from clockify.ids import ApprovalRequestId
 from clockify.ids import ClientId
 from clockify.ids import CustomFieldId
 from clockify.ids import ProjectId
@@ -29,6 +30,25 @@ from clockify.ids import UserGroupId
 from clockify.ids import UserId
 from clockify.ids import WebhookId
 from clockify.ids import WorkspaceId
+from clockify.models import ApprovalDateRange
+from clockify.models import ApprovalDetails
+from clockify.models import ApprovalExpense
+from clockify.models import ApprovalPeriod
+from clockify.models import ApprovalProjectInfo
+from clockify.models import ApprovalRequest
+from clockify.models import ApprovalRequestCreate
+from clockify.models import ApprovalRequestCreator
+from clockify.models import ApprovalRequestFilter
+from clockify.models import ApprovalRequestOwner
+from clockify.models import ApprovalRequestResubmit
+from clockify.models import ApprovalRequestStatus
+from clockify.models import ApprovalRequestType
+from clockify.models import ApprovalRequestUpdate
+from clockify.models import ApprovalSortColumn
+from clockify.models import ApprovalSortOrder
+from clockify.models import ApprovalState
+from clockify.models import ApprovalTaskInfo
+from clockify.models import ApprovalTimeEntry
 from clockify.models import Client
 from clockify.models import ClientCreate
 from clockify.models import ClientUpdate
@@ -112,6 +132,26 @@ __all__ = [
     "SIGNATURE_HEADER",
     "AddonTokenProvider",
     "ApiKeyProvider",
+    "ApprovalDateRange",
+    "ApprovalDetails",
+    "ApprovalExpense",
+    "ApprovalPeriod",
+    "ApprovalProjectInfo",
+    "ApprovalRequest",
+    "ApprovalRequestCreate",
+    "ApprovalRequestCreator",
+    "ApprovalRequestFilter",
+    "ApprovalRequestId",
+    "ApprovalRequestOwner",
+    "ApprovalRequestResubmit",
+    "ApprovalRequestStatus",
+    "ApprovalRequestType",
+    "ApprovalRequestUpdate",
+    "ApprovalSortColumn",
+    "ApprovalSortOrder",
+    "ApprovalState",
+    "ApprovalTaskInfo",
+    "ApprovalTimeEntry",
     "AsyncClockifyClient",
     "AsyncWorkspaceClient",
     "AuthenticationError",

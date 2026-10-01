@@ -61,6 +61,8 @@ support is not implemented yet — see
 - **Webhooks.** `workspace.webhooks` creates, lists, updates and deletes
   webhooks and rotates their token; `verify_signature` checks that a delivery
   came from Clockify.
+- **Approvals.** `workspace.approvals` lists approval requests, submits and
+  resubmits timesheets and expenses, and approves, rejects or withdraws them.
 - **Multi-region support.** `Region.GLOBAL` and the regional Clockify hosts
   are built in; an explicit `base_url` overrides either.
 
@@ -286,6 +288,37 @@ if not verify_signature(headers.get(SIGNATURE_HEADER), stored_token):
 endpoint has no pages, so `list_page()` raises `NotImplementedError`.
 `regenerate_token(id)` issues a new token and invalidates the old one. See
 [`docs/sdk/webhooks.md`](docs/sdk/webhooks.md).
+
+Submit a timesheet for approval and decide on it (Standard plan or above; a
+lower plan answers `403`, raised as `ForbiddenError`):
+
+```python
+import datetime
+
+from clockify import (
+    ApprovalPeriod,
+    ApprovalRequestCreate,
+    ApprovalRequestFilter,
+    ApprovalRequestType,
+    ApprovalRequestUpdate,
+    ApprovalState,
+)
+
+request = workspace.approvals.submit(
+    ApprovalRequestType.TIMESHEET,
+    ApprovalRequestCreate(
+        period_start=datetime.datetime(2026, 9, 28, tzinfo=datetime.UTC),
+        period=ApprovalPeriod.WEEKLY,
+    ),
+)
+workspace.approvals.update(request.id, ApprovalRequestUpdate(state=ApprovalState.APPROVED))
+
+for details in workspace.approvals.list(request_filter=ApprovalRequestFilter(status=ApprovalState.PENDING)):
+    print(details.approval_request.id, details.tracked_time)
+```
+
+`submit_for_user(user_id, type, payload)` submits on behalf of another user and
+`resubmit(payload)` resubmits rejected or withdrawn entries.
 
 Manage pagination directly instead of iterating the full collection:
 
