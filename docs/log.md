@@ -1,5 +1,14 @@
 # Directory Update Log
 
+## 2026-10-01 (2)
+
+* **Feature**: `workspace.approvals` (`list`, `list_page`, `submit`,
+  `submit_for_user`, `update`, `resubmit`, sync and async) and the approval
+  models, so the five Approvals endpoints are `done` in
+  [`sdk/coverage.md`](sdk/coverage.md). Below the Standard plan Clockify answers
+  `403`, raised as `ForbiddenError`. The deprecated submit endpoints without a
+  `{type}` stay out of scope.
+
 ## 2026-10-01 (1)
 
 * **Documentation**: [`sdk/coverage.md`](sdk/coverage.md) tracks Time off,

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from clockify.resources.approvals import ApprovalsResource
+from clockify.resources.approvals import AsyncApprovalsResource
 from clockify.resources.clients import AsyncClientsResource
 from clockify.resources.clients import ClientsResource
 from clockify.resources.custom_fields import AsyncCustomFieldsResource
@@ -48,6 +50,7 @@ class WorkspaceClient:
         self.custom_fields = CustomFieldsResource(transport, workspace_id, page_size=page_size)
         self.time_entries = TimeEntriesResource(transport, workspace_id, page_size=page_size)
         self.webhooks = WebhooksResource(transport, workspace_id, page_size=page_size)
+        self.approvals = ApprovalsResource(transport, workspace_id, page_size=page_size)
         # Reports live on a separate host; without a dedicated transport they fall back to
         # the core one, which keeps a hand-built WorkspaceClient working as before.
         self.reports = ReportsResource(reports_transport or transport, workspace_id)
@@ -72,4 +75,5 @@ class AsyncWorkspaceClient:
         self.custom_fields = AsyncCustomFieldsResource(transport, workspace_id, page_size=page_size)
         self.time_entries = AsyncTimeEntriesResource(transport, workspace_id, page_size=page_size)
         self.webhooks = AsyncWebhooksResource(transport, workspace_id, page_size=page_size)
+        self.approvals = AsyncApprovalsResource(transport, workspace_id, page_size=page_size)
         self.reports = AsyncReportsResource(reports_transport or transport, workspace_id)

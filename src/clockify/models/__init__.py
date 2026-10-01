@@ -1,5 +1,24 @@
 from __future__ import annotations
 
+from clockify.models.approval import ApprovalDateRange
+from clockify.models.approval import ApprovalDetails
+from clockify.models.approval import ApprovalExpense
+from clockify.models.approval import ApprovalPeriod
+from clockify.models.approval import ApprovalProjectInfo
+from clockify.models.approval import ApprovalRequest
+from clockify.models.approval import ApprovalRequestCreate
+from clockify.models.approval import ApprovalRequestCreator
+from clockify.models.approval import ApprovalRequestFilter
+from clockify.models.approval import ApprovalRequestOwner
+from clockify.models.approval import ApprovalRequestResubmit
+from clockify.models.approval import ApprovalRequestStatus
+from clockify.models.approval import ApprovalRequestType
+from clockify.models.approval import ApprovalRequestUpdate
+from clockify.models.approval import ApprovalSortColumn
+from clockify.models.approval import ApprovalSortOrder
+from clockify.models.approval import ApprovalState
+from clockify.models.approval import ApprovalTaskInfo
+from clockify.models.approval import ApprovalTimeEntry
 from clockify.models.base import ClockifyModel
 from clockify.models.client import Client
 from clockify.models.client import ClientCreate
@@ -70,6 +89,25 @@ from clockify.models.workspace import WorkspaceSettings
 from clockify.models.workspace import WorkspaceSubdomain
 
 __all__ = [
+    "ApprovalDateRange",
+    "ApprovalDetails",
+    "ApprovalExpense",
+    "ApprovalPeriod",
+    "ApprovalProjectInfo",
+    "ApprovalRequest",
+    "ApprovalRequestCreate",
+    "ApprovalRequestCreator",
+    "ApprovalRequestFilter",
+    "ApprovalRequestOwner",
+    "ApprovalRequestResubmit",
+    "ApprovalRequestStatus",
+    "ApprovalRequestType",
+    "ApprovalRequestUpdate",
+    "ApprovalSortColumn",
+    "ApprovalSortOrder",
+    "ApprovalState",
+    "ApprovalTaskInfo",
+    "ApprovalTimeEntry",
     "Client",
     "ClientCreate",
     "ClientUpdate",

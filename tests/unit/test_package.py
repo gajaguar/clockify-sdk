@@ -8,7 +8,12 @@ import clockify
 # block in clockify/__init__.py (pylint duplicate-code).
 EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
     "ADDON_TOKEN_ENV_VAR API_KEY_ENV_VAR EVENT_TYPE_HEADER NO_RETRY SIGNATURE_HEADER AddonTokenProvider "
-    "ApiKeyProvider AsyncClockifyClient "
+    "ApiKeyProvider "
+    "ApprovalDateRange ApprovalDetails ApprovalExpense ApprovalPeriod ApprovalProjectInfo ApprovalRequest "
+    "ApprovalRequestCreate ApprovalRequestCreator ApprovalRequestFilter ApprovalRequestId "
+    "ApprovalRequestOwner ApprovalRequestResubmit ApprovalRequestStatus ApprovalRequestType "
+    "ApprovalRequestUpdate ApprovalSortColumn ApprovalSortOrder ApprovalState ApprovalTaskInfo "
+    "ApprovalTimeEntry AsyncClockifyClient "
     "AsyncWorkspaceClient AuthenticationError Client ClientCreate ClientId ClientOptions ClientUpdate "
     "ClockifyAPIError ClockifyClient ClockifyError ConfigurationError ConflictError CqsKind Currency CustomField "
     "CustomFieldCreate CustomFieldEntityType CustomFieldId CustomFieldStatus CustomFieldType CustomFieldUpdate "
