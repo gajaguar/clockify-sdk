@@ -15,6 +15,9 @@ of "covers all actions" — an endpoint with no row, or a row not marked
 
 Status values: `planned`, `in-progress`, `done`.
 
+A section whose heading names a plan is available only from that plan up. On a
+lower plan Clockify answers `403`, which the SDK raises as `ForbiddenError`.
+
 ## Core API — Workspaces
 
 | Endpoint                        | SDK method                  | Status |
@@ -100,6 +103,66 @@ Status values: `planned`, `in-progress`, `done`.
 | `GET .../webhooks/{id}/statuses`            | -                                   | planned |
 | `GET .../addons/{addonId}/webhooks`         | -                                   | planned |
 
+## Core API — Time off (Standard plan)
+
+| Endpoint                                    | SDK method | Status  |
+| ------------------------------------------- | ---------- | ------- |
+| `GET .../policies`                          | -          | planned |
+| `POST .../policies`                         | -          | planned |
+| `GET .../policies/{id}`                     | -          | planned |
+| `PUT .../policies/{id}`                     | -          | planned |
+| `PATCH .../policies/{id}`                   | -          | planned |
+| `DELETE .../policies/{id}`                  | -          | planned |
+| `POST .../time-off-requests`                | -          | planned |
+| `POST .../time-off-requests/users/{userId}` | -          | planned |
+| `POST .../time-off-requests/all`            | -          | planned |
+| `PATCH .../time-off-requests/{id}`          | -          | planned |
+| `DELETE .../time-off-requests/{id}`         | -          | planned |
+| `GET .../balance`                           | -          | planned |
+| `GET .../balance/{userId}`                  | -          | planned |
+| `PATCH .../balance/{balanceId}`             | -          | planned |
+
+## Core API — Approvals (Standard plan)
+
+| Endpoint                                                   | SDK method | Status  |
+| ---------------------------------------------------------- | ---------- | ------- |
+| `GET .../approval-requests`                                | -          | planned |
+| `POST .../approval-requests/{type}`                        | -          | planned |
+| `POST .../approval-requests/users/{userId}/{type}`         | -          | planned |
+| `PATCH .../approval-requests/{id}`                         | -          | planned |
+| `POST .../approval-requests/resubmit-entries-for-approval` | -          | planned |
+
+## Core API — Expenses (Pro plan)
+
+| Endpoint                             | SDK method | Status  |
+| ------------------------------------ | ---------- | ------- |
+| `GET .../expenses`                   | -          | planned |
+| `POST .../expenses`                  | -          | planned |
+| `GET .../expenses/{id}`              | -          | planned |
+| `PUT .../expenses/{id}`              | -          | planned |
+| `DELETE .../expenses/{id}`           | -          | planned |
+| `GET .../expense-categories`         | -          | planned |
+| `POST .../expense-categories`        | -          | planned |
+| `PUT .../expense-categories/{id}`    | -          | planned |
+| `PATCH .../expense-categories/{id}`  | -          | planned |
+| `DELETE .../expense-categories/{id}` | -          | planned |
+
+## Core API — Invoices (Standard plan)
+
+| Endpoint                                        | SDK method | Status  |
+| ----------------------------------------------- | ---------- | ------- |
+| `GET .../invoices`                              | -          | planned |
+| `POST .../invoices`                             | -          | planned |
+| `GET .../invoices/{id}`                         | -          | planned |
+| `PUT .../invoices/{id}`                         | -          | planned |
+| `DELETE .../invoices/{id}`                      | -          | planned |
+| `POST .../invoices/{id}/duplicate`              | -          | planned |
+| `GET .../invoices/{id}/export`                  | -          | planned |
+| `POST .../invoices/{id}/items`                  | -          | planned |
+| `DELETE .../invoices/{id}/items/{itemId}`       | -          | planned |
+| `POST .../invoices/{id}/payments`               | -          | planned |
+| `DELETE .../invoices/{id}/payments/{paymentId}` | -          | planned |
+
 ## Reports API
 
 | Endpoint                                          | SDK method                              | Status |
@@ -108,9 +171,3 @@ Status values: `planned`, `in-progress`, `done`.
 | `POST /workspaces/{workspaceId}/reports/detailed` | `ws.reports.detailed(request)`          | done   |
 | `POST /workspaces/{workspaceId}/reports/weekly`   | `ws.reports.weekly(request)`            | done   |
 | `GET /shared-reports/{id}`                        | `ws.reports.shared(id, query=None)`     | done   |
-
-## Out of scope (v1)
-
-PTO/Time-off, Approvals, Expenses/Invoices (pending confirmation of
-plan-level availability). Not tracked in this table until promoted into
-scope.

@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-10-01 (1)
+
+* **Documentation**: [`sdk/coverage.md`](sdk/coverage.md) tracks Time off,
+  Approvals, Expenses and Invoices as `planned` instead of out of scope. Clockify's
+  pricing page confirms Time off, Approvals and Invoices from the Standard plan
+  and Expenses from the Pro plan; each section names its plan, and a lower plan
+  gets a `403`.
+
 ## 2026-09-30 (14)
 
 * **Release**: version 1.4.0, a minor. Since 1.3.0 the public API only grew:
