@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-09-30 (9)
+
+* **Release**: version 1.3.0, a minor. Since 1.2.0 the public API only grew:
+  `ws.reports` (`summary`, `detailed`, `weekly`, `shared`), its request and
+  response models, and the optional `reports_transport` parameter of
+  `WorkspaceClient` and `AsyncWorkspaceClient` are new, sync and async.
+  Nothing was removed or changed in behavior, so it is not a major.
+
 ## 2026-09-30 (8)
 
 * **Addition**: `ws.reports` with `summary`, `detailed`, `weekly` and `shared`,
