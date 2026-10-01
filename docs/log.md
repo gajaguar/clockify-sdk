@@ -1,5 +1,14 @@
 # Directory Update Log
 
+## 2026-09-30 (6)
+
+* **Addition**: `user_groups.add_user` and `user_groups.remove_user`, sync and
+  async, completing the "Users and user groups" section of
+  [`sdk/coverage.md`](sdk/coverage.md). `add_user` is a non-idempotent command
+  (POST); `remove_user` is idempotent (DELETE). Both return the updated
+  `UserGroup`. The version stays 1.1.0; the minor bump to 1.2.0 is a separate
+  release change.
+
 ## 2026-09-30 (5)
 
 * **Release**: version 1.1.0, a minor. Since 1.0.1 the public API only grew:

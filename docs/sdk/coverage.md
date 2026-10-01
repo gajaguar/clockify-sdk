@@ -83,8 +83,8 @@ Status values: `planned`, `in-progress`, `done`.
 | `POST .../user-groups`                                | `ws.user_groups.create(payload)`     | done    |
 | `PUT .../user-groups/{id}`                            | `ws.user_groups.update(id, payload)` | done    |
 | `DELETE .../user-groups/{id}`                         | `ws.user_groups.delete(id)`          | done    |
-| `POST .../user-groups/{userGroupId}/users`            | `ws.user_groups.add_user(...)`       | planned |
-| `DELETE .../user-groups/{userGroupId}/users/{userId}` | `ws.user_groups.remove_user(...)`    | planned |
+| `POST .../user-groups/{userGroupId}/users`            | `ws.user_groups.add_user(...)`       | done    |
+| `DELETE .../user-groups/{userGroupId}/users/{userId}` | `ws.user_groups.remove_user(...)`    | done    |
 
 ## Reports API
 

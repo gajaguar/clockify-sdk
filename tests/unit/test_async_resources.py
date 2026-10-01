@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Final
 
 import pytest
@@ -242,4 +243,22 @@ async def test_time_entries_direct_paths() -> None:
     assert {created.id, fetched.id, updated.id} == {ITEM_ID}
     assert deleted is None
     assert all(route.call_count == 1 for route in (create, get, put, delete))
+    await client.aclose()
+
+
+@respx.mock
+async def test_user_groups_membership_posts_and_deletes_member() -> None:
+    # Arrange
+    base = f"{WS}/user-groups/{ITEM_ID}/users"
+    post = respx.post(base).mock(return_value=Response(200, json=NAMED))
+    delete = respx.delete(f"{base}/{USER_ID}").mock(return_value=Response(200, json=NAMED))
+    client = _client()
+    groups = client.workspace(WORKSPACE_ID).user_groups
+    # Act
+    added = await groups.add_user(ITEM_ID, USER_ID)
+    removed = await groups.remove_user(ITEM_ID, USER_ID)
+    # Assert
+    assert json.loads(post.calls[0].request.content) == {"userId": USER_ID}
+    assert {added.id, removed.id} == {ITEM_ID}
+    assert delete.call_count == 1
     await client.aclose()

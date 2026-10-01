@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Final
 
 import pytest
@@ -105,4 +106,43 @@ def test_get_is_not_supported_by_the_clockify_api() -> None:
     # Assert
     with pytest.raises(NotImplementedError):
         workspace.user_groups.get("76a687e29ae1f428e7ebe101")
+    client.close()
+
+
+@respx.mock
+def test_add_user_posts_user_id_and_declares_non_idempotent_command() -> None:
+    # Arrange
+    group_id = USER_GROUP_PAYLOAD["id"]
+    user_id = "5a0ab5acb07987125438b60f"
+    route = respx.post(f"{BASE_URL}/workspaces/{WORKSPACE_ID}/user-groups/{group_id}/users").mock(
+        return_value=Response(200, json=USER_GROUP_PAYLOAD)
+    )
+    client = _client()
+    workspace = client.workspace(WORKSPACE_ID)
+    # Act
+    group = workspace.user_groups.add_user(group_id, user_id)
+    # Assert
+    assert group.id == group_id
+    assert json.loads(respx.calls[0].request.content) == {"userId": user_id}
+    assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.NON_IDEMPOTENT_COMMAND
+    assert route.call_count == 1
+    client.close()
+
+
+@respx.mock
+def test_remove_user_deletes_member_and_declares_idempotent_command() -> None:
+    # Arrange
+    group_id = USER_GROUP_PAYLOAD["id"]
+    user_id = "5a0ab5acb07987125438b60f"
+    route = respx.delete(f"{BASE_URL}/workspaces/{WORKSPACE_ID}/user-groups/{group_id}/users/{user_id}").mock(
+        return_value=Response(200, json=USER_GROUP_PAYLOAD)
+    )
+    client = _client()
+    workspace = client.workspace(WORKSPACE_ID)
+    # Act
+    group = workspace.user_groups.remove_user(group_id, user_id)
+    # Assert
+    assert group.id == group_id
+    assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.IDEMPOTENT_COMMAND
+    assert route.call_count == 1
     client.close()
