@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-09-30 (11)
+
+* **Documentation**: the README documents the weekly report's 7-day range and
+  `WeeklySubgroup`, and says that a 403 from the Reports API means the plan or
+  role does not allow reports and that the report models are not yet checked
+  against a live response.
+
 ## 2026-09-30 (10)
 
 * **Fix**: a live run against the Reports API showed two request bugs. A
