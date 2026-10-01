@@ -262,9 +262,10 @@ print(len(page.items), page.items)
 `respect_retry_after=True`.
 
 `Region` members: `GLOBAL`, `EU_CENTRAL_1`, `US_EAST_2`, `EU_WEST_2`,
-`AP_SOUTHEAST_2`, `DEVELOPER`. Only the `GLOBAL` hosts are verified against a
-live account — the others are transcribed from Clockify's docs; pass an
-explicit `base_url`/`reports_base_url` if one turns out to be wrong.
+`AP_SOUTHEAST_2`, `DEVELOPER`. The hosts follow Clockify's docs and every one
+answers, but only the regions with a test account are verified end to end with
+an authenticated call; pass an explicit `base_url`/`reports_base_url` if one
+turns out to be wrong.
 
 ## Development
 

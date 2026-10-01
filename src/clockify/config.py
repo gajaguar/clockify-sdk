@@ -36,17 +36,17 @@ class Region(StrEnum):
     DEVELOPER = "DEVELOPER"
 
 
-# Best-effort host strings transcribed from the public Clockify docs. They are not
-# verified against a live account for every region and MUST be re-verified before a
-# real release; callers can always bypass them with an explicit base_url.
-# The developer sandbox exposes no separate reports host, so the same URL is reused.
+# Host strings follow the public Clockify docs (prefixes euc1, use2, euw2, apse2; paths
+# /api/v1 and /report/v1) and every host was probed and answers. Only an authenticated
+# call proves a region end to end, so callers can always bypass them with an explicit
+# base_url.
 _REGION_HOSTS: Final[dict[Region, tuple[str, str]]] = {
     Region.GLOBAL: ("https://api.clockify.me/api/v1", "https://reports.api.clockify.me/v1"),
     Region.EU_CENTRAL_1: ("https://euc1.clockify.me/api/v1", "https://euc1.clockify.me/report/v1"),
     Region.US_EAST_2: ("https://use2.clockify.me/api/v1", "https://use2.clockify.me/report/v1"),
     Region.EU_WEST_2: ("https://euw2.clockify.me/api/v1", "https://euw2.clockify.me/report/v1"),
     Region.AP_SOUTHEAST_2: ("https://apse2.clockify.me/api/v1", "https://apse2.clockify.me/report/v1"),
-    Region.DEVELOPER: ("https://developer.clockify.me/api/v1", "https://developer.clockify.me/api/v1"),
+    Region.DEVELOPER: ("https://developer.clockify.me/api/v1", "https://developer.clockify.me/report/v1"),
 }
 
 

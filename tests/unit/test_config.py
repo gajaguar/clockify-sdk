@@ -57,7 +57,7 @@ def test_resolve_api_key_error_says_where_to_create_the_key(monkeypatch) -> None
         (Region.US_EAST_2, ("https://use2.clockify.me/api/v1", "https://use2.clockify.me/report/v1")),
         (Region.EU_WEST_2, ("https://euw2.clockify.me/api/v1", "https://euw2.clockify.me/report/v1")),
         (Region.AP_SOUTHEAST_2, ("https://apse2.clockify.me/api/v1", "https://apse2.clockify.me/report/v1")),
-        (Region.DEVELOPER, ("https://developer.clockify.me/api/v1", "https://developer.clockify.me/api/v1")),
+        (Region.DEVELOPER, ("https://developer.clockify.me/api/v1", "https://developer.clockify.me/report/v1")),
     ],
 )
 def test_resolve_urls_per_region(region, expected) -> None:
