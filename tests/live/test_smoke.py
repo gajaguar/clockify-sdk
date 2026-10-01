@@ -1,10 +1,16 @@
 from __future__ import annotations
 
+import datetime
 from os import environ
 
 import pytest
 
+from clockify import ClientOptions
 from clockify import ClockifyClient
+from clockify import Region
+from clockify import ReportGroup
+from clockify import SummaryFilter
+from clockify import SummaryReportRequest
 from clockify import TimeEntryCreate
 from clockify.ids import WorkspaceId
 
@@ -42,4 +48,29 @@ def test_time_entry_start_stop_delete_cycle_smoke() -> None:
     finally:
         if started is not None:
             workspace.time_entries.delete(started.id)
+        client.close()
+
+
+@pytest.mark.live
+@pytest.mark.skipif(
+    not (environ.get("CLOCKIFY_TEST_API_KEY") and environ.get("CLOCKIFY_TEST_WORKSPACE_ID")),
+    reason="CLOCKIFY_TEST_API_KEY / CLOCKIFY_TEST_WORKSPACE_ID not set",
+)
+def test_reports_summary_smoke() -> None:
+    # Arrange
+    region = Region(environ.get("CLOCKIFY_TEST_REGION", Region.GLOBAL))
+    client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"], options=ClientOptions(region=region))
+    workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
+    end = datetime.datetime.now(datetime.UTC)
+    request = SummaryReportRequest(
+        date_range_start=end - datetime.timedelta(days=7),
+        date_range_end=end,
+        summary_filter=SummaryFilter(groups=[ReportGroup.PROJECT]),
+    )
+    try:
+        # Act
+        report = workspace.reports.summary(request)
+        # Assert
+        assert report is not None
+    finally:
         client.close()
