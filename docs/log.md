@@ -1,5 +1,11 @@
 # Directory Update Log
 
+## 2026-09-30 (7)
+
+* **Release**: version 1.2.0, a minor. Since 1.1.0 the public API only grew:
+  `user_groups.add_user` and `user_groups.remove_user` are new, sync and
+  async. Nothing was removed or changed in behavior, so it is not a major.
+
 ## 2026-09-30 (6)
 
 * **Addition**: `user_groups.add_user` and `user_groups.remove_user`, sync and
