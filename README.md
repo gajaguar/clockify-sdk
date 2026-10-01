@@ -58,6 +58,9 @@ support is not implemented yet — see
 - **Typed exception hierarchy.** HTTP failures map to specific
   `clockify.errors` exceptions (`AuthenticationError`, `NotFoundError`,
   `RateLimitError`, and others) instead of a generic HTTP exception.
+- **Webhooks.** `workspace.webhooks` creates, lists, updates and deletes
+  webhooks and rotates their token; `verify_signature` checks that a delivery
+  came from Clockify.
 - **Multi-region support.** `Region.GLOBAL` and the regional Clockify hosts
   are built in; an explicit `base_url` overrides either.
 
@@ -252,6 +255,37 @@ except NotFoundError:
 except RateLimitError:
     print("rate limited even after built-in retries")
 ```
+
+Register a webhook, then check each delivery in your receiver:
+
+```python
+from clockify import (
+    SIGNATURE_HEADER,
+    WebhookCreate,
+    WebhookEvent,
+    WebhookTriggerSourceType,
+    verify_signature,
+)
+
+webhook = workspace.webhooks.create(
+    WebhookCreate(
+        url="https://example.com/clockify",
+        webhook_event=WebhookEvent.NEW_TIMER_STARTED,
+        trigger_source=[workspace.id],
+        trigger_source_type=WebhookTriggerSourceType.WORKSPACE_ID,
+    )
+)
+stored_token = webhook.auth_token  # keep it in your own secret store
+
+# In the receiver, with `headers` from the incoming request:
+if not verify_signature(headers.get(SIGNATURE_HEADER), stored_token):
+    raise PermissionError("not sent by Clockify")
+```
+
+`workspace.webhooks.list()` makes one request and returns every webhook; the
+endpoint has no pages, so `list_page()` raises `NotImplementedError`.
+`regenerate_token(id)` issues a new token and invalidates the old one. See
+[`docs/sdk/webhooks.md`](docs/sdk/webhooks.md).
 
 Manage pagination directly instead of iterating the full collection:
 

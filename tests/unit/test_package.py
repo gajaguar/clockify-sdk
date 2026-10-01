@@ -7,7 +7,8 @@ import clockify
 # Kept as one string rather than a list literal so it does not duplicate the __all__
 # block in clockify/__init__.py (pylint duplicate-code).
 EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
-    "ADDON_TOKEN_ENV_VAR API_KEY_ENV_VAR NO_RETRY AddonTokenProvider ApiKeyProvider AsyncClockifyClient "
+    "ADDON_TOKEN_ENV_VAR API_KEY_ENV_VAR EVENT_TYPE_HEADER NO_RETRY SIGNATURE_HEADER AddonTokenProvider "
+    "ApiKeyProvider AsyncClockifyClient "
     "AsyncWorkspaceClient AuthenticationError Client ClientCreate ClientId ClientOptions ClientUpdate "
     "ClockifyAPIError ClockifyClient ClockifyError ConfigurationError ConflictError CqsKind Currency CustomField "
     "CustomFieldCreate CustomFieldEntityType CustomFieldId CustomFieldStatus CustomFieldType CustomFieldUpdate "
@@ -18,8 +19,10 @@ EXPECTED_EXPORTS: Final = (  # ruff: ignore[split-static-string]
     "SharedReportQuery SummaryFilter SummaryReport SummaryReportRequest Tag TagCreate TagId TagUpdate Task "
     "TaskCreate TaskId TaskStatus TaskUpdate TimeEntry TimeEntryCreate TimeEntryFilter TimeEntryId TimeEntryType "
     "TimeEntryUpdate TimeInterval TransportError User UserGroup UserGroupCreate UserGroupId UserGroupUpdate "
-    "UserId UserRedacted ValidationError WeeklyFilter WeeklyReport WeeklyReportRequest WeeklySubgroup Workspace "
-    "WorkspaceClient WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__"
+    "UserId UserRedacted ValidationError Webhook WebhookCreate WebhookEvent WebhookId WebhookList "
+    "WebhookTriggerSourceType WebhookType WebhookUpdate WeeklyFilter WeeklyReport WeeklyReportRequest "
+    "WeeklySubgroup Workspace WorkspaceClient WorkspaceId WorkspaceSettings WorkspaceSubdomain __version__ "
+    "verify_signature"
 ).split()
 
 

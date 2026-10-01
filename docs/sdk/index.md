@@ -26,6 +26,8 @@ Clockify endpoint.
   prove the contract.
 * [Offset pagination](pagination.md) - how `list()` and `list_page()` hide
   Clockify's `page`/`page-size` pagination.
+* [Webhooks](webhooks.md) - the webhook resource, why `list()` does not
+  paginate, and how to verify a delivery.
 * [Endpoint comment convention](endpoint-comments.md) - the `# METHOD /path`
   comment every resource method carries.
 * [Adding a new endpoint](adding-an-endpoint.md) - the six-step procedure.
