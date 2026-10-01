@@ -268,6 +268,7 @@ print(len(page.items), page.items)
 | `CLOCKIFY_ADDON_TOKEN`       | `ClockifyClient()`             | none           | Add-on token used when neither credential is passed.   |
 | `CLOCKIFY_TEST_API_KEY`      | `tests/live` suite (`-m live`) | none           | Enables the live smoke tests against a real workspace. |
 | `CLOCKIFY_TEST_WORKSPACE_ID` | `tests/live` suite (`-m live`) | none           | Workspace the live smoke tests run against.            |
+| `CLOCKIFY_TEST_REGION`       | `tests/live` suite (`-m live`) | `GLOBAL`       | `Region` the reports smoke test runs against.          |
 
 `ClockifyClient(options=ClientOptions(...))` accepts:
 
