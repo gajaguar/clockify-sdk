@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import json
 from typing import Final
 
@@ -12,11 +13,17 @@ from clockify import AsyncClockifyClient
 from clockify import ClientCreate
 from clockify import ClientOptions
 from clockify import ClientUpdate
+from clockify import CqsKind
 from clockify import CustomFieldCreate
 from clockify import CustomFieldType
 from clockify import CustomFieldUpdate
+from clockify import DetailedReportRequest
 from clockify import ProjectCreate
 from clockify import ProjectUpdate
+from clockify import ReportGroup
+from clockify import SharedReportQuery
+from clockify import SummaryFilter
+from clockify import SummaryReportRequest
 from clockify import TagCreate
 from clockify import TagUpdate
 from clockify import TaskCreate
@@ -26,6 +33,8 @@ from clockify import TimeEntryFilter
 from clockify import TimeEntryUpdate
 from clockify import UserGroupCreate
 from clockify import UserGroupUpdate
+from clockify import WeeklyFilter
+from clockify import WeeklyReportRequest
 from clockify.ids import ProjectId
 from clockify.ids import UserId
 from clockify.ids import WorkspaceId
@@ -261,4 +270,79 @@ async def test_user_groups_membership_posts_and_deletes_member() -> None:
     assert json.loads(post.calls[0].request.content) == {"userId": USER_ID}
     assert {added.id, removed.id} == {ITEM_ID}
     assert delete.call_count == 1
+    await client.aclose()
+
+
+REPORTS_URL: Final = "https://fake.clockify.test/report/v1"
+REPORT_RANGE: Final = {"dateRangeStart": "2026-08-01T00:00:00Z", "dateRangeEnd": "2026-08-31T23:59:59Z"}
+REPORT_START: Final = datetime.datetime(2026, 8, 1, tzinfo=datetime.UTC)
+REPORT_END: Final = datetime.datetime(2026, 8, 31, 23, 59, 59, tzinfo=datetime.UTC)
+
+
+def _reports_client() -> AsyncClockifyClient:
+    options = ClientOptions(base_url=BASE_URL, reports_base_url=REPORTS_URL, retry=NO_RETRY)
+    return AsyncClockifyClient(api_key="dummy", options=options)
+
+
+@respx.mock
+async def test_reports_summary_detailed_and_weekly_post_to_the_reports_host() -> None:
+    # Arrange
+    summary = respx.post(f"{REPORTS_URL}/workspaces/{WORKSPACE_ID}/reports/summary").mock(
+        return_value=Response(200, json={"totals": []})
+    )
+    detailed = respx.post(f"{REPORTS_URL}/workspaces/{WORKSPACE_ID}/reports/detailed").mock(
+        return_value=Response(200, json={"timeentries": [{"_id": "e1"}]})
+    )
+    weekly = respx.post(f"{REPORTS_URL}/workspaces/{WORKSPACE_ID}/reports/weekly").mock(
+        return_value=Response(200, json={"totals": []})
+    )
+    client = _reports_client()
+    reports = client.workspace(WORKSPACE_ID).reports
+    dates = {"date_range_start": REPORT_START, "date_range_end": REPORT_END}
+    # Act
+    await reports.summary(SummaryReportRequest(**dates, summary_filter=SummaryFilter(groups=[ReportGroup.PROJECT])))
+    detailed_report = await reports.detailed(DetailedReportRequest(**dates))
+    await reports.weekly(WeeklyReportRequest(**dates, weekly_filter=WeeklyFilter(group=ReportGroup.USER)))
+    # Assert
+    assert [route.call_count for route in (summary, detailed, weekly)] == [1, 1, 1]
+    assert json.loads(summary.calls[0].request.content) == {
+        **REPORT_RANGE,
+        "summaryFilter": {"groups": ["PROJECT"]},
+        "exportType": "JSON",
+    }
+    assert json.loads(weekly.calls[0].request.content) == {
+        **REPORT_RANGE,
+        "weeklyFilter": {"group": "USER"},
+        "exportType": "JSON",
+    }
+    assert detailed_report.time_entries == [{"_id": "e1"}]
+    assert {call.request.extensions.get("clockify_cqs") for call in respx.calls} == {CqsKind.QUERY}
+    await client.aclose()
+
+
+@respx.mock
+async def test_reports_shared_gets_by_id_with_query_params() -> None:
+    # Arrange
+    route = respx.get(f"{REPORTS_URL}/shared-reports/{ITEM_ID}").mock(return_value=Response(200, json={"name": "x"}))
+    client = _reports_client()
+    # Act
+    report = await client.workspace(WORKSPACE_ID).reports.shared(ITEM_ID, query=SharedReportQuery(page=3))
+    # Assert
+    assert route.call_count == 1
+    assert dict(respx.calls[0].request.url.params) == {"page": "3"}
+    assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY
+    assert report.model_extra == {"name": "x"}
+    await client.aclose()
+
+
+@respx.mock
+async def test_reports_shared_without_query_sends_no_params() -> None:
+    # Arrange
+    route = respx.get(f"{REPORTS_URL}/shared-reports/{ITEM_ID}").mock(return_value=Response(200, json={}))
+    client = _reports_client()
+    # Act
+    await client.workspace(WORKSPACE_ID).reports.shared(ITEM_ID)
+    # Assert
+    assert route.call_count == 1
+    assert not respx.calls[0].request.url.params
     await client.aclose()

@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-09-30 (8)
+
+* **Addition**: `ws.reports` with `summary`, `detailed`, `weekly` and `shared`,
+  sync and async, completing the "Reports API" section of
+  [`sdk/coverage.md`](sdk/coverage.md). The resource uses the reports
+  transport, requests every report as JSON and declares each call a query.
+  `WorkspaceClient` and `AsyncWorkspaceClient` take an optional
+  `reports_transport`. The version stays 1.2.0; the minor bump to 1.3.0 is a
+  separate release change.
+
 ## 2026-09-30 (7)
 
 * **Release**: version 1.2.0, a minor. Since 1.1.0 the public API only grew:

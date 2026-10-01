@@ -85,7 +85,12 @@ class ClockifyClient:
         return self.workspace(user.active_workspace)
 
     def workspace(self, workspace_id: WorkspaceId | str) -> WorkspaceClient:
-        return WorkspaceClient(self._transport, WorkspaceId(str(workspace_id)), page_size=self._config.page_size)
+        return WorkspaceClient(
+            self._transport,
+            WorkspaceId(str(workspace_id)),
+            page_size=self._config.page_size,
+            reports_transport=self._reports_transport,
+        )
 
 
 class AsyncClockifyClient:
@@ -125,4 +130,9 @@ class AsyncClockifyClient:
         return self.workspace(user.active_workspace)
 
     def workspace(self, workspace_id: WorkspaceId | str) -> AsyncWorkspaceClient:
-        return AsyncWorkspaceClient(self._transport, WorkspaceId(str(workspace_id)), page_size=self._config.page_size)
+        return AsyncWorkspaceClient(
+            self._transport,
+            WorkspaceId(str(workspace_id)),
+            page_size=self._config.page_size,
+            reports_transport=self._reports_transport,
+        )

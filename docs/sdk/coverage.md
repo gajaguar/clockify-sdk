@@ -88,12 +88,12 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Reports API
 
-| Endpoint                                          | SDK method                     | Status  |
-| ------------------------------------------------- | ------------------------------ | ------- |
-| `POST /workspaces/{workspaceId}/reports/summary`  | `ws.reports.summary(request)`  | planned |
-| `POST /workspaces/{workspaceId}/reports/detailed` | `ws.reports.detailed(request)` | planned |
-| `POST /workspaces/{workspaceId}/reports/weekly`   | `ws.reports.weekly(request)`   | planned |
-| `GET /shared-reports/{id}`                        | `ws.reports.shared(id)`        | planned |
+| Endpoint                                          | SDK method                              | Status |
+| ------------------------------------------------- | --------------------------------------- | ------ |
+| `POST /workspaces/{workspaceId}/reports/summary`  | `ws.reports.summary(request)`           | done   |
+| `POST /workspaces/{workspaceId}/reports/detailed` | `ws.reports.detailed(request)`          | done   |
+| `POST /workspaces/{workspaceId}/reports/weekly`   | `ws.reports.weekly(request)`            | done   |
+| `GET /shared-reports/{id}`                        | `ws.reports.shared(id, query=None)`     | done   |
 
 ## Out of scope (v1)
 

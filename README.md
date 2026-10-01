@@ -175,6 +175,26 @@ with ClockifyClient() as client:
     print(stopped.time_interval.duration)
 ```
 
+Run a summary report for a date range, grouped by project (Reports API,
+always requested as JSON):
+
+```python
+import datetime
+
+from clockify import ClockifyClient, ReportGroup, SummaryFilter, SummaryReportRequest
+
+with ClockifyClient() as client:
+    workspace = client.default_workspace()
+    request = SummaryReportRequest(
+        date_range_start=datetime.datetime(2026, 8, 1, tzinfo=datetime.UTC),
+        date_range_end=datetime.datetime(2026, 8, 31, 23, 59, 59, tzinfo=datetime.UTC),
+        summary_filter=SummaryFilter(groups=[ReportGroup.PROJECT]),
+    )
+    report = workspace.reports.summary(request)
+    for row in report.group_one or []:
+        print(row.name, row.duration)
+```
+
 Use the async client with `async with` and `await`:
 
 ```python

@@ -10,6 +10,7 @@ from clockify import NO_RETRY
 from clockify import ClientOptions
 from clockify import ClockifyClient
 from clockify import ConfigurationError
+from clockify import WorkspaceClient
 from clockify.ids import WorkspaceId
 
 BASE_URL: Final = "https://fake.clockify.test/api/v1"
@@ -60,4 +61,14 @@ def test_default_workspace_raises_when_user_has_no_active_workspace() -> None:
     # Assert
     with pytest.raises(ConfigurationError):
         client.default_workspace()
+    client.close()
+
+
+def test_workspace_client_built_by_hand_falls_back_to_the_core_transport_for_reports() -> None:
+    # Arrange
+    client = _client()
+    # Act
+    workspace = WorkspaceClient(client._transport, WorkspaceId("64a1f0000000000000000001"))  # ruff: ignore[private-member-access]
+    # Assert
+    assert workspace.reports._transport is client._transport  # ruff: ignore[private-member-access]
     client.close()
