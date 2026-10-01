@@ -45,10 +45,11 @@ def _handle_response(method: str, path: str, response: httpx.Response) -> JSONVa
     # X-Api-Key / X-Addon-Token value cannot leak into a caller's log sink.
     elapsed_ms = _elapsed_ms(response)
     LOGGER.debug("%s %s -> %s (%.1fms)", method, path, response.status_code, elapsed_ms)
-    if response.status_code == _NO_CONTENT:
-        return None
     if not response.is_success:
         raise error_for_response(response)
+    # Clockify answers some deletes (webhooks) with 200 and no body, not 204.
+    if response.status_code == _NO_CONTENT or not response.content:
+        return None
     # httpx's Response.json() is typed Any; the wire body is trusted to be the JSON
     # subset the JSONValue alias describes, per Clockify's documented content type.
     return cast("JSONValue", response.json())

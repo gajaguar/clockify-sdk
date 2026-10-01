@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-09-30 (13)
+
+* **Feature**: `workspace.webhooks` (`list`, `get`, `create`, `update`,
+  `delete`, `regenerate_token`, sync and async), the webhook models, and
+  `verify_signature` with the two header-name constants for receivers. The
+  transport now maps a successful response with no body to `None`, since
+  Clockify answers a webhook delete with `200` and no body. Webhook logs,
+  statuses and add-on webhooks stay `planned` in
+  [`sdk/coverage.md`](sdk/coverage.md). See [`sdk/webhooks.md`](sdk/webhooks.md).
+
 ## 2026-09-30 (12)
 
 * **Documentation**: the README's environment variable table lists

@@ -27,6 +27,7 @@ from clockify.ids import TaskId
 from clockify.ids import TimeEntryId
 from clockify.ids import UserGroupId
 from clockify.ids import UserId
+from clockify.ids import WebhookId
 from clockify.ids import WorkspaceId
 from clockify.models import Client
 from clockify.models import ClientCreate
@@ -80,6 +81,13 @@ from clockify.models import UserGroup
 from clockify.models import UserGroupCreate
 from clockify.models import UserGroupUpdate
 from clockify.models import UserRedacted
+from clockify.models import Webhook
+from clockify.models import WebhookCreate
+from clockify.models import WebhookEvent
+from clockify.models import WebhookList
+from clockify.models import WebhookTriggerSourceType
+from clockify.models import WebhookType
+from clockify.models import WebhookUpdate
 from clockify.models import WeeklyFilter
 from clockify.models import WeeklyReport
 from clockify.models import WeeklyReportRequest
@@ -90,13 +98,18 @@ from clockify.models import WorkspaceSubdomain
 from clockify.retry import NO_RETRY
 from clockify.retry import CqsKind
 from clockify.retry import RetryPolicy
+from clockify.webhooks import EVENT_TYPE_HEADER
+from clockify.webhooks import SIGNATURE_HEADER
+from clockify.webhooks import verify_signature
 from clockify.workspace import AsyncWorkspaceClient
 from clockify.workspace import WorkspaceClient
 
 __all__ = [
     "ADDON_TOKEN_ENV_VAR",
     "API_KEY_ENV_VAR",
+    "EVENT_TYPE_HEADER",
     "NO_RETRY",
+    "SIGNATURE_HEADER",
     "AddonTokenProvider",
     "ApiKeyProvider",
     "AsyncClockifyClient",
@@ -178,6 +191,14 @@ __all__ = [
     "UserId",
     "UserRedacted",
     "ValidationError",
+    "Webhook",
+    "WebhookCreate",
+    "WebhookEvent",
+    "WebhookId",
+    "WebhookList",
+    "WebhookTriggerSourceType",
+    "WebhookType",
+    "WebhookUpdate",
     "WeeklyFilter",
     "WeeklyReport",
     "WeeklyReportRequest",
@@ -188,4 +209,5 @@ __all__ = [
     "WorkspaceSettings",
     "WorkspaceSubdomain",
     "__version__",
+    "verify_signature",
 ]

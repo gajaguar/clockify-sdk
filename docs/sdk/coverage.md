@@ -86,6 +86,20 @@ Status values: `planned`, `in-progress`, `done`.
 | `POST .../user-groups/{userGroupId}/users`            | `ws.user_groups.add_user(...)`       | done    |
 | `DELETE .../user-groups/{userGroupId}/users/{userId}` | `ws.user_groups.remove_user(...)`    | done    |
 
+## Core API — Webhooks
+
+| Endpoint                                    | SDK method                          | Status  |
+| ------------------------------------------- | ----------------------------------- | ------- |
+| `GET .../webhooks`                          | `ws.webhooks.list(webhook_type=)`   | done    |
+| `GET .../webhooks/{id}`                     | `ws.webhooks.get(id)`               | done    |
+| `POST .../webhooks`                         | `ws.webhooks.create(payload)`       | done    |
+| `PUT .../webhooks/{id}`                     | `ws.webhooks.update(id, payload)`   | done    |
+| `DELETE .../webhooks/{id}`                  | `ws.webhooks.delete(id)`            | done    |
+| `PATCH .../webhooks/{id}/token`             | `ws.webhooks.regenerate_token(id)`  | done    |
+| `POST .../webhooks/{id}/logs`               | -                                   | planned |
+| `GET .../webhooks/{id}/statuses`            | -                                   | planned |
+| `GET .../addons/{addonId}/webhooks`         | -                                   | planned |
+
 ## Reports API
 
 | Endpoint                                          | SDK method                              | Status |
@@ -97,6 +111,6 @@ Status values: `planned`, `in-progress`, `done`.
 
 ## Out of scope (v1)
 
-PTO/Time-off, Approvals, Webhooks, Expenses/Invoices (pending confirmation of
+PTO/Time-off, Approvals, Expenses/Invoices (pending confirmation of
 plan-level availability). Not tracked in this table until promoted into
 scope.

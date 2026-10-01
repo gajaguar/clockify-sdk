@@ -78,6 +78,18 @@ def test_no_content_maps_to_none() -> None:
 
 
 @respx.mock
+def test_success_with_empty_body_maps_to_none() -> None:
+    # Arrange
+    respx.delete(f"{BASE_URL}/thing/1").mock(return_value=Response(200))
+    transport = _transport()
+    # Act
+    result = transport.request("DELETE", "/thing/1", kind=CqsKind.IDEMPOTENT_COMMAND)
+    # Assert
+    assert result is None
+    transport.close()
+
+
+@respx.mock
 def test_error_status_maps_to_typed_exception() -> None:
     # Arrange
     respx.get(f"{BASE_URL}/missing").mock(return_value=Response(404, json={"code": 404, "message": "nope"}))

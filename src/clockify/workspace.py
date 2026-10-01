@@ -20,6 +20,8 @@ from clockify.resources.user_groups import AsyncUserGroupsResource
 from clockify.resources.user_groups import UserGroupsResource
 from clockify.resources.users import AsyncUsersResource
 from clockify.resources.users import UsersResource
+from clockify.resources.webhooks import AsyncWebhooksResource
+from clockify.resources.webhooks import WebhooksResource
 
 if TYPE_CHECKING:
     from clockify._transport import AsyncTransport
@@ -45,6 +47,7 @@ class WorkspaceClient:
         self.tags = TagsResource(transport, workspace_id, page_size=page_size)
         self.custom_fields = CustomFieldsResource(transport, workspace_id, page_size=page_size)
         self.time_entries = TimeEntriesResource(transport, workspace_id, page_size=page_size)
+        self.webhooks = WebhooksResource(transport, workspace_id, page_size=page_size)
         # Reports live on a separate host; without a dedicated transport they fall back to
         # the core one, which keeps a hand-built WorkspaceClient working as before.
         self.reports = ReportsResource(reports_transport or transport, workspace_id)
@@ -68,4 +71,5 @@ class AsyncWorkspaceClient:
         self.tags = AsyncTagsResource(transport, workspace_id, page_size=page_size)
         self.custom_fields = AsyncCustomFieldsResource(transport, workspace_id, page_size=page_size)
         self.time_entries = AsyncTimeEntriesResource(transport, workspace_id, page_size=page_size)
+        self.webhooks = AsyncWebhooksResource(transport, workspace_id, page_size=page_size)
         self.reports = AsyncReportsResource(reports_transport or transport, workspace_id)
