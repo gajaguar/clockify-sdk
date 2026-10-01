@@ -29,6 +29,23 @@ from clockify.models.custom_field import CustomFieldEntityType
 from clockify.models.custom_field import CustomFieldStatus
 from clockify.models.custom_field import CustomFieldType
 from clockify.models.custom_field import CustomFieldUpdate
+from clockify.models.expense import Expense
+from clockify.models.expense import ExpenseCategory
+from clockify.models.expense import ExpenseCategoryCreate
+from clockify.models.expense import ExpenseCategoryFilter
+from clockify.models.expense import ExpenseCategoryList
+from clockify.models.expense import ExpenseCategorySortColumn
+from clockify.models.expense import ExpenseCategoryStatusUpdate
+from clockify.models.expense import ExpenseCategoryUpdate
+from clockify.models.expense import ExpenseChangeField
+from clockify.models.expense import ExpenseCreate
+from clockify.models.expense import ExpenseDailyTotal
+from clockify.models.expense import ExpenseDetails
+from clockify.models.expense import ExpenseFile
+from clockify.models.expense import ExpenseList
+from clockify.models.expense import ExpenseUpdate
+from clockify.models.expense import ExpenseWeeklyTotal
+from clockify.models.expense import ExpensesWithCount
 from clockify.models.project import EstimateType
 from clockify.models.project import Project
 from clockify.models.project import ProjectCreate
@@ -124,6 +141,23 @@ __all__ = [
     "DetailedReport",
     "DetailedReportRequest",
     "EstimateType",
+    "Expense",
+    "ExpenseCategory",
+    "ExpenseCategoryCreate",
+    "ExpenseCategoryFilter",
+    "ExpenseCategoryList",
+    "ExpenseCategorySortColumn",
+    "ExpenseCategoryStatusUpdate",
+    "ExpenseCategoryUpdate",
+    "ExpenseChangeField",
+    "ExpenseCreate",
+    "ExpenseDailyTotal",
+    "ExpenseDetails",
+    "ExpenseFile",
+    "ExpenseList",
+    "ExpenseUpdate",
+    "ExpenseWeeklyTotal",
+    "ExpensesWithCount",
     "Membership",
     "MembershipStatus",
     "MembershipType",

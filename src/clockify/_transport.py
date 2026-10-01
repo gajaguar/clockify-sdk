@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
 from logging import NullHandler
 from logging import getLogger
 from typing import TYPE_CHECKING
@@ -29,6 +30,24 @@ _NO_CONTENT: Final = 204
 type JSONValue = (  # pylint: disable=gajaguar-module-const-naming
     bool | int | float | str | list[JSONValue] | dict[str, JSONValue] | None
 )
+
+
+# (filename or None for a plain form field, content, content type or None), as httpx's
+# `files=` takes it. Bytes only, so a retry can resend the same body.
+type MultipartPart = tuple[str | None, bytes, str | None]  # pylint: disable=gajaguar-module-const-naming
+
+
+@dataclass(frozen=True, slots=True)
+class Multipart:
+    # A multipart/form-data body, passed through the `json` argument of `request` so the
+    # signature stays within the argument limit and existing callers keep working.
+    parts: tuple[tuple[str, MultipartPart], ...]
+
+
+def _body_kwargs(body: JSONValue | Multipart) -> dict[str, Any]:
+    if isinstance(body, Multipart):
+        return {"files": list(body.parts)}
+    return {"json": body}
 
 
 def _elapsed_ms(response: httpx.Response) -> float:
@@ -81,14 +100,14 @@ class Transport:
         *,
         kind: CqsKind,
         params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
-        json: JSONValue = None,
+        json: JSONValue | Multipart = None,
     ) -> JSONValue:
         try:
             response = self._client.request(
                 method,
                 path,
                 params=params,
-                json=json,
+                **_body_kwargs(json),
                 extensions={"clockify_cqs": kind},
             )
         except httpx.TransportError as exc:
@@ -125,14 +144,14 @@ class AsyncTransport:
         *,
         kind: CqsKind,
         params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
-        json: JSONValue = None,
+        json: JSONValue | Multipart = None,
     ) -> JSONValue:
         try:
             response = await self._client.request(
                 method,
                 path,
                 params=params,
-                json=json,
+                **_body_kwargs(json),
                 extensions={"clockify_cqs": kind},
             )
         except httpx.TransportError as exc:

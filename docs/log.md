@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-10-01 (4)
+
+* **Feature**: `workspace.expenses` (`list`, `list_page`, `get`, `create`, `update`,
+  `delete`) and `workspace.expense_categories` (`list`, `list_page`, `create`,
+  `update`, `update_status`, `delete`), sync and async, so the Expenses endpoints
+  are `done` in [`sdk/coverage.md`](sdk/coverage.md), whose category routes are
+  corrected to `.../expenses/categories`. Creating and updating an expense send
+  `multipart/form-data`; see [`sdk/multipart-uploads.md`](sdk/multipart-uploads.md).
+  The file download stays `planned`. **The models are not verified against a real
+  response**: Expenses needs the Pro plan and the account used answers `403`.
+
 ## 2026-10-01 (3)
 
 * **Release**: version 1.5.0, a minor. Since 1.4.0 the public API only grew:

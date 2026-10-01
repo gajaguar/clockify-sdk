@@ -13,3 +13,5 @@ UserGroupId = NewType("UserGroupId", str)  # pylint: disable=gajaguar-module-con
 CustomFieldId = NewType("CustomFieldId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 WebhookId = NewType("WebhookId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 ApprovalRequestId = NewType("ApprovalRequestId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+ExpenseId = NewType("ExpenseId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+ExpenseCategoryId = NewType("ExpenseCategoryId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final

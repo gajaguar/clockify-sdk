@@ -8,6 +8,10 @@ from clockify.resources.clients import AsyncClientsResource
 from clockify.resources.clients import ClientsResource
 from clockify.resources.custom_fields import AsyncCustomFieldsResource
 from clockify.resources.custom_fields import CustomFieldsResource
+from clockify.resources.expenses import AsyncExpenseCategoriesResource
+from clockify.resources.expenses import AsyncExpensesResource
+from clockify.resources.expenses import ExpenseCategoriesResource
+from clockify.resources.expenses import ExpensesResource
 from clockify.resources.projects import AsyncProjectsResource
 from clockify.resources.projects import ProjectsResource
 from clockify.resources.reports import AsyncReportsResource
@@ -51,6 +55,8 @@ class WorkspaceClient:
         self.time_entries = TimeEntriesResource(transport, workspace_id, page_size=page_size)
         self.webhooks = WebhooksResource(transport, workspace_id, page_size=page_size)
         self.approvals = ApprovalsResource(transport, workspace_id, page_size=page_size)
+        self.expenses = ExpensesResource(transport, workspace_id, page_size=page_size)
+        self.expense_categories = ExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
         # Reports live on a separate host; without a dedicated transport they fall back to
         # the core one, which keeps a hand-built WorkspaceClient working as before.
         self.reports = ReportsResource(reports_transport or transport, workspace_id)
@@ -76,4 +82,6 @@ class AsyncWorkspaceClient:
         self.time_entries = AsyncTimeEntriesResource(transport, workspace_id, page_size=page_size)
         self.webhooks = AsyncWebhooksResource(transport, workspace_id, page_size=page_size)
         self.approvals = AsyncApprovalsResource(transport, workspace_id, page_size=page_size)
+        self.expenses = AsyncExpensesResource(transport, workspace_id, page_size=page_size)
+        self.expense_categories = AsyncExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
         self.reports = AsyncReportsResource(reports_transport or transport, workspace_id)

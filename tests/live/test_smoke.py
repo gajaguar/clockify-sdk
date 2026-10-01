@@ -101,3 +101,45 @@ def test_approvals_list_smoke() -> None:
         assert page.page == 1
     finally:
         client.close()
+
+
+@pytest.mark.live
+@pytest.mark.skipif(
+    not (environ.get("CLOCKIFY_TEST_API_KEY") and environ.get("CLOCKIFY_TEST_WORKSPACE_ID")),
+    reason="CLOCKIFY_TEST_API_KEY / CLOCKIFY_TEST_WORKSPACE_ID not set",
+)
+def test_expenses_list_smoke() -> None:
+    # Arrange
+    client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"])
+    workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
+    try:
+        # Act
+        page = workspace.expenses.list_page(page_size=1)
+    except ForbiddenError:
+        pytest.skip("403 from the Expenses API: the key authenticated but the workspace plan (below Pro) lacks it")
+    else:
+        # Assert
+        assert page.page == 1
+    finally:
+        client.close()
+
+
+@pytest.mark.live
+@pytest.mark.skipif(
+    not (environ.get("CLOCKIFY_TEST_API_KEY") and environ.get("CLOCKIFY_TEST_WORKSPACE_ID")),
+    reason="CLOCKIFY_TEST_API_KEY / CLOCKIFY_TEST_WORKSPACE_ID not set",
+)
+def test_expense_categories_list_smoke() -> None:
+    # Arrange
+    client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"])
+    workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
+    try:
+        # Act
+        page = workspace.expense_categories.list_page(page_size=1)
+    except ForbiddenError:
+        pytest.skip("403 from the Expenses API: the key authenticated but the workspace plan (below Pro) lacks it")
+    else:
+        # Assert
+        assert page.page == 1
+    finally:
+        client.close()
