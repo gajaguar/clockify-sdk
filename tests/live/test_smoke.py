@@ -213,3 +213,49 @@ def test_time_off_requests_list_smoke() -> None:
         assert page.page == 1
     finally:
         client.close()
+
+
+@pytest.mark.live
+@pytest.mark.skipif(
+    not (environ.get("CLOCKIFY_TEST_API_KEY") and environ.get("CLOCKIFY_TEST_WORKSPACE_ID")),
+    reason="CLOCKIFY_TEST_API_KEY / CLOCKIFY_TEST_WORKSPACE_ID not set",
+)
+def test_invoices_list_smoke() -> None:
+    # Arrange
+    client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"])
+    workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
+    try:
+        # Act
+        page = workspace.invoices.list_page(page_size=1)
+    except ForbiddenError:
+        pytest.skip(
+            "403 from the Invoices API: the key authenticated but the workspace plan (below Standard) lacks it"
+        )
+    else:
+        # Assert
+        assert page.page == 1
+    finally:
+        client.close()
+
+
+@pytest.mark.live
+@pytest.mark.skipif(
+    not (environ.get("CLOCKIFY_TEST_API_KEY") and environ.get("CLOCKIFY_TEST_WORKSPACE_ID")),
+    reason="CLOCKIFY_TEST_API_KEY / CLOCKIFY_TEST_WORKSPACE_ID not set",
+)
+def test_invoice_settings_smoke() -> None:
+    # Arrange
+    client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"])
+    workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
+    try:
+        # Act
+        settings = workspace.invoices.get_settings()
+    except ForbiddenError:
+        pytest.skip(
+            "403 from the Invoices API: the key authenticated but the workspace plan (below Standard) lacks it"
+        )
+    else:
+        # Assert
+        assert settings is not None
+    finally:
+        client.close()

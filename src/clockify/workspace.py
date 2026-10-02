@@ -12,6 +12,12 @@ from clockify.resources.expenses import AsyncExpenseCategoriesResource
 from clockify.resources.expenses import AsyncExpensesResource
 from clockify.resources.expenses import ExpenseCategoriesResource
 from clockify.resources.expenses import ExpensesResource
+from clockify.resources.invoices import AsyncInvoiceItemsResource
+from clockify.resources.invoices import AsyncInvoicePaymentsResource
+from clockify.resources.invoices import AsyncInvoicesResource
+from clockify.resources.invoices import InvoiceItemsResource
+from clockify.resources.invoices import InvoicePaymentsResource
+from clockify.resources.invoices import InvoicesResource
 from clockify.resources.projects import AsyncProjectsResource
 from clockify.resources.projects import ProjectsResource
 from clockify.resources.reports import AsyncReportsResource
@@ -63,6 +69,9 @@ class WorkspaceClient:
         self.approvals = ApprovalsResource(transport, workspace_id, page_size=page_size)
         self.expenses = ExpensesResource(transport, workspace_id, page_size=page_size)
         self.expense_categories = ExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
+        self.invoices = InvoicesResource(transport, workspace_id, page_size=page_size)
+        self.invoice_items = InvoiceItemsResource(transport, workspace_id, page_size=page_size)
+        self.invoice_payments = InvoicePaymentsResource(transport, workspace_id, page_size=page_size)
         self.time_off_policies = TimeOffPoliciesResource(transport, workspace_id, page_size=page_size)
         self.time_off_requests = TimeOffRequestsResource(transport, workspace_id, page_size=page_size)
         self.time_off_balances = TimeOffBalancesResource(transport, workspace_id, page_size=page_size)
@@ -93,6 +102,9 @@ class AsyncWorkspaceClient:
         self.approvals = AsyncApprovalsResource(transport, workspace_id, page_size=page_size)
         self.expenses = AsyncExpensesResource(transport, workspace_id, page_size=page_size)
         self.expense_categories = AsyncExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
+        self.invoices = AsyncInvoicesResource(transport, workspace_id, page_size=page_size)
+        self.invoice_items = AsyncInvoiceItemsResource(transport, workspace_id, page_size=page_size)
+        self.invoice_payments = AsyncInvoicePaymentsResource(transport, workspace_id, page_size=page_size)
         self.time_off_policies = AsyncTimeOffPoliciesResource(transport, workspace_id, page_size=page_size)
         self.time_off_requests = AsyncTimeOffRequestsResource(transport, workspace_id, page_size=page_size)
         self.time_off_balances = AsyncTimeOffBalancesResource(transport, workspace_id, page_size=page_size)

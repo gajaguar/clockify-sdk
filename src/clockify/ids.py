@@ -21,3 +21,5 @@ TimeOffRequestId = NewType("TimeOffRequestId", str)  # pylint: disable=gajaguar-
 TimeOffBalanceId = NewType("TimeOffBalanceId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 TimeOffBalanceAssignmentId = NewType("TimeOffBalanceAssignmentId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 ExpenseFileId = NewType("ExpenseFileId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+InvoiceId = NewType("InvoiceId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+InvoicePaymentId = NewType("InvoicePaymentId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
