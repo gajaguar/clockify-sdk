@@ -1,7 +1,7 @@
 ---
 type: decision
 title: Multipart uploads
-description: Why creating and updating an expense sends multipart/form-data from bytes, how a retry replays it, and why the file download is not covered yet.
+description: Why creating and updating an expense sends multipart/form-data from bytes, how a retry replays it, and where the file download lives.
 tags: [sdk, expenses, transport]
 status: stable
 ---
@@ -32,9 +32,8 @@ first attempt consumed cannot be replayed, while httpx renders `bytes` again on
 every attempt. The price is that a file is held in memory, which a receipt can
 afford. A creation is a non-idempotent command, so it retries only on `429`.
 
-## The file download is not covered
+## The file download
 
-`GET .../expenses/{id}/files/{fileId}` answers with raw bytes, and the transport
-decodes every success as JSON. Supporting it needs a second response path in
-both transports and cannot be checked without a Pro workspace, so it stays
-`planned` in [`coverage.md`](coverage.md).
+`GET .../expenses/{id}/files/{fileId}` answers with raw bytes, which the JSON
+path of the transport cannot return; `ws.expenses.download_file()` uses
+`request_bytes` instead. See [`binary-downloads.md`](binary-downloads.md).

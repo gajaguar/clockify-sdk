@@ -393,8 +393,18 @@ expense = workspace.expenses.create(
 
 The file is sent as bytes, not a stream, so a retry can resend it. Clockify has
 no endpoint to read one category, so `expense_categories.get()` raises
-`NotImplementedError`; downloading the receipt is not covered yet. See
+`NotImplementedError`. See
 [`docs/sdk/multipart-uploads.md`](docs/sdk/multipart-uploads.md).
+
+Download a receipt as bytes (like the rest of Expenses, not checked against a
+real response):
+
+```python
+receipt = workspace.expenses.download_file(expense.id, file_id)
+```
+
+It goes through `Transport.request_bytes`, which returns the raw body; see
+[`docs/sdk/binary-downloads.md`](docs/sdk/binary-downloads.md).
 
 Manage pagination directly instead of iterating the full collection:
 

@@ -193,3 +193,53 @@ async def test_multipart_body_is_sent_as_form_data_with_the_api_key() -> None:
     assert b'name="note"\r\n\r\nhi' in request.content
     assert b'name="file"; filename="a.txt"\r\nContent-Type: text/plain\r\n\r\ndata' in request.content
     await transport.aclose()
+
+
+RECEIPT: Final = b"\x89PNG\r\n\x1a\n\x00\xff\xfe not json, not utf-8"
+
+
+@respx.mock
+async def test_request_bytes_returns_the_raw_body_and_sends_the_api_key() -> None:
+    # Arrange
+    route = respx.get(f"{BASE_URL}/file").mock(
+        return_value=Response(200, content=RECEIPT, headers={"Content-Type": "application/octet-stream"})
+    )
+    transport = _transport()
+    # Act
+    data = await transport.request_bytes("GET", "/file", kind=CqsKind.QUERY, params={"page": 2})
+    # Assert
+    assert data == RECEIPT
+    assert route.calls[0].request.headers["X-Api-Key"] == API_KEY
+    assert route.calls[0].request.url.params["page"] == "2"
+    assert route.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY
+    await transport.aclose()
+
+
+@respx.mock
+async def test_request_bytes_maps_an_error_status_and_a_connect_error() -> None:
+    # Arrange
+    respx.get(f"{BASE_URL}/missing").mock(return_value=Response(404, json={"code": 404, "message": "nope"}))
+    respx.get(f"{BASE_URL}/down").mock(side_effect=ConnectError("dns failure"))
+    transport = _transport()
+    # Act
+    # Assert
+    with pytest.raises(NotFoundError):
+        await transport.request_bytes("GET", "/missing", kind=CqsKind.QUERY)
+    with pytest.raises(TransportError, match="dns failure"):
+        await transport.request_bytes("GET", "/down", kind=CqsKind.QUERY)
+    await transport.aclose()
+
+
+@respx.mock
+async def test_request_bytes_debug_log_never_contains_the_api_key_or_the_body(caplog) -> None:
+    # Arrange
+    respx.get(f"{BASE_URL}/file").mock(return_value=Response(200, content=b"receipt-content-marker"))
+    transport = _transport()
+    caplog.set_level(DEBUG, logger="clockify")
+    # Act
+    await transport.request_bytes("GET", "/file", kind=CqsKind.QUERY)
+    # Assert
+    assert "GET /file -> 200" in caplog.text
+    assert API_KEY not in caplog.text
+    assert "receipt-content-marker" not in caplog.text
+    await transport.aclose()

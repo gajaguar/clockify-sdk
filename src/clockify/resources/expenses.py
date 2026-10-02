@@ -29,6 +29,7 @@ if TYPE_CHECKING:
     from clockify._transport import MultipartPart
     from clockify._transport import Transport
     from clockify.ids import ExpenseCategoryId
+    from clockify.ids import ExpenseFileId
     from clockify.ids import ExpenseId
     from clockify.ids import UserId
     from clockify.ids import WorkspaceId
@@ -124,6 +125,12 @@ class ExpensesResource(_ExpensePaths):
     def delete(self, expense_id: ExpenseId | str) -> None:
         self._transport.request("DELETE", self._item_path(expense_id), kind=CqsKind.IDEMPOTENT_COMMAND)
 
+    # GET .../expenses/{id}/files/{fileId} (the receipt, as raw bytes)
+    def download_file(self, expense_id: ExpenseId | str, file_id: ExpenseFileId | str) -> bytes:
+        return self._transport.request_bytes(
+            "GET", f"{self._item_path(expense_id)}/files/{file_id}", kind=CqsKind.QUERY
+        )
+
 
 class AsyncExpensesResource(_ExpensePaths):
     def __init__(self, transport: AsyncTransport, workspace_id: WorkspaceId, *, page_size: int = 50) -> None:
@@ -164,6 +171,12 @@ class AsyncExpensesResource(_ExpensePaths):
     # DELETE .../expenses/{id}
     async def delete(self, expense_id: ExpenseId | str) -> None:
         await self._transport.request("DELETE", self._item_path(expense_id), kind=CqsKind.IDEMPOTENT_COMMAND)
+
+    # GET .../expenses/{id}/files/{fileId} (the receipt, as raw bytes)
+    async def download_file(self, expense_id: ExpenseId | str, file_id: ExpenseFileId | str) -> bytes:
+        return await self._transport.request_bytes(
+            "GET", f"{self._item_path(expense_id)}/files/{file_id}", kind=CqsKind.QUERY
+        )
 
 
 def _category_params(category_filter: ExpenseCategoryFilter | None, page: int, page_size: int) -> dict[str, Any]:

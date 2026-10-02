@@ -59,13 +59,17 @@ def _elapsed_ms(response: httpx.Response) -> float:
         return 0.0
 
 
-def _handle_response(method: str, path: str, response: httpx.Response) -> JSONValue:
+def _check_response(method: str, path: str, response: httpx.Response) -> None:
     # Only primitives are logged; headers and the config object are never logged so the
     # X-Api-Key / X-Addon-Token value cannot leak into a caller's log sink.
     elapsed_ms = _elapsed_ms(response)
     LOGGER.debug("%s %s -> %s (%.1fms)", method, path, response.status_code, elapsed_ms)
     if not response.is_success:
         raise error_for_response(response)
+
+
+def _handle_response(method: str, path: str, response: httpx.Response) -> JSONValue:
+    _check_response(method, path, response)
     # Clockify answers some deletes (webhooks) with 200 and no body, not 204.
     if response.status_code == _NO_CONTENT or not response.content:
         return None
@@ -93,6 +97,25 @@ class Transport:
             event_hooks=event_hooks or {},
         )
 
+    def _send(
+        self,
+        method: str,
+        path: str,
+        kind: CqsKind,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None,
+        json: JSONValue | Multipart,
+    ) -> httpx.Response:
+        try:
+            return self._client.request(
+                method,
+                path,
+                params=params,
+                **_body_kwargs(json),
+                extensions={"clockify_cqs": kind},
+            )
+        except httpx.TransportError as exc:
+            raise TransportError(str(exc)) from exc
+
     def request(
         self,
         method: str,
@@ -102,17 +125,20 @@ class Transport:
         params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
         json: JSONValue | Multipart = None,
     ) -> JSONValue:
-        try:
-            response = self._client.request(
-                method,
-                path,
-                params=params,
-                **_body_kwargs(json),
-                extensions={"clockify_cqs": kind},
-            )
-        except httpx.TransportError as exc:
-            raise TransportError(str(exc)) from exc
-        return _handle_response(method, path, response)
+        return _handle_response(method, path, self._send(method, path, kind, params, json))
+
+    # For an endpoint that answers with a file, not JSON: the body is returned as it came.
+    def request_bytes(
+        self,
+        method: str,
+        path: str,
+        *,
+        kind: CqsKind,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
+    ) -> bytes:
+        response = self._send(method, path, kind, params, None)
+        _check_response(method, path, response)
+        return response.content
 
     def close(self) -> None:
         self._client.close()
@@ -137,6 +163,25 @@ class AsyncTransport:
             event_hooks=event_hooks or {},
         )
 
+    async def _send(
+        self,
+        method: str,
+        path: str,
+        kind: CqsKind,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None,
+        json: JSONValue | Multipart,
+    ) -> httpx.Response:
+        try:
+            return await self._client.request(
+                method,
+                path,
+                params=params,
+                **_body_kwargs(json),
+                extensions={"clockify_cqs": kind},
+            )
+        except httpx.TransportError as exc:
+            raise TransportError(str(exc)) from exc
+
     async def request(
         self,
         method: str,
@@ -146,17 +191,20 @@ class AsyncTransport:
         params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
         json: JSONValue | Multipart = None,
     ) -> JSONValue:
-        try:
-            response = await self._client.request(
-                method,
-                path,
-                params=params,
-                **_body_kwargs(json),
-                extensions={"clockify_cqs": kind},
-            )
-        except httpx.TransportError as exc:
-            raise TransportError(str(exc)) from exc
-        return _handle_response(method, path, response)
+        return _handle_response(method, path, await self._send(method, path, kind, params, json))
+
+    # For an endpoint that answers with a file, not JSON: the body is returned as it came.
+    async def request_bytes(
+        self,
+        method: str,
+        path: str,
+        *,
+        kind: CqsKind,
+        params: Mapping[str, str | int | float | bool | list[str] | None] | None = None,
+    ) -> bytes:
+        response = await self._send(method, path, kind, params, None)
+        _check_response(method, path, response)
+        return response.content
 
     async def aclose(self) -> None:
         await self._client.aclose()

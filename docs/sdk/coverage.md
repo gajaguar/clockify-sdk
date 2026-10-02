@@ -144,7 +144,8 @@ table listed before: a request hangs off its policy, and the balance has no
 ## Core API — Expenses (Pro plan)
 
 The models follow the OpenAPI spec and are not verified against a real response;
-see [`multipart-uploads.md`](multipart-uploads.md).
+see [`multipart-uploads.md`](multipart-uploads.md). The file download returns
+bytes; see [`binary-downloads.md`](binary-downloads.md).
 
 | Endpoint                                      | SDK method                                      | Status  |
 | --------------------------------------------- | ----------------------------------------------- | ------- |
@@ -153,7 +154,7 @@ see [`multipart-uploads.md`](multipart-uploads.md).
 | `GET .../expenses/{id}`                       | `ws.expenses.get(id)`                           | done    |
 | `PUT .../expenses/{id}`                       | `ws.expenses.update(id, payload)`               | done    |
 | `DELETE .../expenses/{id}`                    | `ws.expenses.delete(id)`                        | done    |
-| `GET .../expenses/{id}/files/{fileId}`        | -                                               | planned |
+| `GET .../expenses/{id}/files/{fileId}`        | `ws.expenses.download_file(id, file_id)`        | done    |
 | `GET .../expenses/categories`                 | `ws.expense_categories.list(category_filter=)`  | done    |
 | `POST .../expenses/categories`                | `ws.expense_categories.create(payload)`         | done    |
 | `PUT .../expenses/categories/{id}`            | `ws.expense_categories.update(id, payload)`     | done    |

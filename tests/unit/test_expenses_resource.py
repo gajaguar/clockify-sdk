@@ -471,3 +471,57 @@ async def test_async_category_list_auto_paginates_and_get_is_not_supported() -> 
     with pytest.raises(NotImplementedError, match="no endpoint to read one expense category"):
         await resource.get(CATEGORY_ID)
     await transport.aclose()
+
+
+FILE_ID: Final = "66a1f0000000000000000099"
+RECEIPT_BYTES: Final = b"%PDF-1.7\n\x00\xff binary receipt"
+
+
+@respx.mock
+def test_download_file_gets_the_receipt_bytes_as_a_query() -> None:
+    # Arrange
+    route = respx.get(f"{EXPENSES_URL}/{EXPENSE_ID}/files/{FILE_ID}").mock(
+        return_value=Response(200, content=RECEIPT_BYTES, headers={"Content-Type": "application/pdf"})
+    )
+    client = _client()
+    # Act
+    data = client.workspace(WORKSPACE_ID).expenses.download_file(EXPENSE_ID, FILE_ID)
+    # Assert
+    assert data == RECEIPT_BYTES
+    assert route.call_count == 1
+    assert not route.calls[0].request.url.params
+    assert not route.calls[0].request.content
+    assert route.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY
+    client.close()
+
+
+@respx.mock
+async def test_async_download_file_gets_the_receipt_bytes_as_a_query() -> None:
+    # Arrange
+    route = respx.get(f"{EXPENSES_URL}/{EXPENSE_ID}/files/{FILE_ID}").mock(
+        return_value=Response(200, content=RECEIPT_BYTES, headers={"Content-Type": "application/pdf"})
+    )
+    client = _async_client()
+    # Act
+    data = await client.workspace(WORKSPACE_ID).expenses.download_file(EXPENSE_ID, FILE_ID)
+    # Assert
+    assert data == RECEIPT_BYTES
+    assert route.call_count == 1
+    assert route.calls[0].request.extensions.get("clockify_cqs") == CqsKind.QUERY
+    await client.aclose()
+
+
+@respx.mock
+def test_download_file_retries_a_5xx_because_it_is_a_query() -> None:
+    # Arrange
+    route = respx.get(f"{EXPENSES_URL}/{EXPENSE_ID}/files/{FILE_ID}").mock(
+        side_effect=[Response(503), Response(200, content=RECEIPT_BYTES)]
+    )
+    retry = RetryPolicy(max_attempts=2, backoff_base=0.0, random_source=lambda: 0.0)
+    client = ClockifyClient(api_key="dummy", options=ClientOptions(base_url=BASE_URL, retry=retry))
+    # Act
+    data = client.workspace(WORKSPACE_ID).expenses.download_file(EXPENSE_ID, FILE_ID)
+    # Assert
+    assert route.call_count == 2
+    assert data == RECEIPT_BYTES
+    client.close()
