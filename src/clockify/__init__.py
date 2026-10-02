@@ -24,6 +24,7 @@ from clockify.ids import ApprovalRequestId
 from clockify.ids import ClientId
 from clockify.ids import CustomFieldId
 from clockify.ids import ExpenseCategoryId
+from clockify.ids import ExpenseFileId
 from clockify.ids import ExpenseId
 from clockify.ids import ProjectId
 from clockify.ids import TagId
@@ -268,6 +269,7 @@ __all__ = [
     "ExpenseDailyTotal",
     "ExpenseDetails",
     "ExpenseFile",
+    "ExpenseFileId",
     "ExpenseId",
     "ExpenseList",
     "ExpenseUpdate",

@@ -33,6 +33,8 @@ Clockify endpoint.
   is not retried.
 * [Multipart uploads](multipart-uploads.md) - how expenses are created and
   updated with `multipart/form-data`, and why only bytes are accepted.
+* [Binary downloads](binary-downloads.md) - why the transport has
+  `request_bytes`, and what it leaves untouched.
 * [Endpoint comment convention](endpoint-comments.md) - the `# METHOD /path`
   comment every resource method carries.
 * [Adding a new endpoint](adding-an-endpoint.md) - the six-step procedure.

@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-10-01 (10)
+
+* **Feature**: `workspace.expenses.download_file(expense_id, file_id)`, sync and
+  async, so the last Expenses endpoint is `done` in
+  [`sdk/coverage.md`](sdk/coverage.md). It needs a second response path in the
+  transport: `Transport.request_bytes` and `AsyncTransport.request_bytes` return
+  the raw body and leave authentication, logging and retries unchanged; see
+  [`sdk/binary-downloads.md`](sdk/binary-downloads.md). **Not verified against a
+  real response**: Expenses needs the Pro plan and the account used answers `403`.
+
 ## 2026-10-01 (9)
 
 * **Release**: version 1.8.0, a minor. Since 1.7.0 the public API only grew:
