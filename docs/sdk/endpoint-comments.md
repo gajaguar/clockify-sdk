@@ -2,7 +2,7 @@
 type: convention
 title: Endpoint comment convention
 description: Every resource method carries a `# METHOD /path` comment above its def, since the no-docstrings rule in AGENTS.md leaves IDE hover text without endpoint information.
-tags: [sdk]
+tags: [sdk, documentation]
 status: stable
 ---
 

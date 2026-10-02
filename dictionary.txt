@@ -57,3 +57,6 @@ uv
 venv
 vocabulary
 workos
+noul
+okflint
+retag

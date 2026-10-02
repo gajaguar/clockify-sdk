@@ -7,3 +7,5 @@ and why.
   ecosystem's own package manager installs everything else.
 * [Rejected install backends](rejected-install-backends.md) - the mise
   `npm:`/`pipx:` backends and pre-commit-managed environments this rules out.
+* [Re-tag the notes](retag-notes.md) - run `make docs-retag`, review the
+  dry run, then write the tags.
