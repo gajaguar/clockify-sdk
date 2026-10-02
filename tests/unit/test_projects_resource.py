@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Final
 
 import respx
@@ -9,6 +10,7 @@ from clockify import NO_RETRY
 from clockify import ClientOptions
 from clockify import ClockifyClient
 from clockify import CqsKind
+from clockify import EstimateType
 from clockify import ProjectCreate
 from clockify import ProjectUpdate
 from clockify.ids import WorkspaceId
@@ -113,4 +115,34 @@ def test_delete_declares_idempotent_command() -> None:
     # Assert
     assert route.call_count == 1
     assert respx.calls[0].request.extensions.get("clockify_cqs") == CqsKind.IDEMPOTENT_COMMAND
+    client.close()
+
+
+@respx.mock
+def test_list_accepts_object_shaped_estimate() -> None:
+    # Arrange
+    payload = {**PROJECT_PAYLOAD, "estimate": {"estimate": "PT0S", "type": "AUTO"}}
+    respx.get(f"{BASE_URL}/workspaces/{WORKSPACE_ID}/projects").mock(return_value=Response(200, json=[payload]))
+    client = _client()
+    workspace = client.workspace(WORKSPACE_ID)
+    # Act
+    page = workspace.projects.list_page()
+    # Assert
+    assert page.items[0].estimate == "PT0S"
+    assert page.items[0].estimate_type == EstimateType.AUTO
+    client.close()
+
+
+@respx.mock
+def test_create_sends_estimate_as_manual_object() -> None:
+    # Arrange
+    route = respx.post(f"{BASE_URL}/workspaces/{WORKSPACE_ID}/projects").mock(
+        return_value=Response(200, json=PROJECT_PAYLOAD)
+    )
+    client = _client()
+    workspace = client.workspace(WORKSPACE_ID)
+    # Act
+    workspace.projects.create(ProjectCreate(name="Apollo", estimate="PT2H"))
+    # Assert
+    assert json.loads(route.calls[0].request.content)["estimate"] == {"estimate": "PT2H", "type": "MANUAL"}
     client.close()
