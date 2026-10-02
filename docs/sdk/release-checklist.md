@@ -2,7 +2,7 @@
 type: playbook
 title: Release checklist
 description: Steps to take before tagging a release; the GitHub Release itself triggers publish.yml, which builds and uploads to PyPI.
-tags: [sdk, release]
+tags: [sdk, release, git]
 status: stable
 ---
 

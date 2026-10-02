@@ -1,7 +1,3 @@
----
-okf_version: "0.2"
----
-
 # SDK
 
 How the SDK is layered, how a request flows, how it reads, protects and

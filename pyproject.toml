@@ -63,6 +63,7 @@ exclude_also = [
 
 [tool.ruff]
 line-length = 119
+extend-exclude = ["tools"]
 lint.select = ["ALL"]
 lint.ignore = ["missing-trailing-comma", "CPY", "D"]
 lint.isort.force-single-line = true
@@ -76,7 +77,7 @@ lint.per-file-ignores."tests/**/*.py" = ["ANN", "magic-value-comparison", "asser
 
 [tool.mypy]
 strict = true
-exclude = ["tests/"]
+exclude = ["tests/", "tools/"]
 
 [tool.pyright]
 include = ["src"]
