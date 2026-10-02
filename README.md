@@ -63,6 +63,10 @@ support is not implemented yet — see
   came from Clockify.
 - **Approvals.** `workspace.approvals` lists approval requests, submits and
   resubmits timesheets and expenses, and approves, rejects or withdraws them.
+- **Time off.** `workspace.time_off_policies`, `time_off_requests` and
+  `time_off_balances` manage policies, requests and balances. Standard plan only,
+  and not checked against a real response; see
+  [`docs/sdk/time-off.md`](docs/sdk/time-off.md).
 - **Expenses.** `workspace.expenses` and `workspace.expense_categories` manage
   expenses (with their receipt file) and their categories. Pro plan only, and
   not verified against a real response.
@@ -337,6 +341,32 @@ for details in workspace.approvals.list(request_filter=ApprovalRequestFilter(sta
 
 `submit_for_user(user_id, type, payload)` submits on behalf of another user and
 `resubmit(payload)` resubmits rejected or withdrawn entries.
+
+Request time off under a policy and read a user's balances (Standard plan or
+above; a lower plan answers `403`, raised as `ForbiddenError`). Time off is built
+from the OpenAPI spec and was not checked against a real response, since the Free
+plan the SDK was built on refuses it:
+
+```python
+import datetime
+
+from clockify import (
+    TimeOffPeriodRequest,
+    TimeOffRequestCreate,
+    TimeOffRequestPeriodRequest,
+)
+
+start, end = datetime.date(2026, 3, 2), datetime.date(2026, 3, 3)
+days = TimeOffPeriodRequest(start=start, end=end)
+policy = next(workspace.time_off_policies.list())
+period = TimeOffRequestPeriodRequest(period=days)
+payload = TimeOffRequestCreate(time_off_period=period, note="Long weekend")
+request = workspace.time_off_requests.create(policy.id, payload)
+balances = list(workspace.time_off_balances.list_for_user(user_id))
+```
+
+`time_off_requests.list()` reads through a `POST`, and a balance change is never
+retried after a `5xx`; see [`docs/sdk/time-off.md`](docs/sdk/time-off.md).
 
 Create an expense category and an expense with its receipt (Pro plan; a lower
 plan answers `403`, raised as `ForbiddenError`). These models follow the OpenAPI

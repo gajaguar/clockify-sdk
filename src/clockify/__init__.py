@@ -29,6 +29,10 @@ from clockify.ids import ProjectId
 from clockify.ids import TagId
 from clockify.ids import TaskId
 from clockify.ids import TimeEntryId
+from clockify.ids import TimeOffBalanceAssignmentId
+from clockify.ids import TimeOffBalanceId
+from clockify.ids import TimeOffPolicyId
+from clockify.ids import TimeOffRequestId
 from clockify.ids import UserGroupId
 from clockify.ids import UserId
 from clockify.ids import WebhookId
@@ -116,6 +120,51 @@ from clockify.models import TimeEntryFilter
 from clockify.models import TimeEntryType
 from clockify.models import TimeEntryUpdate
 from clockify.models import TimeInterval
+from clockify.models import TimeOffAccrualPeriod
+from clockify.models import TimeOffAutomaticAccrual
+from clockify.models import TimeOffAutomaticAccrualRequest
+from clockify.models import TimeOffAutomaticTimeEntryCreation
+from clockify.models import TimeOffAutomaticTimeEntryCreationRequest
+from clockify.models import TimeOffBalance
+from clockify.models import TimeOffBalanceAssignment
+from clockify.models import TimeOffBalanceAssignmentCreate
+from clockify.models import TimeOffBalanceAssignmentDelete
+from clockify.models import TimeOffBalanceAssignmentUpdate
+from clockify.models import TimeOffBalanceDateRange
+from clockify.models import TimeOffBalanceFilter
+from clockify.models import TimeOffBalanceList
+from clockify.models import TimeOffBalanceSortColumn
+from clockify.models import TimeOffBalanceUpdate
+from clockify.models import TimeOffDefaultEntities
+from clockify.models import TimeOffDefaultEntitiesRequest
+from clockify.models import TimeOffHalfDayPeriod
+from clockify.models import TimeOffMemberFilterContains
+from clockify.models import TimeOffMemberFilterStatus
+from clockify.models import TimeOffNegativeBalance
+from clockify.models import TimeOffNegativeBalanceRequest
+from clockify.models import TimeOffPeriod
+from clockify.models import TimeOffPeriodRequest
+from clockify.models import TimeOffPolicy
+from clockify.models import TimeOffPolicyApproval
+from clockify.models import TimeOffPolicyCreate
+from clockify.models import TimeOffPolicyFilter
+from clockify.models import TimeOffPolicyIcon
+from clockify.models import TimeOffPolicyMemberFilter
+from clockify.models import TimeOffPolicyStatus
+from clockify.models import TimeOffPolicyStatusUpdate
+from clockify.models import TimeOffPolicyUpdate
+from clockify.models import TimeOffRequest
+from clockify.models import TimeOffRequestCreate
+from clockify.models import TimeOffRequestDecision
+from clockify.models import TimeOffRequestDetails
+from clockify.models import TimeOffRequestFilter
+from clockify.models import TimeOffRequestList
+from clockify.models import TimeOffRequestPeriod
+from clockify.models import TimeOffRequestPeriodRequest
+from clockify.models import TimeOffRequestStatus
+from clockify.models import TimeOffRequestStatusType
+from clockify.models import TimeOffRequestStatusUpdate
+from clockify.models import TimeOffUnit
 from clockify.models import User
 from clockify.models import UserGroup
 from clockify.models import UserGroupCreate
@@ -267,6 +316,55 @@ __all__ = [
     "TimeEntryType",
     "TimeEntryUpdate",
     "TimeInterval",
+    "TimeOffAccrualPeriod",
+    "TimeOffAutomaticAccrual",
+    "TimeOffAutomaticAccrualRequest",
+    "TimeOffAutomaticTimeEntryCreation",
+    "TimeOffAutomaticTimeEntryCreationRequest",
+    "TimeOffBalance",
+    "TimeOffBalanceAssignment",
+    "TimeOffBalanceAssignmentCreate",
+    "TimeOffBalanceAssignmentDelete",
+    "TimeOffBalanceAssignmentId",
+    "TimeOffBalanceAssignmentUpdate",
+    "TimeOffBalanceDateRange",
+    "TimeOffBalanceFilter",
+    "TimeOffBalanceId",
+    "TimeOffBalanceList",
+    "TimeOffBalanceSortColumn",
+    "TimeOffBalanceUpdate",
+    "TimeOffDefaultEntities",
+    "TimeOffDefaultEntitiesRequest",
+    "TimeOffHalfDayPeriod",
+    "TimeOffMemberFilterContains",
+    "TimeOffMemberFilterStatus",
+    "TimeOffNegativeBalance",
+    "TimeOffNegativeBalanceRequest",
+    "TimeOffPeriod",
+    "TimeOffPeriodRequest",
+    "TimeOffPolicy",
+    "TimeOffPolicyApproval",
+    "TimeOffPolicyCreate",
+    "TimeOffPolicyFilter",
+    "TimeOffPolicyIcon",
+    "TimeOffPolicyId",
+    "TimeOffPolicyMemberFilter",
+    "TimeOffPolicyStatus",
+    "TimeOffPolicyStatusUpdate",
+    "TimeOffPolicyUpdate",
+    "TimeOffRequest",
+    "TimeOffRequestCreate",
+    "TimeOffRequestDecision",
+    "TimeOffRequestDetails",
+    "TimeOffRequestFilter",
+    "TimeOffRequestId",
+    "TimeOffRequestList",
+    "TimeOffRequestPeriod",
+    "TimeOffRequestPeriodRequest",
+    "TimeOffRequestStatus",
+    "TimeOffRequestStatusType",
+    "TimeOffRequestStatusUpdate",
+    "TimeOffUnit",
     "TransportError",
     "User",
     "UserGroup",
