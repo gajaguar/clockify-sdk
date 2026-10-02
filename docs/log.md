@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-10-01 (13)
+
+* **Release**: version 1.10.0, a minor. Since 1.9.0 the public API only grew:
+  `ws.invoices`, `ws.invoice_items`, `ws.invoice_payments` and the invoice
+  models, sync and async; no breaking changes. The new models are not verified
+  against a real response.
+
 ## 2026-10-01 (12)
 
 * **Feature**: `workspace.invoices`, `invoice_items` and `invoice_payments`, sync

@@ -61,7 +61,7 @@ def test_version_is_exported() -> None:
     # Act
     version = clockify.__version__
     # Assert
-    assert version == "1.9.0"
+    assert version == "1.10.0"
 
 
 def test_public_import_surface() -> None:
