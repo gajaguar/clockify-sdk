@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-10-01 (7)
+
+* **Release**: version 1.7.0, a minor. Since 1.6.0 the public API only grew:
+  `ws.webhooks.logs`, `logs_page`, `statuses`, `statuses_page` and
+  `list_for_addon` with their models, sync and async; no breaking changes. The
+  new models are not verified against a real response.
+
 ## 2026-10-01 (6)
 
 * **Feature**: `workspace.webhooks.logs`, `logs_page`, `statuses`, `statuses_page`
