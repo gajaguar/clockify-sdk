@@ -163,19 +163,29 @@ bytes; see [`binary-downloads.md`](binary-downloads.md).
 
 ## Core API — Invoices (Standard plan)
 
-| Endpoint                                        | SDK method | Status  |
-| ----------------------------------------------- | ---------- | ------- |
-| `GET .../invoices`                              | -          | planned |
-| `POST .../invoices`                             | -          | planned |
-| `GET .../invoices/{id}`                         | -          | planned |
-| `PUT .../invoices/{id}`                         | -          | planned |
-| `DELETE .../invoices/{id}`                      | -          | planned |
-| `POST .../invoices/{id}/duplicate`              | -          | planned |
-| `GET .../invoices/{id}/export`                  | -          | planned |
-| `POST .../invoices/{id}/items`                  | -          | planned |
-| `DELETE .../invoices/{id}/items/{itemId}`       | -          | planned |
-| `POST .../invoices/{id}/payments`               | -          | planned |
-| `DELETE .../invoices/{id}/payments/{paymentId}` | -          | planned |
+The models follow the OpenAPI spec and are not verified against a real response;
+see [`invoices.md`](invoices.md). The item route takes the item's `order`, not an
+id, and the table now also lists the six endpoints it did not.
+
+| Endpoint                                        | SDK method                                | Status |
+| ----------------------------------------------- | ----------------------------------------- | ------ |
+| `GET .../invoices`                              | `ws.invoices.list(invoice_filter=)`       | done   |
+| `POST .../invoices/info`                        | `ws.invoices.search(search)`              | done   |
+| `POST .../invoices`                             | `ws.invoices.create(payload)`             | done   |
+| `GET .../invoices/{id}`                         | `ws.invoices.get(id)`                     | done   |
+| `PUT .../invoices/{id}`                         | `ws.invoices.update(id, payload)`         | done   |
+| `DELETE .../invoices/{id}`                      | `ws.invoices.delete(id)`                  | done   |
+| `POST .../invoices/{id}/duplicate`              | `ws.invoices.duplicate(id)`               | done   |
+| `GET .../invoices/{id}/export`                  | `ws.invoices.export(id, user_locale=)`    | done   |
+| `PATCH .../invoices/{id}/status`                | `ws.invoices.update_status(id, payload)`  | done   |
+| `GET .../invoices/settings`                     | `ws.invoices.get_settings()`              | done   |
+| `PUT .../invoices/settings`                     | `ws.invoices.update_settings(payload)`    | done   |
+| `POST .../invoices/{id}/items`                  | `ws.invoice_items.add(id, payload)`       | done   |
+| `POST .../invoices/{id}/items/import`           | `ws.invoice_items.import_entries(id, p)`  | done   |
+| `DELETE .../invoices/{id}/items/{order}`        | `ws.invoice_items.delete(id, order)`      | done   |
+| `GET .../invoices/{id}/payments`                | `ws.invoice_payments.list(id)`            | done   |
+| `POST .../invoices/{id}/payments`               | `ws.invoice_payments.add(id, payload)`    | done   |
+| `DELETE .../invoices/{id}/payments/{paymentId}` | `ws.invoice_payments.delete(id, payment)` | done   |
 
 ## Reports API
 

@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-10-01 (12)
+
+* **Feature**: `workspace.invoices`, `invoice_items` and `invoice_payments`, sync
+  and async, so the Invoices endpoints are `done` in
+  [`sdk/coverage.md`](sdk/coverage.md), which also lists the six endpoints it did
+  not (`info`, `settings` read and write, `items/import`, `payments` list and
+  `status`). `invoices.export` reuses `request_bytes`; see
+  [`sdk/invoices.md`](sdk/invoices.md). **The models are not verified against a
+  real response**: Invoices needs the Standard plan and the account used answers
+  `403`.
+
 ## 2026-10-01 (11)
 
 * **Release**: version 1.9.0, a minor. Since 1.8.0 the public API only grew:

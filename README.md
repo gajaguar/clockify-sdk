@@ -67,6 +67,10 @@ support is not implemented yet — see
   `time_off_balances` manage policies, requests and balances. Standard plan only,
   and not checked against a real response; see
   [`docs/sdk/time-off.md`](docs/sdk/time-off.md).
+- **Invoices.** `workspace.invoices`, `invoice_items` and `invoice_payments`
+  manage invoices, their items and payments, and export an invoice as a file.
+  Standard plan only, and not checked against a real response; see
+  [`docs/sdk/invoices.md`](docs/sdk/invoices.md).
 - **Expenses.** `workspace.expenses` and `workspace.expense_categories` manage
   expenses (with their receipt file) and their categories. Pro plan only, and
   not verified against a real response.
@@ -367,6 +371,46 @@ balances = list(workspace.time_off_balances.list_for_user(user_id))
 
 `time_off_requests.list()` reads through a `POST`, and a balance change is never
 retried after a `5xx`; see [`docs/sdk/time-off.md`](docs/sdk/time-off.md).
+
+Create an invoice, add an item and record a payment (Standard plan or above; a
+lower plan answers `403`, raised as `ForbiddenError`). Amounts are integers in
+the currency's minor unit, and Invoices is built from the OpenAPI spec and was
+not checked against a real response:
+
+```python
+import datetime
+
+from clockify import (
+    InvoiceApplyTaxes,
+    InvoiceCreate,
+    InvoiceItemCreate,
+    InvoicePaymentCreate,
+)
+
+utc = datetime.UTC
+invoice = workspace.invoices.create(
+    InvoiceCreate(
+        client_id=client_id,
+        currency="USD",
+        number="INV-1",
+        issued_date=datetime.datetime(2026, 3, 1, tzinfo=utc),
+        due_date=datetime.datetime(2026, 3, 31, tzinfo=utc),
+    )
+)
+item = InvoiceItemCreate(
+    description="Consulting",
+    item_type="Service",
+    quantity=2,
+    unit_price=6000,  # 60.00
+    apply_taxes=InvoiceApplyTaxes.NONE,
+)
+workspace.invoice_items.add(invoice.id, item)
+workspace.invoice_payments.add(invoice.id, InvoicePaymentCreate(amount=12000))
+pdf = workspace.invoices.export(invoice.id, user_locale="en")
+```
+
+Deleting an item takes its position (`invoice_items.delete(id, order)`) and is
+never retried after a `5xx`; see [`docs/sdk/invoices.md`](docs/sdk/invoices.md).
 
 Create an expense category and an expense with its receipt (Pro plan; a lower
 plan answers `403`, raised as `ForbiddenError`). These models follow the OpenAPI

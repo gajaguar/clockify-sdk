@@ -33,6 +33,8 @@ Clockify endpoint.
   is not retried.
 * [Multipart uploads](multipart-uploads.md) - how expenses are created and
   updated with `multipart/form-data`, and why only bytes are accepted.
+* [Invoices](invoices.md) - the three invoice resources, amounts in minor
+  units, the file export and which shapes the spec leaves doubtful.
 * [Binary downloads](binary-downloads.md) - why the transport has
   `request_bytes`, and what it leaves untouched.
 * [Endpoint comment convention](endpoint-comments.md) - the `# METHOD /path`
