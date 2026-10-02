@@ -1,5 +1,12 @@
 # Directory Update Log
 
+## 2026-10-01 (9)
+
+* **Release**: version 1.8.0, a minor. Since 1.7.0 the public API only grew:
+  `ws.time_off_policies`, `ws.time_off_requests`, `ws.time_off_balances` and the
+  time off models, sync and async; no breaking changes. The new models are not
+  verified against a real response.
+
 ## 2026-10-01 (8)
 
 * **Feature**: `workspace.time_off_policies`, `time_off_requests` and
