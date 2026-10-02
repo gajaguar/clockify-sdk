@@ -1,5 +1,13 @@
 # Directory Update Log
 
+## 2026-10-01 (11)
+
+* **Release**: version 1.9.0, a minor. Since 1.8.0 the public API only grew:
+  `ws.expenses.download_file`, `ExpenseFileId` and `request_bytes` on both
+  transports, sync and async; `request` is unchanged and no existing signature
+  or behavior changed, so there are no breaking changes. The download is not
+  verified against a real response.
+
 ## 2026-10-01 (10)
 
 * **Feature**: `workspace.expenses.download_file(expense_id, file_id)`, sync and
