@@ -19,6 +19,7 @@ from clockify.errors import RateLimitError
 from clockify.errors import ServerError
 from clockify.errors import TransportError
 from clockify.errors import ValidationError
+from clockify.ids import AddonId
 from clockify.ids import ApprovalRequestId
 from clockify.ids import ClientId
 from clockify.ids import CustomFieldId
@@ -122,8 +123,13 @@ from clockify.models import UserGroupUpdate
 from clockify.models import UserRedacted
 from clockify.models import Webhook
 from clockify.models import WebhookCreate
+from clockify.models import WebhookDeliveryStatus
 from clockify.models import WebhookEvent
+from clockify.models import WebhookEventStatus
 from clockify.models import WebhookList
+from clockify.models import WebhookLog
+from clockify.models import WebhookLogSearch
+from clockify.models import WebhookLogStatus
 from clockify.models import WebhookTriggerSourceType
 from clockify.models import WebhookType
 from clockify.models import WebhookUpdate
@@ -149,6 +155,7 @@ __all__ = [
     "EVENT_TYPE_HEADER",
     "NO_RETRY",
     "SIGNATURE_HEADER",
+    "AddonId",
     "AddonTokenProvider",
     "ApiKeyProvider",
     "ApprovalDateRange",
@@ -271,9 +278,14 @@ __all__ = [
     "ValidationError",
     "Webhook",
     "WebhookCreate",
+    "WebhookDeliveryStatus",
     "WebhookEvent",
+    "WebhookEventStatus",
     "WebhookId",
     "WebhookList",
+    "WebhookLog",
+    "WebhookLogSearch",
+    "WebhookLogStatus",
     "WebhookTriggerSourceType",
     "WebhookType",
     "WebhookUpdate",

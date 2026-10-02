@@ -1,5 +1,15 @@
 # Directory Update Log
 
+## 2026-10-01 (6)
+
+* **Feature**: `workspace.webhooks.logs`, `logs_page`, `statuses`, `statuses_page`
+  and `list_for_addon`, sync and async, so the three remaining Webhooks
+  endpoints are `done` in [`sdk/coverage.md`](sdk/coverage.md). The delivery
+  endpoints page with `size`; see [`sdk/webhooks.md`](sdk/webhooks.md).
+  **Not verified against a real response**: the Free plan answers `403` for every
+  webhook endpoint, so the models follow the OpenAPI spec and the first page is
+  assumed to be `1`.
+
 ## 2026-10-01 (5)
 
 * **Release**: version 1.6.0, a minor. Since 1.5.0 the public API only grew:

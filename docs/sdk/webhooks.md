@@ -34,6 +34,22 @@ Clockify answers a webhook delete with `200` and no body, not `204`. The
 transport maps any successful response with an empty body to `None`, so
 `delete()` returns normally.
 
+## Delivery logs and statuses
+
+`logs()` (`POST .../webhooks/{id}/logs`), `statuses()`
+(`GET .../webhooks/{id}/statuses`) and their `_page` variants page with `page`
+and `size`, not the `page-size` of the rest of the API; the SDK maps its
+`page_size` to `size`. `logs()` is a `POST` that only reads, so it is declared a
+query and a `5xx` is retried. Its `from`, `to`, `status` and `sortByNewest`
+filter is the `WebhookLogSearch` body; `from` is the `start` field in Python.
+`list_for_addon()` (`GET .../addons/{addonId}/webhooks`) makes one request, like
+`list()`.
+
+The Free plan answers `403` for every webhook endpoint, `GET .../webhooks`
+included, so these models follow the OpenAPI spec and are **not checked against
+a real response**: every field is optional, and the first page is assumed to be
+`1` although the spec's default for `page` is `0`.
+
 ## Verifying a delivery
 
 Every delivery carries the `Clockify-Signature` header, whose value is the

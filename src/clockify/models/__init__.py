@@ -91,8 +91,13 @@ from clockify.models.user_group import UserGroupUpdate
 from clockify.models.user_group import UserRedacted
 from clockify.models.webhook import Webhook
 from clockify.models.webhook import WebhookCreate
+from clockify.models.webhook import WebhookDeliveryStatus
 from clockify.models.webhook import WebhookEvent
+from clockify.models.webhook import WebhookEventStatus
 from clockify.models.webhook import WebhookList
+from clockify.models.webhook import WebhookLog
+from clockify.models.webhook import WebhookLogSearch
+from clockify.models.webhook import WebhookLogStatus
 from clockify.models.webhook import WebhookTriggerSourceType
 from clockify.models.webhook import WebhookType
 from clockify.models.webhook import WebhookUpdate
@@ -198,8 +203,13 @@ __all__ = [
     "UserStatus",
     "Webhook",
     "WebhookCreate",
+    "WebhookDeliveryStatus",
     "WebhookEvent",
+    "WebhookEventStatus",
     "WebhookList",
+    "WebhookLog",
+    "WebhookLogSearch",
+    "WebhookLogStatus",
     "WebhookTriggerSourceType",
     "WebhookType",
     "WebhookUpdate",

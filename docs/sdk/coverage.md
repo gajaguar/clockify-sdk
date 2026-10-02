@@ -99,9 +99,9 @@ lower plan Clockify answers `403`, which the SDK raises as `ForbiddenError`.
 | `PUT .../webhooks/{id}`                     | `ws.webhooks.update(id, payload)`   | done    |
 | `DELETE .../webhooks/{id}`                  | `ws.webhooks.delete(id)`            | done    |
 | `PATCH .../webhooks/{id}/token`             | `ws.webhooks.regenerate_token(id)`  | done    |
-| `POST .../webhooks/{id}/logs`               | -                                   | planned |
-| `GET .../webhooks/{id}/statuses`            | -                                   | planned |
-| `GET .../addons/{addonId}/webhooks`         | -                                   | planned |
+| `POST .../webhooks/{id}/logs`               | `ws.webhooks.logs(id, search=)`     | done    |
+| `GET .../webhooks/{id}/statuses`            | `ws.webhooks.statuses(id, status=)` | done    |
+| `GET .../addons/{addonId}/webhooks`         | `ws.webhooks.list_for_addon(id)`    | done    |
 
 ## Core API — Time off (Standard plan)
 

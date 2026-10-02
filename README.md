@@ -292,6 +292,21 @@ endpoint has no pages, so `list_page()` raises `NotImplementedError`.
 `regenerate_token(id)` issues a new token and invalidates the old one. See
 [`docs/sdk/webhooks.md`](docs/sdk/webhooks.md).
 
+Read what happened to each delivery (a lower plan answers `403`, raised as
+`ForbiddenError`; these three methods are built from the OpenAPI spec and not
+checked against a real response, since the Free plan the SDK was built on
+refuses every webhook endpoint):
+
+```python
+from clockify import WebhookDeliveryStatus, WebhookLogSearch, WebhookLogStatus
+
+failed = workspace.webhooks.statuses(webhook.id, status=WebhookDeliveryStatus.FAILED)
+logs = workspace.webhooks.logs(
+    webhook.id, search=WebhookLogSearch(status=WebhookLogStatus.FAILED, sort_by_newest=True)
+)
+addon_hooks = workspace.webhooks.list_for_addon(addon_id)
+```
+
 Submit a timesheet for approval and decide on it (Standard plan or above; a
 lower plan answers `403`, raised as `ForbiddenError`):
 
