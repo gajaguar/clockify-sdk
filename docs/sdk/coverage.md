@@ -105,22 +105,31 @@ lower plan Clockify answers `403`, which the SDK raises as `ForbiddenError`.
 
 ## Core API — Time off (Standard plan)
 
-| Endpoint                                    | SDK method | Status  |
-| ------------------------------------------- | ---------- | ------- |
-| `GET .../policies`                          | -          | planned |
-| `POST .../policies`                         | -          | planned |
-| `GET .../policies/{id}`                     | -          | planned |
-| `PUT .../policies/{id}`                     | -          | planned |
-| `PATCH .../policies/{id}`                   | -          | planned |
-| `DELETE .../policies/{id}`                  | -          | planned |
-| `POST .../time-off-requests`                | -          | planned |
-| `POST .../time-off-requests/users/{userId}` | -          | planned |
-| `POST .../time-off-requests/all`            | -          | planned |
-| `PATCH .../time-off-requests/{id}`          | -          | planned |
-| `DELETE .../time-off-requests/{id}`         | -          | planned |
-| `GET .../balance`                           | -          | planned |
-| `GET .../balance/{userId}`                  | -          | planned |
-| `PATCH .../balance/{balanceId}`             | -          | planned |
+The models follow the OpenAPI spec and are not verified against a real response;
+see [`time-off.md`](time-off.md). The routes are the spec's, not the ones this
+table listed before: a request hangs off its policy, and the balance has no
+`GET .../balance`.
+
+| Endpoint                                                                      | SDK method                                                          | Status |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------------- | ------ |
+| `GET .../time-off/policies`                                                   | `ws.time_off_policies.list(policy_filter=)`                         | done   |
+| `POST .../time-off/policies`                                                  | `ws.time_off_policies.create(payload)`                              | done   |
+| `GET .../time-off/policies/{id}`                                              | `ws.time_off_policies.get(id)`                                      | done   |
+| `PUT .../time-off/policies/{id}`                                              | `ws.time_off_policies.update(id, payload)`                          | done   |
+| `PATCH .../time-off/policies/{id}`                                            | `ws.time_off_policies.update_status(id, payload)`                   | done   |
+| `DELETE .../time-off/policies/{id}`                                           | `ws.time_off_policies.delete(id)`                                   | done   |
+| `POST .../time-off/requests`                                                  | `ws.time_off_requests.list(request_filter=)`                        | done   |
+| `POST .../time-off/policies/{policyId}/requests`                              | `ws.time_off_requests.create(policy_id, payload)`                   | done   |
+| `POST .../time-off/policies/{policyId}/users/{userId}/requests`               | `ws.time_off_requests.create_for_user(policy_id, user_id, payload)` | done   |
+| `PATCH .../time-off/policies/{policyId}/requests/{requestId}`                 | `ws.time_off_requests.update_status(policy_id, request_id, body)`   | done   |
+| `DELETE .../time-off/policies/{policyId}/requests/{requestId}`                | `ws.time_off_requests.delete(policy_id, request_id)`                | done   |
+| `GET .../time-off/balance/policy/{policyId}`                                  | `ws.time_off_balances.list_for_policy(policy_id, balance_filter=)`  | done   |
+| `GET .../time-off/balance/user/{userId}`                                      | `ws.time_off_balances.list_for_user(user_id, balance_filter=)`      | done   |
+| `PATCH .../time-off/balance/policy/{policyId}`                                | `ws.time_off_balances.update(policy_id, payload)`                   | done   |
+| `POST .../time-off/balance/assignment`                                        | `ws.time_off_balances.create_assignment(payload)`                   | done   |
+| `GET .../time-off/balance/assignment/user/{userId}/policy/{policyId}`         | `ws.time_off_balances.list_assignments(user_id, policy_id)`         | done   |
+| `PUT .../time-off/balance/assignment/{id}/user/{userId}/policy/{policyId}`    | `ws.time_off_balances.update_assignment(id, user_id, policy_id, p)` | done   |
+| `DELETE .../time-off/balance/assignment/{id}/user/{userId}/policy/{policyId}` | `ws.time_off_balances.delete_assignment(id, user_id, policy_id, p)` | done   |
 
 ## Core API — Approvals (Standard plan)
 

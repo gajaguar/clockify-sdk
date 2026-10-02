@@ -22,6 +22,12 @@ from clockify.resources.tasks import AsyncTasksResource
 from clockify.resources.tasks import TasksResource
 from clockify.resources.time_entries import AsyncTimeEntriesResource
 from clockify.resources.time_entries import TimeEntriesResource
+from clockify.resources.time_off import AsyncTimeOffBalancesResource
+from clockify.resources.time_off import AsyncTimeOffPoliciesResource
+from clockify.resources.time_off import AsyncTimeOffRequestsResource
+from clockify.resources.time_off import TimeOffBalancesResource
+from clockify.resources.time_off import TimeOffPoliciesResource
+from clockify.resources.time_off import TimeOffRequestsResource
 from clockify.resources.user_groups import AsyncUserGroupsResource
 from clockify.resources.user_groups import UserGroupsResource
 from clockify.resources.users import AsyncUsersResource
@@ -57,6 +63,9 @@ class WorkspaceClient:
         self.approvals = ApprovalsResource(transport, workspace_id, page_size=page_size)
         self.expenses = ExpensesResource(transport, workspace_id, page_size=page_size)
         self.expense_categories = ExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
+        self.time_off_policies = TimeOffPoliciesResource(transport, workspace_id, page_size=page_size)
+        self.time_off_requests = TimeOffRequestsResource(transport, workspace_id, page_size=page_size)
+        self.time_off_balances = TimeOffBalancesResource(transport, workspace_id, page_size=page_size)
         # Reports live on a separate host; without a dedicated transport they fall back to
         # the core one, which keeps a hand-built WorkspaceClient working as before.
         self.reports = ReportsResource(reports_transport or transport, workspace_id)
@@ -84,4 +93,7 @@ class AsyncWorkspaceClient:
         self.approvals = AsyncApprovalsResource(transport, workspace_id, page_size=page_size)
         self.expenses = AsyncExpensesResource(transport, workspace_id, page_size=page_size)
         self.expense_categories = AsyncExpenseCategoriesResource(transport, workspace_id, page_size=page_size)
+        self.time_off_policies = AsyncTimeOffPoliciesResource(transport, workspace_id, page_size=page_size)
+        self.time_off_requests = AsyncTimeOffRequestsResource(transport, workspace_id, page_size=page_size)
+        self.time_off_balances = AsyncTimeOffBalancesResource(transport, workspace_id, page_size=page_size)
         self.reports = AsyncReportsResource(reports_transport or transport, workspace_id)

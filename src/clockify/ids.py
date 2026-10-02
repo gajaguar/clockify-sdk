@@ -16,3 +16,7 @@ ApprovalRequestId = NewType("ApprovalRequestId", str)  # pylint: disable=gajagua
 ExpenseId = NewType("ExpenseId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 ExpenseCategoryId = NewType("ExpenseCategoryId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
 AddonId = NewType("AddonId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+TimeOffPolicyId = NewType("TimeOffPolicyId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+TimeOffRequestId = NewType("TimeOffRequestId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+TimeOffBalanceId = NewType("TimeOffBalanceId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final
+TimeOffBalanceAssignmentId = NewType("TimeOffBalanceAssignmentId", str)  # pylint: disable=gajaguar-module-const-naming,gajaguar-require-final

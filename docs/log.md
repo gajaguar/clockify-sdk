@@ -1,5 +1,16 @@
 # Directory Update Log
 
+## 2026-10-01 (8)
+
+* **Feature**: `workspace.time_off_policies`, `time_off_requests` and
+  `time_off_balances`, sync and async, so the Time off endpoints are `done` in
+  [`sdk/coverage.md`](sdk/coverage.md), whose routes are corrected to the spec's
+  (a request hangs off its policy and the balance has no `GET .../balance`). It
+  also covers the four balance-assignment endpoints the table did not list. See
+  [`sdk/time-off.md`](sdk/time-off.md). **The models are not verified against a
+  real response**: Time off needs the Standard plan and the account used answers
+  `403`.
+
 ## 2026-10-01 (7)
 
 * **Release**: version 1.7.0, a minor. Since 1.6.0 the public API only grew:

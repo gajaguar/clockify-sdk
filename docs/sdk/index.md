@@ -28,6 +28,9 @@ Clockify endpoint.
   Clockify's `page`/`page-size` pagination.
 * [Webhooks](webhooks.md) - the webhook resource, why `list()` does not
   paginate, and how to verify a delivery.
+* [Time off](time-off.md) - the policy, request and balance resources, the
+  routes that differ from what the table once listed, and why a balance change
+  is not retried.
 * [Multipart uploads](multipart-uploads.md) - how expenses are created and
   updated with `multipart/form-data`, and why only bytes are accepted.
 * [Endpoint comment convention](endpoint-comments.md) - the `# METHOD /path`
