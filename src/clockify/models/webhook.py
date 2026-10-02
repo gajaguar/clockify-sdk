@@ -4,6 +4,7 @@ from enum import StrEnum
 
 from pydantic import Field
 
+from clockify._time import ClockifyInstant
 from clockify.ids import WebhookId
 from clockify.ids import WorkspaceId
 from clockify.models.base import ClockifyModel
@@ -127,3 +128,54 @@ class WebhookUpdate(ClockifyModel):
     trigger_source: list[str]
     trigger_source_type: WebhookTriggerSourceType
     name: str | None = None
+
+
+class WebhookDeliveryStatus(StrEnum):
+    SUCCEEDED = "SUCCEEDED"
+    RETRYING = "RETRYING"
+    FAILED = "FAILED"
+    UNKNOWN = "UNKNOWN"
+
+    @classmethod
+    def _missing_(cls, value: object) -> WebhookDeliveryStatus:
+        del value
+        return cls.UNKNOWN
+
+
+class WebhookLogStatus(StrEnum):
+    ALL = "ALL"
+    SUCCEEDED = "SUCCEEDED"
+    FAILED = "FAILED"
+
+
+# None of the delivery-log models has been checked against a real response: webhooks
+# answer 403 on the Free plan the SDK was built on. They follow the OpenAPI spec, with
+# every field optional.
+class WebhookLog(ClockifyModel):
+    id: str | None = None
+    webhook_id: WebhookId | None = None
+    webhook_event_status_id: str | None = None
+    status_code: int | None = None
+    request_body: str | None = None
+    response_body: str | None = None
+    responded_at: str | None = None
+
+
+class WebhookEventStatus(ClockifyModel):
+    id: str | None = None
+    webhook_id: WebhookId | None = None
+    webhook_log_id: str | None = None
+    status: WebhookDeliveryStatus | None = None
+    status_code: int | None = None
+    retry_count: int | None = None
+    request_body: str | None = None
+    response_body: str | None = None
+    responded_at: str | None = None
+
+
+class WebhookLogSearch(ClockifyModel):
+    # `from` is a Python keyword, so the field is `start` and only the wire name differs.
+    start: ClockifyInstant | None = Field(default=None, alias="from")
+    to: ClockifyInstant | None = None
+    status: WebhookLogStatus | None = None
+    sort_by_newest: bool | None = None
