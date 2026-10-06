@@ -15,6 +15,7 @@ from clockify._transport import Transport  # ruff: ignore[import-private-name]
 from clockify.config import AddonTokenProvider
 from clockify.config import ApiKeyProvider
 from clockify.config import ClientConfig
+from clockify.errors import ClockifyAPIError
 from clockify.errors import MissingCredentialsError
 from clockify.errors import NotFoundError
 from clockify.errors import TransportError
@@ -99,6 +100,21 @@ def test_error_status_maps_to_typed_exception() -> None:
     # Assert
     with pytest.raises(NotFoundError):
         transport.request("GET", "/missing", kind=CqsKind.QUERY)
+    transport.close()
+
+
+@respx.mock
+def test_request_does_not_follow_a_redirect_to_another_origin() -> None:
+    # Arrange
+    other_origin = "https://storage.example.com/file"
+    respx.get(f"{BASE_URL}/user").mock(return_value=Response(307, headers={"Location": other_origin}))
+    target = respx.get(other_origin).mock(return_value=Response(200, content=b"leaked"))
+    transport = _transport()
+    # Act
+    # Assert
+    with pytest.raises(ClockifyAPIError):
+        transport.request("GET", "/user", kind=CqsKind.QUERY)
+    assert not target.called
     transport.close()
 
 
