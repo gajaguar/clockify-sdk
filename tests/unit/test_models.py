@@ -113,8 +113,6 @@ def test_base_model_config():
     assert config == {
         "alias_generator": to_camel,
         "populate_by_name": True,
-        "validate_by_alias": True,
-        "validate_by_name": True,
         "extra": "allow",
         "frozen": True,
     }
