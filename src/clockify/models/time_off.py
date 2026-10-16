@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from dataclasses import dataclass
 from enum import StrEnum
 from typing import TYPE_CHECKING
@@ -295,8 +295,8 @@ class TimeOffRequestList(ClockifyModel):
 
 
 class TimeOffPeriodRequest(ClockifyModel):
-    start: datetime.date | None = None
-    end: datetime.date | None = None
+    start: dt.date | None = None
+    end: dt.date | None = None
     days: int | None = None
 
 
@@ -350,8 +350,8 @@ class TimeOffBalanceAssignment(ClockifyModel):
 
 
 class TimeOffBalanceDateRange(ClockifyModel):
-    start: datetime.date | None = None
-    end: datetime.date | None = None
+    start: dt.date | None = None
+    end: dt.date | None = None
 
 
 class TimeOffBalanceUpdate(ClockifyModel):
@@ -420,8 +420,8 @@ class TimeOffBalanceFilter:
 class TimeOffRequestFilter:
     # Unlike the other filters this one travels in the body of `POST .../time-off/requests`,
     # which reads despite the verb, so it renders a JSON body rather than query parameters.
-    start: datetime.datetime | None = None
-    end: datetime.datetime | None = None
+    start: dt.datetime | None = None
+    end: dt.datetime | None = None
     statuses: list[TimeOffRequestStatusType] | None = None
     users: list[UserId] | None = None
     user_groups: list[UserGroupId] | None = None

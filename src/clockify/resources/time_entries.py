@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import cast
@@ -97,11 +97,11 @@ class TimeEntriesResource(_TimeEntryPaths):
         return TimeEntry.model_validate(data)
 
     # PATCH .../user/{userId}/time-entries
-    def stop(self, user_id: UserId | str, *, end: datetime.datetime | None = None) -> TimeEntry:
+    def stop(self, user_id: UserId | str, *, end: dt.datetime | None = None) -> TimeEntry:
         # Classified non-idempotent, not idempotent, despite the PATCH verb: a retried
         # stop against a stale in-flight timer could end a different entry than the one
         # the caller intended (see retry.py's CQS-aware retry rule).
-        resolved_end = end if end is not None else datetime.datetime.now(datetime.UTC)
+        resolved_end = end if end is not None else dt.datetime.now(dt.UTC)
         body: dict[str, JSONValue] = {"end": format_instant(resolved_end)}
         data = self._transport.request(
             "PATCH", self._user_path(user_id), kind=CqsKind.NON_IDEMPOTENT_COMMAND, json=body
@@ -169,9 +169,9 @@ class AsyncTimeEntriesResource(_TimeEntryPaths):
         return TimeEntry.model_validate(data)
 
     # PATCH .../user/{userId}/time-entries
-    async def stop(self, user_id: UserId | str, *, end: datetime.datetime | None = None) -> TimeEntry:
+    async def stop(self, user_id: UserId | str, *, end: dt.datetime | None = None) -> TimeEntry:
         # Non-idempotent despite the PATCH verb, same as the sync client (see retry.py).
-        resolved_end = end if end is not None else datetime.datetime.now(datetime.UTC)
+        resolved_end = end if end is not None else dt.datetime.now(dt.UTC)
         body: dict[str, JSONValue] = {"end": format_instant(resolved_end)}
         data = await self._transport.request(
             "PATCH", self._user_path(user_id), kind=CqsKind.NON_IDEMPOTENT_COMMAND, json=body

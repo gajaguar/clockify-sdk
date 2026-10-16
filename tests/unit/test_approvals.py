@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from typing import Final
 
 import pytest
@@ -68,13 +68,13 @@ def test_approval_request_parses_nested_objects() -> None:
     assert request.type is ApprovalRequestType.TIMESHEET
     assert request.status is not None
     assert request.status.state is ApprovalState.PENDING
-    assert request.status.updated_at == datetime.datetime(2026, 9, 28, 10, tzinfo=datetime.UTC)
+    assert request.status.updated_at == dt.datetime(2026, 9, 28, 10, tzinfo=dt.UTC)
     assert request.owner is not None
     assert request.owner.start_of_week == "MONDAY"
     assert request.creator is not None
     assert request.creator.user_email == "someone@example.com"
     assert request.date_range is not None
-    assert request.date_range.end == datetime.datetime(2026, 10, 4, 23, 59, 59, tzinfo=datetime.UTC)
+    assert request.date_range.end == dt.datetime(2026, 10, 4, 23, 59, 59, tzinfo=dt.UTC)
 
 
 def test_approval_details_parses_durations_entries_and_expenses() -> None:
@@ -84,12 +84,12 @@ def test_approval_details_parses_durations_entries_and_expenses() -> None:
     # Assert
     assert details.approval_request is not None
     assert details.approval_request.id == "6a0000000000000000000001"
-    assert details.tracked_time == datetime.timedelta(hours=8)
-    assert details.billable_time == datetime.timedelta(hours=7, minutes=30)
+    assert details.tracked_time == dt.timedelta(hours=8)
+    assert details.billable_time == dt.timedelta(hours=7, minutes=30)
     assert details.billable_amount == pytest.approx(112.5)
     assert details.entries is not None
     assert details.entries[0].time_interval is not None
-    assert details.entries[0].time_interval.duration == datetime.timedelta(hours=8)
+    assert details.entries[0].time_interval.duration == dt.timedelta(hours=8)
     assert details.entries[0].project is not None
     assert details.entries[0].project.client_name == "ACME"
     assert details.entries[0].tags is not None
@@ -121,9 +121,7 @@ def test_unknown_enum_value_falls_back_to_unknown(enum: type[ApprovalState], val
 
 def test_create_dumps_only_the_fields_that_were_set() -> None:
     # Arrange
-    payload = ApprovalRequestCreate(
-        period_start=datetime.datetime(2026, 9, 28, tzinfo=datetime.UTC), period=ApprovalPeriod.WEEKLY
-    )
+    payload = ApprovalRequestCreate(period_start=dt.datetime(2026, 9, 28, tzinfo=dt.UTC), period=ApprovalPeriod.WEEKLY)
     # Act
     body = payload.model_dump(mode="json", by_alias=True, exclude_unset=True)
     # Assert
@@ -132,7 +130,7 @@ def test_create_dumps_only_the_fields_that_were_set() -> None:
 
 def test_create_without_period_omits_it() -> None:
     # Arrange
-    payload = ApprovalRequestCreate(period_start=datetime.datetime(2026, 9, 28, tzinfo=datetime.UTC))
+    payload = ApprovalRequestCreate(period_start=dt.datetime(2026, 9, 28, tzinfo=dt.UTC))
     # Act
     body = payload.model_dump(mode="json", by_alias=True, exclude_unset=True)
     # Assert
@@ -142,7 +140,7 @@ def test_create_without_period_omits_it() -> None:
 def test_resubmit_dumps_the_type() -> None:
     # Arrange
     payload = ApprovalRequestResubmit(
-        period_start=datetime.datetime(2026, 9, 28, tzinfo=datetime.UTC), type=ApprovalRequestType.EXPENSE
+        period_start=dt.datetime(2026, 9, 28, tzinfo=dt.UTC), type=ApprovalRequestType.EXPENSE
     )
     # Act
     body = payload.model_dump(mode="json", by_alias=True, exclude_unset=True)

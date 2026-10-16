@@ -19,7 +19,7 @@ from clockify.models.base import ClockifyModel
 from clockify.models.custom_field import CustomFieldType
 
 if TYPE_CHECKING:
-    import datetime
+    import datetime as dt
 
 
 class TimeEntryType(StrEnum):
@@ -94,8 +94,8 @@ class TimeEntryFilter:
     # kebab-case (project-required, in-progress), not camelCase, so ClockifyModel's
     # to_camel alias generator does not apply.
     description: str | None = None
-    start: datetime.datetime | None = None
-    end: datetime.datetime | None = None
+    start: dt.datetime | None = None
+    end: dt.datetime | None = None
     project: ProjectId | None = None
     task: TaskId | None = None
     tag_ids: list[TagId] | None = None

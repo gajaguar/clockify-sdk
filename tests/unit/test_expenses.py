@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from typing import Final
 
 import pytest
@@ -127,9 +127,7 @@ def test_expense_list_parses_the_wrapper_and_totals() -> None:
     assert expense_list == ExpenseList(
         expenses=ExpensesWithCount(count=1, expenses=[DETAILS]),
         daily_totals=[
-            ExpenseDailyTotal(
-                date="2026-09-30", date_as_instant=datetime.datetime(2026, 9, 30, tzinfo=datetime.UTC), total=12.5
-            )
+            ExpenseDailyTotal(date="2026-09-30", date_as_instant=dt.datetime(2026, 9, 30, tzinfo=dt.UTC), total=12.5)
         ],
         weekly_totals=[ExpenseWeeklyTotal(date="2026-09-28", total=12.5)],
     )
@@ -166,7 +164,7 @@ def test_expense_create_dumps_the_form_fields_without_the_file() -> None:
         user_id="u1",
         category_id="c1",
         project_id="p1",
-        date=datetime.datetime(2026, 9, 30, tzinfo=datetime.UTC),
+        date=dt.datetime(2026, 9, 30, tzinfo=dt.UTC),
         amount=12.5,
         file=ExpenseFile("receipt.pdf", b"%PDF", "application/pdf"),
     )
@@ -187,7 +185,7 @@ def test_expense_update_dumps_the_change_fields() -> None:
     payload = ExpenseUpdate(
         user_id="u1",
         category_id="c1",
-        date=datetime.datetime(2026, 9, 30, tzinfo=datetime.UTC),
+        date=dt.datetime(2026, 9, 30, tzinfo=dt.UTC),
         amount=1.0,
         change_fields=[ExpenseChangeField.AMOUNT, ExpenseChangeField.NOTES],
     )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -47,7 +47,7 @@ DETAILS_PAYLOAD: Final = {"id": EXPENSE_ID, "total": 12.5, "fileName": "receipt.
 LIST_PAYLOAD: Final = {"expenses": {"count": 1, "expenses": [DETAILS_PAYLOAD]}, "dailyTotals": [], "weeklyTotals": []}
 CATEGORY_PAYLOAD: Final = {"id": CATEGORY_ID, "name": "Travel", "archived": False}
 
-DATE: Final = datetime.datetime(2026, 9, 30, tzinfo=datetime.UTC)
+DATE: Final = dt.datetime(2026, 9, 30, tzinfo=dt.UTC)
 FILE: Final = ExpenseFile("receipt.pdf", b"%PDF-1.4 bytes", "application/pdf")
 CREATE: Final = ExpenseCreate(
     user_id="u1", category_id="c1", project_id="p1", date=DATE, amount=12.5, billable=True, notes="taxi", file=FILE

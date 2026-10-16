@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 
 import pytest
 from pydantic import BaseModel
@@ -22,11 +22,11 @@ class _Sample(BaseModel):
 @pytest.mark.parametrize(
     ("text", "delta"),
     [
-        ("PT0S", datetime.timedelta()),
-        ("PT1H30M", datetime.timedelta(hours=1, minutes=30)),
-        ("P1DT2H3M4S", datetime.timedelta(days=1, hours=2, minutes=3, seconds=4)),
-        ("P2D", datetime.timedelta(days=2)),
-        ("-PT45M", -datetime.timedelta(minutes=45)),
+        ("PT0S", dt.timedelta()),
+        ("PT1H30M", dt.timedelta(hours=1, minutes=30)),
+        ("P1DT2H3M4S", dt.timedelta(days=1, hours=2, minutes=3, seconds=4)),
+        ("P2D", dt.timedelta(days=2)),
+        ("-PT45M", -dt.timedelta(minutes=45)),
     ],
 )
 def test_duration_round_trip(text, delta):
@@ -66,7 +66,7 @@ def test_instant_round_trip():
     # Act
     parsed = parse_instant(text)
     # Assert
-    assert parsed == datetime.datetime(2026, 8, 26, 10, 0, tzinfo=datetime.UTC)
+    assert parsed == dt.datetime(2026, 8, 26, 10, 0, tzinfo=dt.UTC)
     assert format_instant(parsed) == text
 
 
@@ -78,12 +78,12 @@ def test_parse_instant_normalizes_offset_and_naive():
     naive = parse_instant("2026-08-26T10:00:00")
     # Assert
     assert format_instant(parsed) == "2026-08-26T10:00:00Z"
-    assert naive.tzinfo is datetime.UTC
+    assert naive.tzinfo is dt.UTC
 
 
 def test_format_instant_keeps_microseconds():
     # Arrange
-    moment = datetime.datetime(2026, 8, 26, 10, 0, 0, 500000, tzinfo=datetime.UTC)
+    moment = dt.datetime(2026, 8, 26, 10, 0, 0, 500000, tzinfo=dt.UTC)
     # Act
     rendered = format_instant(moment)
     # Assert
@@ -118,16 +118,16 @@ def test_annotated_types_round_trip_through_model():
     model = _Sample.model_validate(payload)
     dumped = model.model_dump(mode="json")
     # Assert
-    assert model.duration == datetime.timedelta(hours=1, minutes=30)
-    assert model.instant == datetime.datetime(2026, 8, 26, 10, 0, tzinfo=datetime.UTC)
+    assert model.duration == dt.timedelta(hours=1, minutes=30)
+    assert model.instant == dt.datetime(2026, 8, 26, 10, 0, tzinfo=dt.UTC)
     assert dumped == payload
 
 
 def test_annotated_types_accept_native_objects():
     # Arrange
     payload = {
-        "duration": datetime.timedelta(seconds=90),
-        "instant": datetime.datetime(2026, 8, 26, 10, 0, tzinfo=datetime.UTC),
+        "duration": dt.timedelta(seconds=90),
+        "instant": dt.datetime(2026, 8, 26, 10, 0, tzinfo=dt.UTC),
     }
     # Act
     model = _Sample.model_validate(payload)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -63,8 +63,8 @@ ITEM_URL: Final = f"{INVOICES_URL}/{INVOICE_ID}"
 CLIENT_ID: Final = ClientId("66b1f0000000000000000020")
 PAYMENT_ID: Final = "66b1f0000000000000000030"
 CQS: Final = "clockify_cqs"
-ISSUED: Final = datetime.datetime(2026, 3, 1, tzinfo=datetime.UTC)
-DUE: Final = datetime.datetime(2026, 3, 31, tzinfo=datetime.UTC)
+ISSUED: Final = dt.datetime(2026, 3, 1, tzinfo=dt.UTC)
+DUE: Final = dt.datetime(2026, 3, 31, tzinfo=dt.UTC)
 
 INVOICE_PAYLOAD: Final = {
     "id": INVOICE_ID,
@@ -161,7 +161,7 @@ PAYMENT: Final = InvoicePayment(
     id=PAYMENT_ID,
     amount=5000,
     author="Ada",
-    date=datetime.datetime(2026, 3, 10, tzinfo=datetime.UTC),
+    date=dt.datetime(2026, 3, 10, tzinfo=dt.UTC),
     note="wire",
 )
 LABEL_NAMES: Final = (
@@ -288,7 +288,7 @@ def test_search_page_posts_the_filter_and_the_page_in_the_body_as_a_query() -> N
             contains=InvoiceFilterContains.CONTAINS, ids=[str(CLIENT_ID)], status=InvoiceFilterStatus.ALL
         ),
         invoice_number="INV",
-        issue_date=InvoiceIssueDateRange(start=datetime.date(2026, 3, 1), end=datetime.date(2026, 3, 31)),
+        issue_date=InvoiceIssueDateRange(start=dt.date(2026, 3, 1), end=dt.date(2026, 3, 31)),
         greater_than_amount=100,
         statuses=[InvoiceStatus.OVERDUE],
         sort_column=InvoiceSortColumn.AMOUNT,
@@ -647,9 +647,7 @@ def test_payments_are_listed_added_and_deleted() -> None:
     page = payments.list_page(INVOICE_ID, page=2, page_size=5)
     added = payments.add(
         INVOICE_ID,
-        InvoicePaymentCreate(
-            amount=5000, note="wire", payment_date=datetime.datetime(2026, 3, 10, tzinfo=datetime.UTC)
-        ),
+        InvoicePaymentCreate(amount=5000, note="wire", payment_date=dt.datetime(2026, 3, 10, tzinfo=dt.UTC)),
     )
     deleted = payments.delete(INVOICE_ID, PAYMENT_ID)
     # Assert

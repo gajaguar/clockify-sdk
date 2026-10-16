@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from os import environ
 
 import pytest
@@ -62,9 +62,9 @@ def test_reports_summary_smoke() -> None:
     region = Region(environ.get("CLOCKIFY_TEST_REGION", Region.GLOBAL))
     client = ClockifyClient(api_key=environ["CLOCKIFY_TEST_API_KEY"], options=ClientOptions(region=region))
     workspace = client.workspace(WorkspaceId(environ["CLOCKIFY_TEST_WORKSPACE_ID"]))
-    end = datetime.datetime.now(datetime.UTC)
+    end = dt.datetime.now(dt.UTC)
     request = SummaryReportRequest(
-        date_range_start=end - datetime.timedelta(days=7),
+        date_range_start=end - dt.timedelta(days=7),
         date_range_end=end,
         summary_filter=SummaryFilter(groups=[ReportGroup.PROJECT]),
     )

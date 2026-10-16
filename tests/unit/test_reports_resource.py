@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -27,8 +27,8 @@ from clockify.ids import WorkspaceId
 BASE_URL: Final = "https://fake.clockify.test/api/v1"
 REPORTS_URL: Final = "https://fake.clockify.test/report/v1"
 WORKSPACE_ID: Final = WorkspaceId("64a1f0000000000000000001")
-START: Final = datetime.datetime(2026, 8, 1, tzinfo=datetime.UTC)
-END: Final = datetime.datetime(2026, 8, 31, 23, 59, 59, tzinfo=datetime.UTC)
+START: Final = dt.datetime(2026, 8, 1, tzinfo=dt.UTC)
+END: Final = dt.datetime(2026, 8, 31, 23, 59, 59, tzinfo=dt.UTC)
 RANGE_BODY: Final = {"dateRangeStart": "2026-08-01T00:00:00Z", "dateRangeEnd": "2026-08-31T23:59:59Z"}
 SHARED_ID: Final = "5d0f5b1f1f1f1f1f1f1f1f1f"
 

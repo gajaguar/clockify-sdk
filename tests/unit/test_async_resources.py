@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -275,8 +275,8 @@ async def test_user_groups_membership_posts_and_deletes_member() -> None:
 
 REPORTS_URL: Final = "https://fake.clockify.test/report/v1"
 REPORT_RANGE: Final = {"dateRangeStart": "2026-08-01T00:00:00Z", "dateRangeEnd": "2026-08-31T23:59:59Z"}
-REPORT_START: Final = datetime.datetime(2026, 8, 1, tzinfo=datetime.UTC)
-REPORT_END: Final = datetime.datetime(2026, 8, 31, 23, 59, 59, tzinfo=datetime.UTC)
+REPORT_START: Final = dt.datetime(2026, 8, 1, tzinfo=dt.UTC)
+REPORT_END: Final = dt.datetime(2026, 8, 31, 23, 59, 59, tzinfo=dt.UTC)
 
 
 def _reports_client() -> AsyncClockifyClient:
