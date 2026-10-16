@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -41,7 +41,7 @@ REQUEST_PAYLOAD: Final = {
     "status": {"state": "PENDING"},
 }
 DETAILS_PAYLOAD: Final = {"approvalRequest": REQUEST_PAYLOAD, "trackedTime": "PT8H"}
-PERIOD_START: Final = datetime.datetime(2026, 9, 28, tzinfo=datetime.UTC)
+PERIOD_START: Final = dt.datetime(2026, 9, 28, tzinfo=dt.UTC)
 CREATE: Final = ApprovalRequestCreate(period_start=PERIOD_START)
 CREATE_BODY: Final = {"periodStart": "2026-09-28T00:00:00Z"}
 RESUBMIT: Final = ApprovalRequestResubmit(period_start=PERIOD_START, type=ApprovalRequestType.TIMESHEET)

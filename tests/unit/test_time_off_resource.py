@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import json
 from typing import Final
 
@@ -96,13 +96,13 @@ STATUS_PAYLOAD: Final = {"statusType": "APPROVED", "note": "enjoy", "changedAt":
 STATUS: Final = TimeOffRequestStatus(
     status_type=TimeOffRequestStatusType.APPROVED,
     note="enjoy",
-    changed_at=datetime.datetime(2026, 3, 1, 10, 0, tzinfo=datetime.UTC),
+    changed_at=dt.datetime(2026, 3, 1, 10, 0, tzinfo=dt.UTC),
 )
 PERIOD_PAYLOAD: Final = {"period": {"start": "2026-03-02T00:00:00Z", "end": "2026-03-03T00:00:00Z"}, "halfDay": False}
 PERIOD: Final = TimeOffRequestPeriod(
     period=TimeOffPeriod(
-        start=datetime.datetime(2026, 3, 2, tzinfo=datetime.UTC),
-        end=datetime.datetime(2026, 3, 3, tzinfo=datetime.UTC),
+        start=dt.datetime(2026, 3, 2, tzinfo=dt.UTC),
+        end=dt.datetime(2026, 3, 3, tzinfo=dt.UTC),
     ),
     half_day=False,
 )
@@ -130,7 +130,7 @@ DETAILS: Final = TimeOffRequestDetails(
 )
 REQUEST_CREATE: Final = TimeOffRequestCreate(
     time_off_period=TimeOffRequestPeriodRequest(
-        period=TimeOffPeriodRequest(start=datetime.date(2026, 3, 2), end=datetime.date(2026, 3, 3)),
+        period=TimeOffPeriodRequest(start=dt.date(2026, 3, 2), end=dt.date(2026, 3, 3)),
         is_half_day=False,
         half_day_period=TimeOffHalfDayPeriod.NOT_DEFINED,
     ),
@@ -177,11 +177,11 @@ ASSIGNMENT: Final = TimeOffBalanceAssignment(
     balance=5.0,
     accrued=1.0,
     date_range=TimeOffPeriod(
-        start=datetime.datetime(2026, 1, 1, tzinfo=datetime.UTC),
-        end=datetime.datetime(2026, 12, 31, tzinfo=datetime.UTC),
+        start=dt.datetime(2026, 1, 1, tzinfo=dt.UTC),
+        end=dt.datetime(2026, 12, 31, tzinfo=dt.UTC),
     ),
 )
-DATE_RANGE: Final = TimeOffBalanceDateRange(start=datetime.date(2026, 1, 1), end=datetime.date(2026, 12, 31))
+DATE_RANGE: Final = TimeOffBalanceDateRange(start=dt.date(2026, 1, 1), end=dt.date(2026, 12, 31))
 DATE_RANGE_BODY: Final = {"start": "2026-01-01", "end": "2026-12-31"}
 
 
@@ -345,8 +345,8 @@ def test_requests_list_page_posts_the_filter_and_page_in_the_body_as_a_query() -
     )
     client = _client()
     request_filter = TimeOffRequestFilter(
-        start=datetime.datetime(2026, 3, 1, tzinfo=datetime.UTC),
-        end=datetime.datetime(2026, 4, 1, tzinfo=datetime.UTC),
+        start=dt.datetime(2026, 3, 1, tzinfo=dt.UTC),
+        end=dt.datetime(2026, 4, 1, tzinfo=dt.UTC),
         statuses=[TimeOffRequestStatusType.PENDING, TimeOffRequestStatusType.APPROVED],
         users=[USER_ID],
         user_groups=[],

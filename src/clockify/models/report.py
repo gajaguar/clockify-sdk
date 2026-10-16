@@ -13,7 +13,7 @@ from clockify._time import format_instant
 from clockify.models.base import ClockifyModel
 
 if TYPE_CHECKING:
-    import datetime
+    import datetime as dt
 
 
 class ReportSortOrder(StrEnum):
@@ -165,8 +165,8 @@ class SharedReport(ClockifyModel):
 @dataclass(frozen=True, slots=True)
 class SharedReportQuery:
     # Parameter Object grouping the optional GET /shared-reports/{id} query parameters.
-    date_range_start: datetime.datetime | None = None
-    date_range_end: datetime.datetime | None = None
+    date_range_start: dt.datetime | None = None
+    date_range_end: dt.datetime | None = None
     sort_order: ReportSortOrder | None = None
     sort_column: str | None = None
     page: int | None = None

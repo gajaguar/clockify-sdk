@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 from dataclasses import dataclass
 from enum import StrEnum
 
@@ -386,8 +386,8 @@ class InvoicePaymentCreate(ClockifyModel):
 
 
 class InvoiceIssueDateRange(ClockifyModel):
-    start: datetime.date | None = Field(default=None, alias="issue-date-start")
-    end: datetime.date | None = Field(default=None, alias="issue-date-end")
+    start: dt.date | None = Field(default=None, alias="issue-date-start")
+    end: dt.date | None = Field(default=None, alias="issue-date-end")
 
 
 # `page` and `pageSize` are not fields: list_page/search_page add them to the body.
