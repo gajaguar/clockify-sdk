@@ -493,7 +493,7 @@ turns out to be wrong.
 ```bash
 make install   # sync Python deps, install node tooling, install pre-commit hook
 make check     # read-only gate: lint, format-check, mypy, pyright,
-               # md-lint, spell, pylint, commits-check
+               # md-lint, spell, ferrolint, commits-check
 make fix       # apply safe auto-fixes (format, ruff --fix, markdownlint --fix)
 make test      # run the test suite
 make build     # build the sdist and wheel into dist/
@@ -512,13 +512,13 @@ Run `make help` for the full target list; every target accepts
 - **pytest** + **pytest-cov** + **respx** — testing, coverage, HTTP mocking
 - **markdownlint-cli2** + **cspell** (pnpm, dev-only) — Markdown lint & spell check
 - **checkmake** — lints the `Makefile` itself (`make makefile-lint`)
-- **pylint** + a custom checker plugin (a `uv` git dependency pinned in
-  `pyproject.toml`) — custom checkers for personal-preference rules ruff
-  doesn't cover (e.g. no docstrings — see below)
+- **ferrolint** + the `pylint-gajaguar` plugin (a PyPI dev dependency) —
+  custom rules for personal-preference checks ruff doesn't cover (e.g. no
+  docstrings — see below)
 - **pre-commit** — git hook running the generic hygiene hooks
   (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
   check-merge-conflict, check-added-large-files, mixed-line-ending),
-  markdownlint-cli2, cspell, checkmake, ruff, ruff-format, mypy, and pylint
+  markdownlint-cli2, cspell, checkmake, ruff, ruff-format, mypy, and ferrolint
   before each commit
 - **mise** — pins the whole toolchain version (Python, uv, node, pnpm,
   pre-commit, checkmake) in `mise.toml`
